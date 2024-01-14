@@ -134,16 +134,7 @@ export const OrderViewOrderMethod = (page = 1) => async (dispatch, getState) => 
                 // console.log("TestMethod", response);
 
                 dispatch(setOrders(response?.data));
-                // if (page === 1) {
-                //     dispatch(setOrdersCurrentPage(page + 1));
 
-                // } else {
-
-                //     dispatch(addOrdersPageData(response?.data));
-                //     dispatch(setOrdersCurrentPage(page + 1));
-
-
-                // }
                 return response?.data;
             } else {
                 throw new Error("No products found in the response");
@@ -761,10 +752,10 @@ export const GetCartMethod = (data) => async (dispatch, getState) => {
         } catch (error) {
             // console.error("TestMethod API request error:", error);
             showMessage({
-                message: "Error fetching data",
+                message: "Fetching data",
                 // description: error.message || "Unknown error occurred",
                 description: "No More Data Availabe",
-                type: "danger",
+                info: "danger",
             });
         } finally {
             dispatch(setLoadingState(false));
@@ -1286,7 +1277,7 @@ export const UpdateDeliveryChargesMethod = (charges) => async (dispatch, getStat
     try {
         const method = "PUT";
         const headers = {};
-        const endUrl = `http://3.111.70.84:8089/prod/api/v1/store-master/update-delivery-charges/${store_per_id}/${saasId}/${storeId}/${charges}`;
+        const endUrl = `${BASE_URL}store-master/update-delivery-charges/${store_per_id}/${saasId}/${storeId}/${charges}`;
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
@@ -1339,7 +1330,7 @@ export const UpdateMinOrderValueMethod = (charges) => async (dispatch, getState)
     try {
         const method = "PUT";
         const headers = {};
-        const endUrl = `http://3.111.70.84:8089/prod/api/v1/store-master/update-minimum-order-value/${store_per_id}/${saasId}/${storeId}/${charges}`;
+        const endUrl = `${BASE_URL}store-master/update-minimum-order-value/${store_per_id}/${saasId}/${storeId}/${charges}`;
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
@@ -1389,7 +1380,7 @@ export const GetMinOrderValueMethod = () => async (dispatch, getState) => {
     try {
         const method = "GET";
         const headers = {};
-        const endUrl = `http://3.111.70.84:8089/prod/api/v1/store-master/get-minimum-order-value/${store_per_id}/${saasId}/${storeId}`;
+        const endUrl = `${BASE_URL}store-master/get-minimum-order-value/${store_per_id}/${saasId}/${storeId}`;
 
 
         try {
@@ -1435,7 +1426,7 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
     try {
         const method = "GET";
         const headers = {};
-        const endUrl = `http://3.111.70.84:8089/prod/api/v1/store-master/get-delivery-charges/${store_per_id}/${saasId}/${storeId}`;
+        const endUrl = `${BASE_URL}store-master/get-delivery-charges/${store_per_id}/${saasId}/${storeId}`;
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
