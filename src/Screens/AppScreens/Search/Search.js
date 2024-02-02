@@ -2,10 +2,6 @@ import { StyleSheet, Text, View, TextInput, FlatList, Image, TouchableOpacity } 
 import React, { useState, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { BASE_URL } from '../config/Base_Url';
-// import { scale, textScale } from '../styles/responsiveSize';
-// import NoDataFound from './NoDataFound';
-// import { GetSearchItemsMethod } from '../config/userApiMethods';
 import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../../../config/Base_Url';
@@ -78,6 +74,7 @@ const SearchBar = () => {
             paddingLeft: scale(8),
             flex: 1,
           }}
+          autoFocus={true}
         />
       </View>
 

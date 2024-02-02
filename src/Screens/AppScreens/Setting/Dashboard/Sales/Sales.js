@@ -8,22 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { GetgetSalesReportMethod } from '../../../../../config/userApiMethods';
 
-const Screen1 = () => (
-    //   <SearchBar />
-    <View style={styles.screenContainer}>
-        <Text>Screen 1 Content</Text>
-    </View>
-
-);
-
-const Screen2 = () => (
-    //   <Ratings />//
-    <View style={styles.screenContainer}>
-        <Text>Screen 2 Content</Text>
-    </View>
-
-
-);
 
 
 

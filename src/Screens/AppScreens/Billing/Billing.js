@@ -342,7 +342,14 @@ const Billing = () => {
         ImgCompoStyle={styles.serviceImage}
       />
       <Text style={styles.itemPrice} numberOfLines={1}>₹{item.price}</Text>
-      <Text style={styles.itemName} numberOfLines={1}>{item.item_name}</Text>
+      {/* <View style={{ flex: 1, backgroundColor: 'red' ,width:'80%'}}> */}
+      {/* <Text style={styles.itemName} numberOfLines={1}>{item.item_name}</Text> */}
+      <Text style={styles.itemName} numberOfLines={1}>
+        {item.item_name.charAt(0).toUpperCase() + item.item_name.slice(1)}
+      </Text>
+
+
+      {/* </View> */}
       <TouchableOpacity style={styles.button} onPress={() => addToCart(item)}>
         <Text style={styles.buttonText}>Cart</Text>
       </TouchableOpacity>
@@ -418,7 +425,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   categoryItemText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   categoryItemsItem: {
@@ -431,6 +438,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 4,
     elevation: 2, // Add elevation for a shadow effect
+    // gap:8,
+    // paddingVertical:8
   },
   serviceImage: {
     width: 100,
@@ -442,12 +451,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     // marginBottom: 8,
-    color:'#000'
+    color: '#000'
   },
   itemName: {
     fontSize: 14,
     // marginBottom: 8,
-    color:'#000'
+    color: 'grey',
+    textAlign: 'left'
 
   },
   button: {
@@ -456,13 +466,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     width: '90%',
-    // marginTop: 12, // Increased margin
+    marginTop: 8, // Increased margin
   },
   buttonText: {
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
-    
+
   },
   verticalFlatList: {
     // marginTop: 16,

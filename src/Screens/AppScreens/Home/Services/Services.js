@@ -20,13 +20,6 @@ const ServiceItem = memo(({ service }) => {
     // console.log("o",service)
     return (
         <View style={[styles.serviceContainer, { elevation: 10 }]}>
-            {/* <View style={{ elevation: 2, backgroundColor: '#FFF', paddingTop: moderateScale(4) }}> */}
-            {/* <MyImgCompo
-                imageUri={`${BASE_URL}item/get-image/${service.item_id}`}
-                resizeMode={'center'}
-                ImgCompoStyle={styles.serviceImage}
-            /> */}
-
             <Image
                 source={{ uri: `${BASE_URL}item/get-image/${service.item_id}` }}
                 resizeMode='center'

@@ -17,7 +17,6 @@ export default {
   /********************* Images **********************/
   JennyWilson: require('../assets/images/JennyWilson.png'),
   avtar: require('../assets/images/avtar.jpeg'),
-  nanoLogo: require('../assets/images/nanoLogo.png'),
   NanoPosLogo: require('../assets/images/NanoPOS.png'),
 
 

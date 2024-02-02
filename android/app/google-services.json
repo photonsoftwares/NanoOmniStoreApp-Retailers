@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "805034489789",
+    "project_id": "nanoretailer-9e101",
+    "storage_bucket": "nanoretailer-9e101.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805034489789:android:eb0378f44008cd20a144d4",
+        "android_client_info": {
+          "package_name": "com.omniretailer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHJ5LXmJ6bfuVpS-7Q3UcB6_7KK_4Gyrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View, useColorScheme, Modal } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AppStack from './AppStack';
 import AuthStack from './AuthStack';
 import colors from '../styles/colors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import NoInternet from '../Components/NoInternet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setFcmTokenMethod } from '../config/userApiMethods';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +16,20 @@ const Routes = () => {
     const theme = useColorScheme() === 'dark' ? colors.dark : colors.light;
     const accessToken = useSelector(state => state?.authReducer?.user?.jwt_response);
     const usertType = useSelector(state => state?.authReducer?.user?.user_data?.userType);
-    // console.log("<>", usertType)
+
+    const dispatch=useDispatch()
+
+        useEffect(() => {
+            getFcmToken()
+        })
+
+    const getFcmToken = async () => {
+        let fcmToken = await AsyncStorage.getItem('fcmToken')
+        console.log("old fcmTokenjj", fcmToken)
+        dispatch(setFcmTokenMethod(fcmToken))
+
+    }
+
 
     let network = NoInternet();
     const NoInternetModal = () => {

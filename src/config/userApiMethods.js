@@ -134,7 +134,16 @@ export const OrderViewOrderMethod = (page = 1) => async (dispatch, getState) => 
                 // console.log("TestMethod", response);
 
                 dispatch(setOrders(response?.data));
+                // if (page === 1) {
+                //     dispatch(setOrdersCurrentPage(page + 1));
 
+                // } else {
+
+                //     dispatch(addOrdersPageData(response?.data));
+                //     dispatch(setOrdersCurrentPage(page + 1));
+
+
+                // }
                 return response?.data;
             } else {
                 throw new Error("No products found in the response");
@@ -170,7 +179,6 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
     // console.log("OrderViewOrderOne", storeId, saasId,order_id)
 
     try {
-        // const endUrl = `http://3.7.230.172:8088/test/api/v1/order/view-order-detail-web/80001/8/47217`
         const endUrl = `${BASE_URL}order/view-order-detail-web/${storeId}/${saasId}/${order_id}`;
         // console.log(endUrl)
 
@@ -206,12 +214,14 @@ export const OrderMasterDetailsMethod = (storeId, saasId, order_id) => async (di
 
         // console.log('GetOrderMasterDetails_Resp', response?.data);
         if (response?.status) {
-            // console.log("more then one")
+            console.log("more then one", response)
             await dispatch(setCustomerData(response?.data));
+            await dispatch(GetCustomerAddressMethod(storeId, saasId, response?.data?.address_id))
+
 
         }
 
-        return response;
+        return response?.status;
     } catch (error) {
         showMessage({
             message: "Network Error " `${error}`,
@@ -233,7 +243,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        // console.log('GetCustomerAddress_rep', response?.data);
+        // console.log('GetCustomerAddress_rep', responser);
         if (response?.status) {
             // console.log("more then one"),
             await dispatch(setCustomerAddresses(response?.data));
@@ -752,10 +762,10 @@ export const GetCartMethod = (data) => async (dispatch, getState) => {
         } catch (error) {
             // console.error("TestMethod API request error:", error);
             showMessage({
-                message: "Fetching data",
+                message: "Error fetching data",
                 // description: error.message || "Unknown error occurred",
                 description: "No More Data Availabe",
-                info: "danger",
+                type: "danger",
             });
         } finally {
             dispatch(setLoadingState(false));
@@ -1160,7 +1170,6 @@ export const GetgetSalesReportMethod = (startDate_props) => async (dispatch, get
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const { salesReportData, startDate } = getState()?.salesReportReducer
 
-    // console.log('GetgetSalesReportMethod_props', storeId, saasId, startDate_props);
     const date = await startDate_props == undefined ? startDate : startDate_props
     // console.log(">", startDate,startDate_props)
 
@@ -1170,9 +1179,9 @@ export const GetgetSalesReportMethod = (startDate_props) => async (dispatch, get
     try {
         const method = "GET";
         const headers = {};
-        // const endUrl = `${BASE_URL}tax/get-sales-report/${date}/${storeId}/${saasId}`;
-        const endUrl = await `${BASE_URL}tax/get-sales-report/${date}/${storeId}/${saasId}`;
-        // const endUrl = await `https://pos.photonsoftwares.com/prod/api/v1/tax/get-sales-report/${date}/${storeId}/${saasId}`;
+        // const endUrl = await `${BASE_URL}tax/get-sales-report/${date}/${storeId}/${saasId}`;
+        // const endUrl = await `http://103.139.59.233:8089/prod/api/v1/tax/get-sales-report/${date}/${storeId}/${saasId}`;
+        const endUrl = await `http://103.139.59.233:8089/prod/api/v1/tax/get-sales-report/${date}/${storeId}/${saasId}`;
         // console.log("endUrl_Before", endUrl,response)
 
 
@@ -1231,11 +1240,11 @@ export const GetgetSalesSummarytMethod = (fromDate, toDate) => async (dispatch, 
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
-            console.log("GetgetSalesSummarytMethod_endUrl", endUrl)
+            // console.log("GetgetSalesSummarytMethod_endUrl", endUrl)
 
             // console.log('GetgetSalesReportMethod_resp', response?.list_sales_report?.length)
             if (response?.status === true) {
-                console.log("GetgetSalesSummarytMethod_resp_inside", response?.data?.length);
+                // console.log("GetgetSalesSummarytMethod_resp_inside", response?.data?.length);
                 await dispatch(setSalesSummary(response?.data))
 
                 return response?.status
@@ -1462,5 +1471,44 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
         });
         dispatch(setLoadingState(false));
     }
+
+};
+
+
+
+export const setFcmTokenMethod = data => async dispatch => {
+
+    try {
+        const endUrl = `http://103.148.165.246:8093/test/api/v1/customer/save-Fmc-Token/12/${body}`;
+        //   const endUrl = `http://103.148.165.246:8093/test/api/v1/customer/save-Fmc-Token/12/danish`;
+        const headers = {};
+        const body = data;
+        const method = 'POST';
+        let response = await ApiRequest(endUrl, method, headers, body);
+        //   console.log("before resp",body)
+        console.log("setFcmTokenAction response", response);
+
+        if (response?.status) {
+
+            // showMessage({
+            //   message: response?.message,
+            //   type: 'success'
+            // })
+        }
+        else {
+            // showMessage({
+            //   message: response?.message,
+            //   type: "danger",
+            // })
+        }
+        return response;
+    } catch (error) {
+        showMessage({
+            message: error,
+            type: "danger",
+        })
+    }
+
+
 
 };

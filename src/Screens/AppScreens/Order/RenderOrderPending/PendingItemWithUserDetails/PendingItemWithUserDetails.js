@@ -7,6 +7,7 @@ import ButtonCompo from '../../../../../Components/ButtonCompo';
 import HeaderComp from '../../../../../Components/HeaderCompo';
 import GenrateInvoicePdf from './GenrateInvoicePdf/GenrateInvoicePdf';
 import { useNavigation } from '@react-navigation/native';
+import Loader from '../../../../../Components/Loader';
 
 const PendingItemWithUserDetails = ({ route }) => {
   const navigation = useNavigation()
@@ -15,12 +16,20 @@ const PendingItemWithUserDetails = ({ route }) => {
   const { customerBookedOrders, customerAddresses, customerData } = useSelector((state) => state.customerReducer);
   const { extraDeliveryCharges, extraDeliveryChargesValue } = useSelector((state) => state.extraChargesReducer);
   const [total, setTotal] = useState(0);
-
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    dispatch(OrderMasterDetailsMethod(storeId, saasId, route?.params));
-    dispatch(GetCustomerAddressMethod(storeId, saasId, customerData?.address_id));
+    const res = dispatch(OrderMasterDetailsMethod(storeId, saasId, route?.params));
+
+    setTimeout(() => {
+
+      setLoader(false);
+
+    }, 1500);
   }, []);
+
+
+
 
   // useEffect(() => {
   //   // Calculate the total whenever customerBookedOrders changes
@@ -87,37 +96,37 @@ const PendingItemWithUserDetails = ({ route }) => {
       <View style={styles.itemContainer}>
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`Customer ID: `}</Text>
-          <Text style={styles.valueStyle}>{customerData.customer_id}</Text>
+          <Text style={styles.valueStyle}>{customerData?.customer_id}</Text>
         </View>
 
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`Customer Name: `}</Text>
-          <Text style={styles.valueStyle}>{customerData.customer_name}</Text>
+          <Text style={styles.valueStyle}>{customerData?.customer_name}</Text>
         </View>
 
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`Address: `}</Text>
-          <Text style={styles.valueStyle}>{customerAddresses.address}</Text>
+          <Text style={styles.valueStyle}>{customerAddresses?.address}</Text>
         </View>
 
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`Street: `}</Text>
-          <Text style={styles.valueStyle}>{customerAddresses.street}</Text>
+          <Text style={styles.valueStyle}>{customerAddresses?.street}</Text>
         </View>
 
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`Pincode: `}</Text>
-          <Text style={styles.valueStyle}>{customerAddresses.pincode}</Text>
+          <Text style={styles.valueStyle}>{customerAddresses?.pincode}</Text>
         </View>
 
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`City: `}</Text>
-          <Text style={styles.valueStyle}>{customerAddresses.city}</Text>
+          <Text style={styles.valueStyle}>{customerAddresses?.city}</Text>
         </View>
 
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`State: `}</Text>
-          <Text style={styles.valueStyle}>{customerAddresses.state}</Text>
+          <Text style={styles.valueStyle}>{customerAddresses?.state}</Text>
         </View>
 
         <View style={styles.divider}></View>
@@ -165,7 +174,6 @@ const PendingItemWithUserDetails = ({ route }) => {
     );
   };
 
-  // console.log(customerBookedOrders[0])
 
   const handleButtonPress = async () => {
     // Log or display the total
@@ -234,27 +242,33 @@ const PendingItemWithUserDetails = ({ route }) => {
     // navigation.navigate('GenrateInvoicePdf', )
   };
 
-  const extraChargesFunc = ({ charges }) => {
-    console.log("first",)
-  }
 
 
   return (
     <>
       <HeaderComp screenName={'Order Details'} />
-      <View style={{ backgroundColor: 'white', flex: 1 }}>
 
-        <View style={styles.cardContainer}>
-          {renderCustomerDetails()}
-          {renderOrderDetails()}
-          {renderItemDetails()}
+      {loader ?
+
+        <Loader
+          isLoading={loader}
+        /> :
+
+        <View style={{ backgroundColor: 'white', flex: 1 }}>
+
+          <View style={styles.cardContainer}>
+            {renderCustomerDetails()}
+            {renderOrderDetails()}
+            {renderItemDetails()}
+          </View>
+
+          <ButtonCompo
+            title={`Pick Pack - Total: ₹${total.toFixed(2)}`}
+            onPress={handleButtonPress}
+          />
         </View>
+      }
 
-        <ButtonCompo
-          title={`Pick Pack - Total: ₹${total.toFixed(2)}`}
-          onPress={handleButtonPress}
-        />
-      </View>
     </>
   );
 };

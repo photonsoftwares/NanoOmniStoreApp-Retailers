@@ -1,83 +1,6 @@
-// import { StyleSheet, Text, View, Button } from 'react-native'
-// import React from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { setStartDate } from '../../../../../../ReduxToolkit/features/salesReport'
-
-// const SalesReport = () => {
-//   const { salesReportData, startDate } = useSelector((state) => state?.salesReportReducer)
-//   const { salesData } = useSelector((state) => state?.salesSummaryReducer)
-//   const dispatch = useDispatch()
 
 
-//   // console.log("salesReportData", salesReportData?.length, startDate)
-//   return (
-//     <View>
-//       <Text>SalesReport</Text>
-//       <Button title='nikl' onPress={() => dispatch(setStartDate('2023/12/20'))} />
-//     </View>
-//   )
-// }
-
-// export default SalesReport
-
-// const styles = StyleSheet.create({})
-
-
-// import React, { useCallback, memo } from 'react';
-// import { View, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
-// import { useSelector } from 'react-redux';
-
-
-
-
-// const ListItem = memo(({ item }) => {
-//   const handlePress = () => {
-//     // Handle item press, e.g., navigate to the PDF URL
-//     console.log(`Pressed item ${item.invoice_no}`);
-//   };
-
-//   return (
-//     <TouchableOpacity onPress={handlePress} style={styles.itemContainer}>
-//       <View>
-//         <Text>{`Invoice No: ${item.invoice_no}`}</Text>
-//         <Text>{`Business Date: ${item.business_date}`}</Text>
-//         <Text>{`Invoice Total: ${item.invoice_total}`}</Text>
-//         <Text>{`Tax Total: ${item.tax_total}`}</Text>
-//       </View>
-//     </TouchableOpacity>
-//   );
-// });
-
-// const SalesReport = () => {
-//   const { salesReportData, startDate } = useSelector((state) => state?.salesReportReducer)
-//   const keyExtractor = useCallback((item) => String(item.invoice_no), []);
-//   const renderItem = useCallback(({ item }) => <ListItem item={item} />, []);
-
-//   return (
-//     <FlatList
-//       data={salesReportData}
-//       keyExtractor={keyExtractor}
-//       renderItem={renderItem}
-//       contentContainerStyle={styles.flatListContainer}
-//     />
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   flatListContainer: {
-//     padding: 16,
-//   },
-//   itemContainer: {
-//     marginBottom: 16,
-//     padding: 16,
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     borderRadius: 8,
-//   },
-// });
-
-// export default SalesReport;
-
+////optimization
 
 
 import React, { useCallback, memo, useState, useEffect } from 'react';
@@ -85,7 +8,6 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { moderateScale } from '../../../../../../styles/responsiveSize';
 import Calender from '../../../../../../Components/Calender';
 import { GetgetSalesReportMethod } from '../../../../../../config/userApiMethods';
 import NoDataFound from '../../../../../../Components/NoDataFound';
@@ -101,7 +23,7 @@ const getCurrentDateInIndianFormat = () => {
   const formattedDay = day < 10 ? `0${day}` : day;
   const formattedMonth = month < 10 ? `0${month}` : month;
 
-  return `${year}/${formattedMonth}/${formattedDay}`;
+  return `${year}-${formattedMonth}-${formattedDay}`;
 };
 
 
@@ -119,7 +41,7 @@ const ListItem = memo(({ item }) => {
     console.log(`Generate receipt for item ${item.pdf_name}`);
     const pdf_file_name = item.pdf_name
     navigation.navigate('GenrateInvoicePdf', pdf_file_name)
-    // console.log(pdf_file_name)
+    console.log(pdf_file_name)
 
   };
 
@@ -132,7 +54,6 @@ const ListItem = memo(({ item }) => {
         <Text style={[styles.listStyle]}>{`Tax Total: ₹${item.tax_total}`}</Text>
       </View>
       <TouchableOpacity onPress={handleGenerateReceipt} style={styles.generateButton}>
-        {/* <Text style={styles.buttonText}>Generate Receipt</Text> */}
         <MaterialCommunityIcons name="cloud-print" size={32} color='blue' />
 
       </TouchableOpacity>
@@ -180,16 +101,6 @@ const SalesReport = () => {
     // console.log("fromDate",fromDate)
   }, [fromDate]);
 
-  // const dispatchGetSalesReport = useCallback(() => {
-  //   dispatch(GetgetSalesReportMethod(fromDate));
-  // }, [dispatch, fromDate]);
-
-  // useFocusEffect(dispatchGetSalesReport);
-
-
-
-
-  // console.log("first", salesReportData.length)
 
 
 
@@ -220,7 +131,7 @@ const SalesReport = () => {
         :
         null}
       <FlatList
-        data={salesReportData}
+        data={salesReportData && salesReportData}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         contentContainerStyle={styles.flatListContainer}
@@ -246,7 +157,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    borderRadius:8
+    borderRadius: 8
 
   },
   itemContent: {
