@@ -1,3 +1,213 @@
+// import React, { useState } from 'react';
+// import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+// import DropDownPicker from 'react-native-dropdown-picker';
+// import { useDispatch, useSelector } from 'react-redux';
+// import HeaderComp from '../../../../../Components/HeaderCompo';
+// import { GetCategoryItemMethod, GetSelectedCategoryItemsMethod, ItemUpdateMethod } from '../../../../../config/userApiMethods';
+// import { useNavigation } from '@react-navigation/native';
+
+// const UpdateItemScreen = ({ route }) => {
+//     const { itemId } = route.params;
+
+//     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
+//     const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
+
+//     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
+//     const [description, setDescription] = useState(itemToUpdate?.description || '');
+//     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
+//     const [status, setStatus] = useState(itemToUpdate?.status);
+//     const [category, setCategory] = useState(itemToUpdate?.category || '');
+//     const [isOpen, setOpen] = useState(false);
+
+//     const dispatch = useDispatch()
+//     const navigation = useNavigation()
+//     const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
+//     console.log("first", status)
+
+
+//     // Dummy data for the status options
+//     const statusOptions = [
+//         { label: 'Active', value: 'active' },
+//         { label: 'Inactive', value: 'inactive' },
+//     ];
+
+//     const handleStatusChange = (selectedStatus) => {
+//         setStatus(selectedStatus);
+//     };
+
+//     const handleUpdate = async () => {
+//         // Dispatch the updateItem action with the updated data
+//         // console.log({
+//         //     id: itemId,
+//         //     item_name: itemName,
+//         //     description: description,
+//         //     price: newprice,
+//         //     status: status,
+//         //     category: category,
+//         // });
+//         const data = {
+//             "item_name": itemName,
+//             "item_code": itemId,
+//             "description": description,
+//             "price": newprice,
+//             "discount": 0,
+//             "acutal_price": newprice,
+//             "special_description": "lpoop",
+//             "tax": "00",
+//             "status": status,
+//             "saas_id": saasId,
+//             "store_id": storeId,
+//             "hsn_code": "00",
+//             "promo_id": 0,
+//             "sku": 0,
+//             "category": category,
+//             "barcode": 0,
+//             "mrp": 0,
+//             "stock_quantity": 0,
+//             "update_price": "00",
+//             "selling_price": "00",
+//             "opening_quantity": "00",
+//             "closing_quantity": 0,
+//             "received_quantity": "00"
+//         }
+//         const jsonString = JSON.stringify(data);
+//         console.log("ad", jsonString)
+
+//         const ItemUpdateMethod_resp = await dispatch(ItemUpdateMethod(jsonString,
+//             itemId,
+//             storeId,
+//             saasId,
+//             recommendedCurrentPage
+//         ))
+//         if (ItemUpdateMethod_resp) {
+//             navigation.goBack()
+//             dispatch(GetCategoryItemMethod())
+//             dispatch(GetSelectedCategoryItemsMethod())
+//             // console.log("ItemUpdate",ItemUpdateMethod_resp)
+
+//         }
+
+//     };
+//     return (
+//         <>
+//             <HeaderComp
+//                 screenName={'Item Update'}
+//             />
+//             <ScrollView
+//                 contentContainerStyle={[{ flexGrow: 1, }]}
+//                 keyboardDismissMode="interactive"
+//                 keyboardShouldPersistTaps="always"
+//                 showsVerticalScrollIndicator={false}
+//             >
+//                 <View style={styles.container}>
+//                     <Text style={styles.label}>Item Name</Text>
+//                     <TextInput
+//                         style={styles.input}
+//                         value={itemName}
+//                         onChangeText={(text) => setItemName(text)}
+//                     />
+
+//                     <Text style={styles.label}>Description</Text>
+//                     <TextInput
+//                         style={styles.input}
+//                         value={description}
+//                         onChangeText={(text) => setDescription(text)}
+//                     />
+
+//                     <Text style={styles.label}>Price</Text>
+//                     <TextInput
+//                         style={styles.input}
+//                         value={newprice}
+//                         onChangeText={(text) => setPrice(text)}
+//                         keyboardType="numeric"
+//                     />
+
+//                     <Text style={styles.label}>Status</Text>
+//                     <DropDownPicker
+//                         open={isOpen}
+//                         value={status}
+//                         items={statusOptions}
+//                         setOpen={setOpen}
+//                         setValue={(value) => handleStatusChange(value)}
+//                         setItems={() => { }}
+//                         containerStyle={styles.dropdownContainer}
+//                         style={styles.dropdownStyle}
+//                         itemStyle={styles.dropdownItemStyle}
+//                         dropDownStyle={styles.dropdownDropStyle}
+//                         placeholder="Select Status"
+//                         searchable={false}
+//                     />
+
+//                     <Text style={styles.label}>Category</Text>
+//                     <TextInput
+//                         style={styles.input}
+//                         value={category}
+//                         onChangeText={(text) => setCategory(text)}
+//                     />
+
+
+//                     <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+//                         <Text style={styles.buttonText}>Update Item</Text>
+//                     </TouchableOpacity>
+//                 </View>
+//             </ScrollView>
+//         </>
+//     );
+// };
+
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         padding: 16,
+//     },
+//     label: {
+//         fontSize: 16,
+//         fontWeight: 'bold',
+//         marginTop: 8,
+//     },
+//     input: {
+//         height: 40,
+//         borderColor: 'gray',
+//         borderWidth: 1,
+//         marginTop: 8,
+//         paddingHorizontal: 8,
+//     },
+//     dropdownContainer: {
+//         height: 40,
+//         marginTop: 8,
+//     },
+//     dropdownStyle: {
+//         backgroundColor: '#fafafa',
+//     },
+//     dropdownItemStyle: {
+//         justifyContent: 'flex-start',
+//     },
+//     dropdownDropStyle: {
+//         backgroundColor: '#fafafa',
+//     },
+//     button: {
+//         backgroundColor: '#ECE447',
+//         padding: 16,
+//         borderRadius: 8,
+//         alignItems: 'center',
+//         marginTop: 16,
+//     },
+//     buttonText: {
+//         color: '#000',
+//         fontSize: 18,
+//         fontWeight: 'bold',
+//     },
+// });
+
+// export default UpdateItemScreen;
+
+
+
+
+
+
+
+
 
 ///////////
 

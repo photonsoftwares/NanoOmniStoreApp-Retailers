@@ -71,13 +71,14 @@ import SearchBar from './SearchBar';
 import Profile from '../Screens/AppScreens/Profile/Profile';
 
 const HomeHeader = () => {
-    const storeName = useSelector(state => state?.auth?.data?.store_name);
+    // const storeName = useSelector(state => state?.auth?.data?.store_name);
+    const {storeName} = useSelector(state => state?.authReducer?.user?.store_data);
     const userId = useSelector(state => state?.auth?.data?.customer_data?.id);
     const userType = useSelector(state => state?.auth?.data?.customer_data?.customerType
     );
     const navigation = useNavigation()
 
-    // console.log("storenammoe", storeName)
+    console.log("storenammoe", storeName)
     // console.log("storenammoe", userType)
     return (
         <View style={styles.container}>
@@ -100,7 +101,7 @@ const HomeHeader = () => {
                 <ScrollView style={styles.textContainer} horizontal={true} showsHorizontalScrollIndicator={false}>
 
                     {/* <Text numberOfLines={1} style={styles.text}>{storeName}  {userId}</Text> */}
-                    <Text numberOfLines={1} style={styles.text}>NanoPos</Text>
+                    <Text numberOfLines={1} style={styles.text}>{storeName}</Text>
                 </ScrollView>
             </View>
 
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'green'
     },
     text: {
-        fontSize: textScale(18),
+        fontSize: textScale(16),
         color: '#000',
         fontWeight: 'bold'
     },

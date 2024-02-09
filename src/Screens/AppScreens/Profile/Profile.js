@@ -22,6 +22,9 @@ const Profile = () => {
   const colors = useTheme().colors;
 
 
+const a=useSelector((state) => state?.authReducer?.user)
+
+// console.log("sas",a)
   // const saasIdaslk = useSelector((state) => state?.authReducer?.user?.customer_data)
   // console.log(
   //   userId,

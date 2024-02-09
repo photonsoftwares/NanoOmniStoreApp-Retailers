@@ -22,6 +22,7 @@ import HourlySale from '../Screens/AppScreens/Setting/Dashboard/HourlySale/Hourl
 import DailyOps from '../Screens/AppScreens/Setting/Dashboard/DailyOps/DailyOps'
 import ExtraCharges from '../Screens/AppScreens/Setting/Dashboard/ExtraCharges/ExtraCharges'
 import Test1 from '../Screens/Test/Test1'
+import DeliveredItemDetail from '../Screens/AppScreens/Order/RenderOrderDelivery/DeliveredItemDetail'
 
 const AppStack = (Stack) => {
   return (
@@ -45,6 +46,10 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.RENDERORDERDELIVERD}
         component={RenderOrderDelivery}
+      />
+      <Stack.Screen
+        name={NavigationStrings.DELIVERDITEMDETAIL}
+        component={DeliveredItemDetail}
       />
       <Stack.Screen
         name={NavigationStrings.RENDERORDERRETURN}

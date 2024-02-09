@@ -321,6 +321,7 @@ const Billing = () => {
     }
 
   }
+
   const selectedCategoryFunc = async (selectedCategoryItem) => {
     // console.log("first", selectedCategoryItem)
     await dispatch(GetSelectedCategoryItemsMethod(selectedCategoryItem))
@@ -448,7 +449,7 @@ const styles = StyleSheet.create({
     // marginBottom: 8,
   },
   itemPrice: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     // marginBottom: 8,
     color: '#000'

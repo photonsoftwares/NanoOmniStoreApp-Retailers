@@ -17,11 +17,12 @@ const Routes = () => {
     const accessToken = useSelector(state => state?.authReducer?.user?.jwt_response);
     const usertType = useSelector(state => state?.authReducer?.user?.user_data?.userType);
 
-    const dispatch=useDispatch()
+    
+    const dispatch = useDispatch()
 
-        useEffect(() => {
-            getFcmToken()
-        })
+    useEffect(() => {
+        getFcmToken()
+    })
 
     const getFcmToken = async () => {
         let fcmToken = await AsyncStorage.getItem('fcmToken')

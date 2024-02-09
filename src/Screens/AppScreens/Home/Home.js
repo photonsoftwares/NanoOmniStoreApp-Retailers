@@ -15,8 +15,6 @@ const Home = () => {
   const dispatch = useDispatch()
   const colors = useTheme().colors;
 
-
-
   // RecommendedItemMethod
   useEffect(() => {
     dispatch(RecommendedItemMethod(storeId, saasId))
@@ -63,7 +61,7 @@ const Home = () => {
           style={{
             height: scale(200),
             width: '100%',
-            marginTop:2
+            marginTop: 2
           }}>
           {/* <HomeSliderCompo /> */}
           <Banner />

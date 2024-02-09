@@ -3,7 +3,7 @@ import { ApiRequest } from "./apiRequests";
 import { setLoadingState } from "../ReduxToolkit/features/loadingSlice";
 import { BASE_URL } from "./Base_Url";
 import { addPageData, setProducts } from "../ReduxToolkit/features/productSlice";
-import { addOrdersPageData, setOrders, setOrdersCurrentPage } from "../ReduxToolkit/features/orderSlice";
+import { addOrdersPageData, setDeliveredItems, setOrders, setOrdersCurrentPage } from "../ReduxToolkit/features/orderSlice";
 import { setBookedOrders, setCustomerAddresses, setCustomerData } from "../ReduxToolkit/features/customerSlice";
 import { addRecommendedPageData, setRecommended, setRecommendedCurrentPage, } from "../ReduxToolkit/features/recommendedSlice";
 import { addCategoriesPageData, setCategoriesData, setCurrentCategoryPage } from "../ReduxToolkit/features/categoriesSlice";
@@ -185,7 +185,9 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
         const headers = {};
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
-        console.log('OrderViewOneMethod', endUrl);
+
+        console.log("OrderViewOneMethod_url",endUrl)
+        // console.log('OrderViewOneMethod_resp', response);
 
         if (response?.status) {
             await dispatch(setBookedOrders(response?.data));
@@ -212,7 +214,7 @@ export const OrderMasterDetailsMethod = (storeId, saasId, order_id) => async (di
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        // console.log('GetOrderMasterDetails_Resp', response?.data);
+        console.log('GetOrderMasterDetails_Resp', response?.data);
         if (response?.status) {
             console.log("more then one", response)
             await dispatch(setCustomerData(response?.data));
@@ -261,7 +263,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 };
 
 export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getState) => {
-    // console.log("SaveTransaction_props", orderIdd)
+    console.log("SaveTransaction_props",)
 
     try {
         // const endUrl = `http://3.7.230.172:8088/test/api/v1/transaction/save-transaction`;
@@ -271,9 +273,11 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
         const headers = {};
         const body = data;
         const method = 'Post';
+
+        console.log("SaveTransaction_before", endUrl, body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        // console.log('SaveTransaction_resp', response);
+        console.log('SaveTransaction_resp', response);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -1112,54 +1116,54 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
 export const AddNewItemMethod = (data) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
-    // console.log('AddNewItemMethod_props', storeId, saasId, data);
+    console.log('AddNewItemMethod_props', storeId, saasId, data);
 
     dispatch(setLoadingState(true));
 
-    try {
-        const method = "POST";
-        const headers = {};
-        const body = JSON.stringify(data);
-        const endUrl = `${BASE_URL}item/add-item`;
-        // const endUrl = `http://3.111.70.84:8089/prod/api/v1/item/add-item`;
+    // try {
+    //     const method = "POST";
+    //     const headers = {};
+    //     const body = JSON.stringify(data);
+    //     const endUrl = `${BASE_URL}item/add-item`;
+    //     // const endUrl = `http://3.111.70.84:8089/prod/api/v1/item/add-item`;
 
-        try {
-            const response = await ApiRequest(endUrl, method, headers, body);
+    //     try {
+    //         const response = await ApiRequest(endUrl, method, headers, body);
 
-            console.log('AddNewItemMethod_resp', response);
-            if (response?.status) {
-                showMessage({
-                    message: `${response?.message}`,
-                    type: "success",
-                })
-                dispatch(DeleteAllCartMethod())
-            } else {
-                showMessage({
-                    message: `${response.message}`,
-                    type: "danger",
-                })
-            }
-            return response
-        } catch (error) {
-            // console.error("TestMethod API request error:", error);
-            showMessage({
-                message: "Error fetching data",
-                description: error.message || "Unknown error occurred",
-                // description: "No More Data Availabe",
-                type: "danger",
-            });
-        } finally {
-            dispatch(setLoadingState(false));
-        }
-    } catch (error) {
-        // console.error("TestMethod unexpected error:", error);
-        showMessage({
-            message: "Error fetching data",
-            description: error.message || "Unknown error occurred",
-            type: "danger",
-        });
-        dispatch(setLoadingState(false));
-    }
+    //         console.log('AddNewItemMethod_resp', response);
+    //         if (response?.status) {
+    //             showMessage({
+    //                 message: `${response?.message}`,
+    //                 type: "success",
+    //             })
+    //             dispatch(DeleteAllCartMethod())
+    //         } else {
+    //             showMessage({
+    //                 message: `${response.message}`,
+    //                 type: "danger",
+    //             })
+    //         }
+    //         return response
+    //     } catch (error) {
+    //         // console.error("TestMethod API request error:", error);
+    //         showMessage({
+    //             message: "Error fetching data",
+    //             description: error.message || "Unknown error occurred",
+    //             // description: "No More Data Availabe",
+    //             type: "danger",
+    //         });
+    //     } finally {
+    //         dispatch(setLoadingState(false));
+    //     }
+    // } catch (error) {
+    //     // console.error("TestMethod unexpected error:", error);
+    //     showMessage({
+    //         message: "Error fetching data",
+    //         description: error.message || "Unknown error occurred",
+    //         type: "danger",
+    //     });
+    //     dispatch(setLoadingState(false));
+    // }
 
 };
 
@@ -1476,14 +1480,21 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
 
 
 
-export const setFcmTokenMethod = data => async dispatch => {
+export const setFcmTokenMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
+
+    // console.log("setFcmTokenMethod_data", data)
+
 
     try {
-        const endUrl = `http://103.148.165.246:8093/test/api/v1/customer/save-Fmc-Token/12/${body}`;
-        //   const endUrl = `http://103.148.165.246:8093/test/api/v1/customer/save-Fmc-Token/12/danish`;
+        // const endUrl = `http://103.148.165.246:8093/test/api/v1/customer/save-Fmc-Token/12/${body}`;
+
         const headers = {};
         const body = data;
         const method = 'POST';
+        const endUrl = `${BASE_URL}customer/save-Fmc-Token/${userId}/${body}`;
+
+
         let response = await ApiRequest(endUrl, method, headers, body);
         //   console.log("before resp",body)
         console.log("setFcmTokenAction response", response);
@@ -1508,6 +1519,63 @@ export const setFcmTokenMethod = data => async dispatch => {
             type: "danger",
         })
     }
+
+
+
+};
+
+
+
+//
+export const getOrderItemDetailMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
+
+    // console.log("getOrderItemDetailMethod_data", data, userId, storeId, saasId)
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const headers = {};
+        const body = data;
+        const method = 'GET';
+        // const endUrl = `http://103.139.59.233:8089/prod/api/v1/customer/save-Fmc-Token/${userId}/${body}`;
+        // const endUrl = `http://103.139.59.233:8089/prod/api/v1/order/get-order-details-list/${saasId}/${storeId}/${data}`;
+        const endUrl = `${BASE_URL}order/get-order-details-list/${saasId}/${storeId}/${data}`;
+
+
+        // console.log("before resp", endUrl)
+        let response = await ApiRequest(endUrl, method, headers, body);
+        // console.log("getOrderItemDetailMethod response", response?.data);
+
+        if (response?.status) {
+
+            await dispatch(setDeliveredItems(response?.data?.order_sub_details))
+            // showMessage({
+            //   message: response?.message,
+            //   type: 'success'
+            // })
+            dispatch(setLoadingState(false));
+
+        }
+        else {
+            // showMessage({
+            //   message: response?.message,
+            //   type: "danger",
+            // })
+            dispatch(setLoadingState(false));
+
+        }
+        return response;
+    } catch (error) {
+        showMessage({
+            message: error,
+            type: "danger",
+        })
+        dispatch(setLoadingState(false));
+
+
+    }
+
 
 
 

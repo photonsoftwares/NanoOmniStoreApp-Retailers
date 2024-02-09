@@ -16,6 +16,9 @@ export default {
     RENDERORDERCANCLE: "RenderOrderCancle",
     RENDERORDERPENDING: "RenderOrderPending",
     RENDERORDERDELIVERD: "RenderOrderDelivery",
+    DELIVERDITEMDETAIL: "DeliveredItemDetail",
+
+
     RENDERORDERRETURN: "RenderOrderReturn",
     PENDINGITEMWITHUSERDETAILS: "PendingItemWithUserDetails",
     GENRATEINVOICEPDF: "GenrateInvoicePdf",

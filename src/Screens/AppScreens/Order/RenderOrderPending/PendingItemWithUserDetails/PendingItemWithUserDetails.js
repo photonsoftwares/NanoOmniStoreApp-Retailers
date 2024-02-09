@@ -13,10 +13,14 @@ const PendingItemWithUserDetails = ({ route }) => {
   const navigation = useNavigation()
   const dispatch = useDispatch();
   const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
-  const { customerBookedOrders, customerAddresses, customerData } = useSelector((state) => state.customerReducer);
+  const { customerBookedOrders, customerAddresses, customerData, } = useSelector((state) => state.customerReducer);
+  const hiajsi = useSelector((state) => state.customerReducer);
   const { extraDeliveryCharges, extraDeliveryChargesValue } = useSelector((state) => state.extraChargesReducer);
   const [total, setTotal] = useState(0);
   const [loader, setLoader] = useState(true);
+  const { customer_name } = customerData
+  console.log("customerData", customerData)
+
 
   useEffect(() => {
     const res = dispatch(OrderMasterDetailsMethod(storeId, saasId, route?.params));
@@ -102,6 +106,10 @@ const PendingItemWithUserDetails = ({ route }) => {
         <View style={styles.allView}>
           <Text style={styles.titleStyle}>{`Customer Name: `}</Text>
           <Text style={styles.valueStyle}>{customerData?.customer_name}</Text>
+        </View>
+        <View style={styles.allView}>
+          <Text style={styles.titleStyle}>{`Mobile Number: `}</Text>
+          <Text style={styles.valueStyle}>{customerData?.mobile_number}</Text>
         </View>
 
         <View style={styles.allView}>
@@ -246,7 +254,7 @@ const PendingItemWithUserDetails = ({ route }) => {
 
   return (
     <>
-      <HeaderComp screenName={'Order Details'} />
+      <HeaderComp screenName={'Order Details'} onBackPress={() => navigation.goBack()} />
 
       {loader ?
 

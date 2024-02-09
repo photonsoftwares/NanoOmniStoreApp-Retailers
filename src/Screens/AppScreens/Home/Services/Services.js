@@ -31,7 +31,7 @@ const ServiceItem = memo(({ service }) => {
 
             {/* </View> */}
             <View style={{ width: '80%', paddingVertical: moderateScale(4), }}>
-                <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(12), }]} numberOfLines={2} >{service?.item_name}</Text>
+                <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(11.5), }]} numberOfLines={2} >{service?.item_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900, fontWeight: '400', fontSize: 12 }]} numberOfLines={1}>Qty{service?.product_qty}</Text>
