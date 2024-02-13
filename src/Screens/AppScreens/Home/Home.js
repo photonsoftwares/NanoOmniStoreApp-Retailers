@@ -14,6 +14,7 @@ const Home = () => {
 
   const dispatch = useDispatch()
   const colors = useTheme().colors;
+  // console.log(userId,"LL")
 
   // RecommendedItemMethod
   useEffect(() => {

@@ -15,7 +15,7 @@ const Banner = () => {
 
           // { img: `${imgPath.qrCode2}` }
         ]}
-        // autoPlay={true}
+        autoPlay={true}
         // onItemChanged={(item) => console.log("item", item)}
         closeIconColor="#fff"
         caroselImageStyle={{ height: '100%', resizeMode: 'cover', }}

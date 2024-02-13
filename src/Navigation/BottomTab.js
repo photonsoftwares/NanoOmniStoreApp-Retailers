@@ -12,9 +12,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from '@react-navigation/native';
 import Test1 from '../Screens/Test/Test1';
 
-// import Sales from '../Screens/AppScreens/Sales/Sales';
-// import Purchase from '../Screens/AppScreens/Purchase/Purchase';
-
 
 
 

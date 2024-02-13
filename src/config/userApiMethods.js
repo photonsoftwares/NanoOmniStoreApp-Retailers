@@ -2,7 +2,7 @@ import { showMessage } from "react-native-flash-message";
 import { ApiRequest } from "./apiRequests";
 import { setLoadingState } from "../ReduxToolkit/features/loadingSlice";
 import { BASE_URL } from "./Base_Url";
-import { addPageData, setProducts } from "../ReduxToolkit/features/productSlice";
+import { addPageData, setCategoryData, setProducts } from "../ReduxToolkit/features/productSlice";
 import { addOrdersPageData, setDeliveredItems, setOrders, setOrdersCurrentPage } from "../ReduxToolkit/features/orderSlice";
 import { setBookedOrders, setCustomerAddresses, setCustomerData } from "../ReduxToolkit/features/customerSlice";
 import { addRecommendedPageData, setRecommended, setRecommendedCurrentPage, } from "../ReduxToolkit/features/recommendedSlice";
@@ -16,96 +16,6 @@ import axios from "axios";
 import { setSalesSummary } from "../ReduxToolkit/features/salesSummary";
 import { setExtraDeliveryChargesValue, setExtraMinOrderValue } from "../ReduxToolkit/features/extraChargesSlice";
 
-
-export const TestMethod = (storeId, saasId, page = 1) => async dispatch => {
-    // console.log('TestMethod_props', storeId, saasId, page);
-
-    dispatch(setLoadingState(true));
-    // console.log(page)
-
-    try {
-        const endUrl = `http://3.7.230.172:8088/test/api/v1/search/recommended-item/80001/8/${page}`;
-
-        const method = "GET";
-        const headers = {};
-
-
-        try {
-            const response = await ApiRequest(endUrl, method, headers);
-
-            console.log('TestMethod_resp', response?.data.length);
-            if (response?.status === true) {
-                // console.log("TestMethod", response?.data?.length);
-
-                if (page === 1) {
-                    dispatch(setProducts(response?.data));
-                } else {
-
-                    dispatch(addPageData(response?.data));
-
-                }
-                return response?.data;
-            } else {
-                throw new Error("No products found in the response");
-            }
-
-
-
-        } catch (error) {
-            // console.error("TestMethod API request error:", error);
-            showMessage({
-                message: "Error fetching data",
-                description: error.message || "Unknown error occurred",
-                type: "danger",
-            });
-        } finally {
-            dispatch(setLoadingState(false));
-        }
-    } catch (error) {
-        // console.error("TestMethod unexpected error:", error);
-        showMessage({
-            message: "Error fetching data",
-            description: error.message || "Unknown error occurred",
-            type: "danger",
-        });
-        dispatch(setLoadingState(false));
-    }
-};
-
-
-// OLD
-const OrderViewOrderMethodOld = (storeId, saasId, page = 1) => async (dispatch, getState) => {
-    // console.log("OrderViewOrder_props", storeId, saasId,)
-    dispatch(setLoadingState(true));
-
-
-    try {
-        // const endUrl = `${BASE_URL}search/recommended-item/${storeId}/${saasId}/${page}`;
-        const endUrl = `${BASE_URL}order/view-order/${saasId}/${storeId}`;
-        // console.log(endUrl)
-
-        const headers = {};
-        const method = 'GET';
-        let response = await ApiRequest(endUrl, method, headers);
-
-        // console.log('OrderViewOrder_resp', response?.data.length);
-        // if (response?.status && response?.data?.length > 0) {
-        //     // console.log("more then one")
-        //     await dispatch({
-        //         type: ActionTypes.ORDERVIEWORDER,
-        //         payload: response?.data,
-        //     });
-        // }
-
-        return response;
-    } catch (error) {
-        showMessage({
-            message: "Network Error " `${error}`,
-            type: "danger",
-        })
-    }
-
-};
 
 
 
@@ -186,7 +96,7 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        console.log("OrderViewOneMethod_url",endUrl)
+        console.log("OrderViewOneMethod_url", endUrl)
         // console.log('OrderViewOneMethod_resp', response);
 
         if (response?.status) {
@@ -206,7 +116,7 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
 
 
 export const OrderMasterDetailsMethod = (storeId, saasId, order_id) => async (dispatch, getState) => {
-    // console.log("GetOrderMasterDetails", storeId, saasId, order_id)
+
     try {
         const endUrl = `${BASE_URL}order/get-ordermaster-details/${saasId}/${storeId}/${order_id}`;
 
@@ -263,12 +173,10 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 };
 
 export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getState) => {
-    console.log("SaveTransaction_props",)
+    // console.log("SaveTransaction_props",)
 
     try {
-        // const endUrl = `http://3.7.230.172:8088/test/api/v1/transaction/save-transaction`;
         const endUrl = `${BASE_URL}transaction/save-transaction`;
-        // console.log(endUrl)
 
         const headers = {};
         const body = data;
@@ -286,6 +194,46 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
             await dispatch(DeleteAllCartMethod())
             await dispatch(UpdateOrderStatusMethod(orderIdd))
             // await dispatch(UpdateOrderMasterMethod(response?.data?.transaction_id));
+
+        } else {
+            showMessage({
+                message: `${response.message}`,
+                type: "danger",
+            })
+        }
+
+
+        return response?.data?.pdf_file_name
+    } catch (error) {
+        showMessage({
+            message: "Network Error " `${error}`,
+            type: "danger",
+        })
+    }
+
+};
+export const SaveTransactionBillingMethod = (data, orderIdd) => async (dispatch, getState) => {
+    // console.log("SaveTransaction_props",)
+
+    try {
+        const endUrl = `${BASE_URL}transaction/save-transaction`;
+
+        const headers = {};
+        const body = data;
+        const method = 'Post';
+
+        // console.log("SaveTransaction_before", endUrl, body)
+        let response = await ApiRequest(endUrl, method, headers, body);
+
+        console.log('SaveTransaction_resp', response);
+        if (response?.status) {
+            showMessage({
+                message: `Invoice is Loading`,
+                type: "success",
+            })
+            await dispatch(DeleteAllCartMethod())
+            await dispatch(OrderViewOrderMethod())
+
 
         } else {
             showMessage({
@@ -356,8 +304,6 @@ export const UpdateOrderStatusMethod = (orderIdd) => async (dispatch, getState) 
 
     try {
         const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/delivered`;
-        // const endUrl = `${BASE_URL}order/update/order/master/${orderId}`;
-
         const headers = {};
         const method = 'Put';
         let response = await ApiRequest(endUrl, method, headers,);
@@ -425,12 +371,13 @@ export const RecommendedItemMethod = (storeId, saasId, page = 1) => async dispat
         } catch (error) {
             // console.error("TestMethod API request error:", error);
 
-            showMessage({
-                message: "No More Data Availabel",
-                // description: error.message || "Unknown error occurred",
-                // description: "No More Data Availabe",
-                type: "info",
-            });
+            // showMessage({
+            //     message: "No More Data Availabel",
+            //     // description: error.message || "Unknown error occurred",
+            //     // description: "No More Data Availabe",
+            //     type: "info",
+            // });
+            showToast("No More Data Availabel")
 
         } finally {
             dispatch(setLoadingState(false));
@@ -915,21 +862,18 @@ export const DeleteOneMethod = (itemId) => async (dispatch, getState) => {
 export const UpdateCartItemQntyMethod = (itemId, qty,) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
-    console.log('UpdateCartItemQntyMethod', userId, storeId, saasId, qty, itemId);
+    // console.log('UpdateCartItemQntyMethod', userId, storeId, saasId, qty, itemId);
     dispatch(setLoadingState(true));
 
     try {
         const method = "PUT";
         const headers = {};
         const endUrl = `${BASE_URL}price-check/updateproduct/${qty}/${saasId}/${storeId}/${userId}/${itemId}`;
-        // const endUrl = `http://3.111.70.84:8089/prod/api/v1/price-check/deleteproduct/${saasId}/${storeId}/${id}/${itemId}`;
-
 
         try {
             const response = await ApiRequest(endUrl, method, headers,);
+            console.log("UpdateCartItemQntyMethod_response", response)
 
-            // console.log('DeleteOneMethod_resp', response?.data?.products?.length);
-            // console.log('UpdateCartItemQntyMethod', response?.data);
             if (response?.status === true) {
                 console.log('UpdateCartItemQntyMethod', response?.data?.products?.length);
 
@@ -1033,11 +977,10 @@ export const CreateOrderMethod = (data) => async (dispatch, getState) => {
 
 };
 
+//main
 export const uploadImageMethod = async (itemId, selectedImage) => {
 
-    console.log('uploadImage_props', itemId, selectedImage)
-    // setIsLoading(true);
-    // setError(null);
+    // console.log('uploadImage_props', itemId, selectedImage)
     var assets = selectedImage?.assets;
 
 
@@ -1048,9 +991,9 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
                 uri: selectedImage.assets[0].uri,
                 type: selectedImage.assets[0].type,
                 name: selectedImage.assets[0].fileName,
-                // name: 'potato.jpg', 
             });
 
+            console.log("formData", formData)
             const response = await axios.post(
                 `${BASE_URL}item/save-image/${itemId}`,
                 formData,
@@ -1113,57 +1056,163 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
 };
 
 
+
+// // Function to upload an image
+// export const uploadImageMethod = async (itemId, selectedImage) => {
+//     try {
+//         // Extract assets from selectedImage
+//         const assets = selectedImage?.assets;
+
+//         // Check if assets are available
+//         if (assets && assets.length > 0) {
+//             // Create FormData object
+//             const formData = new FormData();
+//             formData.append('file', {
+//                 uri: assets[0].uri,
+//                 type: assets[0].type,
+//                 name: assets[0].fileName,
+//             });
+
+//             console.log("formdata",formData)
+
+//             // Send POST request to upload image
+//             const response = await axios.post(
+//                 `${BASE_URL}item/save-image/${itemId}`,
+//                 formData,
+//                 {
+//                     headers: {
+//                         'Content-Type': 'multipart/form-data',
+//                     },
+//                 }
+//             );
+
+//             // Show success message
+//             showMessage({
+//                 message: "Item Added Successfully",
+//                 type: "success",
+//             });
+
+//             // Handle successful upload
+//             console.log('Upload response:', response.data);
+//         } else {
+//             // Show message if no image is selected
+//             showMessage({
+//                 message: "Item Saved without Image",
+//                 type: "success",
+//             });
+//         }
+//     } catch (error) {
+//         // Handle upload error
+//         console.error('Upload error:', error);
+//         showMessage({
+//             message: "Failed to upload image",
+//             description: error.message,
+//             type: "danger",
+//         });
+//     }
+// };
+
+
+
+
+
+
+
 export const AddNewItemMethod = (data) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-
     console.log('AddNewItemMethod_props', storeId, saasId, data);
 
     dispatch(setLoadingState(true));
 
-    // try {
-    //     const method = "POST";
-    //     const headers = {};
-    //     const body = JSON.stringify(data);
-    //     const endUrl = `${BASE_URL}item/add-item`;
-    //     // const endUrl = `http://3.111.70.84:8089/prod/api/v1/item/add-item`;
+    try {
+        const method = "POST";
+        const headers = {};
+        const body = JSON.stringify(data);
+        const endUrl = `${BASE_URL}item/add-item`;
 
-    //     try {
-    //         const response = await ApiRequest(endUrl, method, headers, body);
+        try {
+            const response = await ApiRequest(endUrl, method, headers, body);
 
-    //         console.log('AddNewItemMethod_resp', response);
-    //         if (response?.status) {
-    //             showMessage({
-    //                 message: `${response?.message}`,
-    //                 type: "success",
-    //             })
-    //             dispatch(DeleteAllCartMethod())
-    //         } else {
-    //             showMessage({
-    //                 message: `${response.message}`,
-    //                 type: "danger",
-    //             })
-    //         }
-    //         return response
-    //     } catch (error) {
-    //         // console.error("TestMethod API request error:", error);
-    //         showMessage({
-    //             message: "Error fetching data",
-    //             description: error.message || "Unknown error occurred",
-    //             // description: "No More Data Availabe",
-    //             type: "danger",
-    //         });
-    //     } finally {
-    //         dispatch(setLoadingState(false));
-    //     }
-    // } catch (error) {
-    //     // console.error("TestMethod unexpected error:", error);
-    //     showMessage({
-    //         message: "Error fetching data",
-    //         description: error.message || "Unknown error occurred",
-    //         type: "danger",
-    //     });
-    //     dispatch(setLoadingState(false));
-    // }
+            console.log('AddNewItemMethod_resp', response);
+            if (response?.status) {
+                showMessage({
+                    message: `${response?.message}`,
+                    type: "success",
+                })
+                dispatch(DeleteAllCartMethod())
+            } else {
+                showMessage({
+                    message: `${response.message}`,
+                    type: "danger",
+                })
+            }
+            return response
+        } catch (error) {
+            // console.error("TestMethod API request error:", error);
+            showMessage({
+                message: "Error fetching data",
+                description: error.message || "Unknown error occurred",
+                // description: "No More Data Availabe",
+                type: "danger",
+            });
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+    } catch (error) {
+        // console.error("TestMethod unexpected error:", error);
+        showMessage({
+            message: "Error fetching data",
+            description: error.message || "Unknown error occurred",
+            type: "danger",
+        });
+        dispatch(setLoadingState(false));
+    }
+
+};
+
+
+export const GetCategoryMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    console.log('GetCategoryMethod_props', storeId, saasId, data);
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const method = "GET";
+        const headers = {};
+        const body = JSON.stringify(data);
+        const endUrl = `${BASE_URL}category/get-list/${saasId}/${storeId}`;
+        // const endUrl = `${BASE_URL}category/get-list/6/60001`;
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers, );
+            // console.log('GetCategoryMethod_resp', response);
+
+            if (response?.status) {
+
+               
+                dispatch(setCategoryData( response?.data))
+            } 
+            return response?.data
+        } catch (error) {
+            // console.error("TestMethod API request error:", error);
+            showMessage({
+                message: "Error fetching categpry",
+                description: error.message || "Unknown error occurred",
+                type: "danger",
+            });
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+    } catch (error) {
+        // console.error("TestMethod unexpected error:", error);
+        showMessage({
+            message: "Error fetching data",
+            description: error.message || "Unknown error occurred",
+            type: "danger",
+        });
+        dispatch(setLoadingState(false));
+    }
 
 };
 

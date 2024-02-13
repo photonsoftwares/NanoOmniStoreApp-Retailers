@@ -18,6 +18,14 @@ const orderSlice = createSlice({
 
       // state.orders.push(action.payload);
     },
+    clearOrderss: (state, action) => {
+      return {
+        ...state,
+        ordersData: [],
+      };
+
+      // state.orders.push(action.payload);
+    },
     addOrdersPageData: (state, action) => {
       return {
         ...state,
@@ -45,7 +53,7 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setOrders, addOrdersPageData, setOrdersCurrentPage, clearOrders,setDeliveredItems } = orderSlice.actions;
+export const { setOrders, addOrdersPageData, setOrdersCurrentPage, clearOrders,setDeliveredItems,clearOrderss } = orderSlice.actions;
 export const selectOrderState = (state) => state.order;
 
 export default orderSlice.reducer;

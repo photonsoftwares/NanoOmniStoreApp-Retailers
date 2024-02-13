@@ -6,6 +6,12 @@ import { moderateScale } from '../../../styles/responsiveSize';
 import { logoutSuccess } from '../../../ReduxToolkit/features/authSlice';
 import { useTheme } from '@react-navigation/native';
 import ImagePath from '../../../constants/ImagePath';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { clearRecommended } from '../../../ReduxToolkit/features/recommendedSlice';
+import { clearOrders, clearOrderss } from '../../../ReduxToolkit/features/orderSlice';
+import { clearCartt } from '../../../ReduxToolkit/features/cartSlice';
+import { clearSearch } from '../../../ReduxToolkit/features/searchSlice';
+import { clearExtraDeliveryCharges } from '../../../ReduxToolkit/features/extraChargesSlice';
 
 const Profile = () => {
   // const { userId, storeId, saasId,email, mobilephoneNo, name } = useSelector((state) => state?.authReducer?.user?.user_data)
@@ -24,19 +30,23 @@ const Profile = () => {
 
 const a=useSelector((state) => state?.authReducer?.user)
 
-// console.log("sas",a)
-  // const saasIdaslk = useSelector((state) => state?.authReducer?.user?.customer_data)
-  // console.log(
-  //   userId,
-  //   storeId,
-  //   saasId,
-  //   email,
-  //   phoneNo,
-  //   storeName,
-  //   city,
-  //   country,
-  //   state,
-  // )
+const handleUserLogout = async () => {
+  try {
+    // Clear AsyncStorage data
+    await AsyncStorage.clear();
+    // Perform other logout actions (e.g., navigate to login screen)
+    // For example:
+    // navigation.navigate('Login');
+    dispatch(logoutSuccess())
+    dispatch(clearRecommended())
+    dispatch(clearOrders())
+
+  } catch (error) {
+    console.error('Error clearing AsyncStorage:', error);
+  }
+};
+
+
 
   const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(false);
@@ -61,6 +71,13 @@ const a=useSelector((state) => state?.authReducer?.user)
     console.log('User logged out');
     dispatch(logoutSuccess())
     // You can navigate to the login screen or perform any other logout actions
+    dispatch(logoutSuccess())
+    dispatch(clearRecommended())
+    dispatch(clearOrderss())
+    dispatch(clearCartt())
+    dispatch(clearSearch())
+    dispatch(clearExtraDeliveryCharges())
+
   };
 
   const handleEditPress = () => {

@@ -1,286 +1,102 @@
-// import { StyleSheet, Text, View, Button } from 'react-native'
-// import React, { useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { GetCartMethod, GetCategoryItemMethod, GetCustomerAddressMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, GetgetSalesReportMethod, OrderMasterDetailsMethod, OrderViewOneMethod, OrderViewOrderMethod, SaveTransactionMethod, TestMethod, UpdateOrderMasterMethod, UpdateOrderStatusMethod } from '../../config/userApiMethods'
-// import { selectRecommended } from '../../ReduxToolkit/features/recommendedSlice'
-// import SelectPaymentMethod from '../../Components/SelectPaymentMethod'
-
-// const Test = () => {
-//   const AllState = useSelector((state) => state)
-//   // console.log("AllState", AllState)
-
-//   const { authReducer,
-//     loadingReducer,
-//     productReducer,
-//     userProfileReducer,
-//     orderReducer,
-//     customerReducer,
-//     recommendedReducer,
-//     categoriesReducer,
-//     categoryItemsReducer,
-//     salesReportReducer,
-//     salesSummaryReducer,
-//     searchReducer,
-//   } = useSelector((state) => state)
-
-//   // console.log("allState", categoriesReducer, categoryItemsReducer,)
-//   // console.log("AllStateReducer", AllStateReducer)
-
-//   const { searchData } = searchReducer
-//   // console.log("searchData",searchData.length)
-
-//   const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
-//   // console.log(id, storeId, saasId,)
-
-//   const { productsData } = useSelector((state) => state?.productReducer)
-//   // console.log("<>", productsData.length)
-
-//   const { ordersData, ordersCurrentPage } = useSelector((state) => state?.orderReducer)
-//   // const { order_id } = ordersData
-//   // console.log("ordersData", ordersData)
-
-//   // const { recommendedData, recommendedTotalPages } = useSelector((state) => state?.recommendedReducer)
-//   // console.log("recommendedData, recommendedTotalPages", recommendedData, recommendedTotalPages)
-
-//   const { customerBookedOrders, customerAddresses, customerData } = customerReducer
-//   const combinedArray = [...customerBookedOrders, customerAddresses, customerData];
-//   // console.log("combinedArray", combinedArray)
-//   // console.log("customerReducer", customerBookedOrders, customerAddresses, customerData)
-
-
-//   const pendingOrders = ordersData.filter(order => order.status === "PENDING");
-//   // console.log(pendingOrders.length)
-
-//   const dispatch = useDispatch()
-
-
-
-//   return (
-//     <View style={{ gap: 10 }}>
-//       <Text>Test</Text>
-//       <Button
-//         title='TestMethod'
-//         onPress={() => dispatch(TestMethod(storeId, saasId))}
-//       />
-//       <Button
-//         title='OrderViewOrderMethod'
-//         onPress={() => dispatch(OrderViewOrderMethod(storeId, saasId, ordersCurrentPage))}
-//       />
-//       <Button
-//         title='OrderViewOneMethod'
-//         onPress={() => dispatch(OrderViewOneMethod(storeId, saasId, '19866'))}
-//       />
-//       <Button
-//         title='OrderMasterDetailsMethod'
-//         onPress={() => dispatch(OrderMasterDetailsMethod(storeId, saasId, '19866'))}
-//       />
-//       <Button
-//         title='GetCustomerAddressMethod'
-//         onPress={() => dispatch(GetCustomerAddressMethod(storeId, saasId, '78'))}
-//       />
-//       <Button
-//         title='UpdateOrderMasterMethod'
-//         onPress={() => dispatch(UpdateOrderMasterMethod(data))}
-//       />
-//       <Button
-//         title='GetCategoryItemMethod'
-//         onPress={() => dispatch(GetCategoryItemMethod())}
-//       />
-//       <Button
-//         title='GetSelectedCategoryItemsMethod'
-//         onPress={() => dispatch(GetSelectedCategoryItemsMethod())}
-//       />
-//       <Button
-//         title='GetCartMethod'
-//         onPress={() => dispatch(GetCartMethod())}
-//       />
-//       <Button
-//         title='GetCartMethod'
-//         onPress={() => dispatch(GetSearchItemsMethod('s'))}
-//       />
-//       <Button
-//         title='GetgetSalesReportMethod'
-//         onPress={() => dispatch(GetgetSalesReportMethod('2023-12-12'))}
-//       />
-//       <Button
-//         title='UpdateOrderStatusMethod'
-//         onPress={() => dispatch(UpdateOrderStatusMethod())}
-//       />
-
-
-
-
-
-
-
-//     </View>
-//   )
-// }
-
-// export default Test
-
-// const styles = StyleSheet.create({})
-
-
-
-
-
-// import React, { useState } from 'react';
-// import { View, Button, Image, Alert } from 'react-native';
-// import ImagePicker from 'react-native-image-picker';
-// import axios from 'axios';
-
-// const Test = () => {
-//   const [selectedImage, setSelectedImage] = useState(null);
-
-//   const selectImage = () => {
-//     const options = {
-//       title: 'Select Image',
-//       storageOptions: {
-//         skipBackup: true,
-//         path: 'images',
-//       },
-//     };
-
-//     ImagePicker.showImagePicker(options, (response) => {
-//       if (response.didCancel) {
-//         console.log('User cancelled image picker');
-//       } else if (response.error) {
-//         console.log('ImagePicker Error: ', response.error);
-//       } else {
-//         // Set the selected image URI to state
-//         setSelectedImage(response.uri);
-//         // Upload the selected image
-//         uploadImage(response.uri);
-//       }
-//     });
-//   };
-
-//   const uploadImage = async (imageUri) => {
-//     const apiUrl = 'http://3.111.70.84:8089/prod/api/v1/item/save-image/49681';
-
-//     const formData = new FormData();
-//     formData.append('file', {
-//       uri: imageUri,
-//       type: 'image/jpeg',
-//       name: 'image.jpg',
-//     });
-
-//     try {
-//       const response = await axios.post(apiUrl, formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data',
-//         },
-//       });
-
-//       console.log('Upload successful:', response.data);
-//       Alert.alert('Upload successful!', 'Image has been uploaded successfully.');
-//     } catch (error) {
-//       console.error('Upload failed:', error);
-//       Alert.alert('Upload failed!', 'There was an error uploading the image.');
-//     }
-//   };
-
-//   return (
-//     <View>
-//       {selectedImage && (
-//         <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200 }} />
-//       )}
-//       <Button title="Select Image" onPress={selectImage} />
-//     </View>
-//   );
-// };
-
-// export default Test;
-
-
-
-
-import React, { useState } from 'react';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { ActivityIndicator, Button, Image, Text, View } from 'react-native';
-import axios from 'axios';
-import { BASE_URL } from '../../config/Base_Url';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import CustomDropDown from '../../Components/CustomDropDown'; // Adjust the path as per your project structure
 
 const Test = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const pickImage = async () => {
-    try {
-      const result = await launchImageLibrary({
-        mediaType: 'photo',
-        includeBase64: false,
-        // maxHeight: 200,
-        // maxWidth: 200,
-      });
+  // const handleAddItem = async (e) => {
+  //   e.preventDefault();
+  //   console.log(itemCategory);
+  //   console.log("categoryArr", categoryArr);
+  //   const body = {
+  //     item_name: itemName,
+  //     item_code: Number(itemCode),
+  //     description: itemName,
+  //     special_description: spacildescription,
+  //     price: Number(itemPrice),
+  //     brand: brandName,
+  //     UOM: "pieces",
+  //     colorList: [{
+  //       "product_size": 10,
+  //       "product_color": "Red",
+  //       "saas_id": "6",
+  //       "store_id": "60001"
+  //     },
+  //     {
+  //       "product_size": 12,
+  //       "product_color": "Blue",
+  //       "saas_id": "6",
+  //       "store_id": "60001"
+  //     }],
+  //     // discount: Number(selectedOptionDiscount.value),
+  //     tax: Number(taxPercentage),
+  //     tax_code: Number(taxPercentage),
+  //     status: "active",
+  //     saas_id: saasId,
+  //     product_cost: purchasePrice,
+  //     mrp: mrp,
+  //     category: itemCategory,
+  //     selling_price: sellingPrice,
+  //     stock_qty: stockQty,
+  //     tax_percentage: taxPercenatage,
+  //     store_id: storeId,
+  //     department: itemName,
+  //   }
+  //   try {
+  //     const response = await axios.post(${ BASE_Url } / item / add - item, body)
+  //     console.log("this response", response.data.data, response.data.status)
+  //     if (response.data.status) {
+  //       if (response.data.data.item_id) {
+  //         console.log("this item id", response.data.data.item_id)
+  //         const Data = {
+  //           saas_id: saasId,
+  //           store_id: storeId,
+  //           item_id: response.data.data.item_id,
+  //           sizes: size
+  //         }
+  //         if (size.length > 0) {
+  //           try {
+  //             await axios.post(${ BASE_Url } / item / add - size - master, Data)
+  //             setSize([])
+  //           } catch (error) {
+  //             console.log(error)
+  //           }
+  //         }
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: 'Item Added Successfully',
 
-      if (result.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (result.error) {
-        console.error('ImagePicker Error: ', result.error);
-      } else {
-        setSelectedImage(result);
-      }
-    } catch (error) {
-      console.error('Error picking image:', error);
-    }
-  };
+  //         });
+  //         dispatch(handleAddItemToStoreResponse({ data: response.data.data }))
+  //       }
+  //     }
 
-  // console.log("first", selectedImage)
 
-  const uploadImage = async () => {
-    setIsLoading(true);
-    setError(null);
+  //     setItemName("");
+  //     setItemCategory("");
+  //     setSpacildescription("")
 
-    try {
-      const formData = new FormData();
-      formData.append('file', {
-        uri: selectedImage.assets[0].uri,
-        type: selectedImage.assets[0].type,
-        name: 'potato.jpg', // Adjust filename as needed
-      });
+  //   } catch (error) {
+  //     // Log the error to the console
+  //     console.error('Error in handleAddItem:', error);
 
-      const response = await axios.post(
-        `${BASE_URL}item/save-image/49681`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      console.log('Upload response:', response.data);
-      // Handle successful upload
-      setSelectedImage(null); // Clear selected image after successful upload
-    } catch (error) {
-      console.error('Upload error:', error);
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  //     // Show an error alert using Swal
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Error',
+  //       text: 'An error occurred while adding the item. Please try again.',
+  //     });
+  //   }
+  // };
+ 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {selectedImage ? (
-        <Image source={{ uri: selectedImage.assets[0].uri }} style={{ width: '80%', height: '80%', padding: 10, marginBottom: 10 }} resizeMode='contain' />
-      ) : (
-        <Button title="Select Image" onPress={pickImage} />
-      )}
-      <Button title="Select Image" onPress={pickImage} />
-
-      {isLoading && <ActivityIndicator size="large" />}
-      {error && <Text style={{ color: 'red' }}>{error.message}</Text>}
-      {selectedImage && <Button title="Upload" onPress={uploadImage} />}
+    <View>
+      <Text>Test</Text>
+      <CustomDropDown/>
     </View>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test
 
-
-
-
+const styles = StyleSheet.create({})

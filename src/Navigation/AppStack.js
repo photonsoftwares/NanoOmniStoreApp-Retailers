@@ -23,6 +23,7 @@ import DailyOps from '../Screens/AppScreens/Setting/Dashboard/DailyOps/DailyOps'
 import ExtraCharges from '../Screens/AppScreens/Setting/Dashboard/ExtraCharges/ExtraCharges'
 import Test1 from '../Screens/Test/Test1'
 import DeliveredItemDetail from '../Screens/AppScreens/Order/RenderOrderDelivery/DeliveredItemDetail'
+import Test from '../Screens/Test/Test'
 
 const AppStack = (Stack) => {
   return (
@@ -127,8 +128,8 @@ const AppStack = (Stack) => {
         component={SearchBar}
       />
       <Stack.Screen
-        name={NavigationStrings.TEST1}
-        component={Test1}
+        name={NavigationStrings.TEST}
+        component={Test}
       />
 
 

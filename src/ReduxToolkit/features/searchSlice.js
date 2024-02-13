@@ -14,11 +14,17 @@ export const searchSlice = createSlice({
                 searchData: action.payload,
             };
         },
+        clearSearch: (state, action) => {
+            return {
+                ...state,
+                searchData: [],
+            };
+        },
 
     },
 });
 
-export const { setSearch } = searchSlice.actions;
+export const { setSearch, clearSearch } = searchSlice.actions;
 
 
 export default searchSlice.reducer;

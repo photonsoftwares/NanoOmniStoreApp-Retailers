@@ -217,13 +217,13 @@ const PendingItem = memo(({ item }) => {
       <View style={styles.separator} />
       <View style={styles.ContainerBothView}>
         <View style={styles.quantityContainer}>
-          <Text style={styles.itemTitle}>Quantity:</Text>
+          <Text style={styles.itemTitle}>Items</Text>
           <Text style={[styles.itemValue, { fontWeight: '500' }]}>{item.order_qty}</Text>
 
         </View>
         <View style={styles.verticalSeparator} />
         <View style={styles.valueContainer}>
-          <Text style={styles.itemTitle}>Value:</Text>
+          <Text style={styles.itemTitle}>Total Value</Text>
           <Text style={[styles.itemValue, { fontWeight: '500' }]}>{item.order_value}</Text>
 
         </View>

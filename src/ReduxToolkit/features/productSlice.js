@@ -4,6 +4,7 @@ const initialState = {
   productsData: [],
   productsCurrentPage: 1,
   productsTotalPages: 1,
+  categoryData: []
 };
 
 export const productsSlice = createSlice({
@@ -34,10 +35,16 @@ export const productsSlice = createSlice({
         productsTotalPages: action.payload,
       };
     },
+    setCategoryData: (state, action) => {
+      return {
+        ...state,
+        categoryData: action.payload,
+      };
+    },
   },
 });
 
-export const { setProducts, addPageData, setCurrentPage, setTotalPages } = productsSlice.actions;
+export const { setProducts, addPageData, setCurrentPage, setTotalPages,setCategoryData } = productsSlice.actions;
 
 export const selectProducts = state => state.products.data;
 export const selectCurrentPage = state => state.products.currentPage;

@@ -44,13 +44,13 @@ const persistConfig = {
     storage: AsyncStorage,
     whitelist: [
         'authReducer',
-        'productReducer',
-        'orderReducer',
-        'recommendedReducer',
-        'categoriesReducer',
-        'categoryItemsReducer',
-        'cartReducer',
-        'extraChargesReducer',
+        // 'productReducer',
+        // 'orderReducer',
+        // 'recommendedReducer',
+        // 'categoriesReducer',
+        // 'categoryItemsReducer',
+        // 'cartReducer',
+        // 'extraChargesReducer',
         
 
     ], //Things you want to persist

@@ -16,6 +16,12 @@ export const recommendedSlice = createSlice({
                 recommendedData: action.payload,
             };
         },
+        clearRecommended: (state, action) => {
+            return {
+                ...state,
+                recommendedData: [],
+            };
+        },
         addRecommendedPageData: (state, action) => {
             return {
                 ...state,
@@ -37,7 +43,7 @@ export const recommendedSlice = createSlice({
     },
 });
 
-export const { setRecommended, addRecommendedPageData, setRecommendedCurrentPage, setRecommendedTotalPages } = recommendedSlice.actions;
+export const { setRecommended, addRecommendedPageData, setRecommendedCurrentPage, setRecommendedTotalPages,clearRecommended } = recommendedSlice.actions;
 
 export const selectRecommended = (state) => state.recommended.recommendedData;
 export const selectRecommendedCurrentPage = (state) => state.recommended.recommendedCurrentPage;

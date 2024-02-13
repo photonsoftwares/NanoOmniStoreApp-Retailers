@@ -1,317 +1,3 @@
-// import React, { useCallback } from 'react';
-// import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native';
-// import { useSelector, useDispatch } from 'react-redux';
-// import HeaderComp from '../../../../Components/HeaderCompo';
-// import { BASE_URL } from '../../../../config/Base_Url';
-// import { moderateScale } from '../../../../styles/responsiveSize';
-
-// const Cart = () => {
-//     const dispatch = useDispatch();
-//     const { cartItems } = useSelector((state) => state?.cartReducer);
-//     console.log("jo", cartItems[0].length)
-
-//     const handleUpdateQuantity = useCallback((itemId, newQuantity) => {
-//         console.log("1")
-//         // Dispatch the action to update the quantity
-//         // dispatch(updateCartItemQuantity({ itemId, newQuantity }));
-//     }, [dispatch]);
-
-//     const renderItem = useCallback(({ item }) => (
-//         <View style={styles.cartItem}>
-//             <Image
-//                 // source={ImagePath.JennyWilson}
-//                 source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
-//                 style={styles.itemImage}
-//                 resizeMode='contain'
-//             />
-
-//             <Text>{item.itemName}</Text>
-//             <Text>Price: ${item.price}</Text>
-//             <Text>Quantity:{item.productQty}</Text>
-//             <TextInput
-//                 style={styles.quantityInput}
-//                 keyboardType="numeric"
-//                 // value={item.quantity.toString()}
-//                 onChangeText={(text) => handleUpdateQuantity(item.id, parseInt(text, 10))}
-//             />
-//         </View>
-//     ), [handleUpdateQuantity]);
-
-//     const keyExtractor = useCallback((item, index) => index, []);
-
-//     return (
-//         <>
-//             <HeaderComp screenName={'Cart'} />
-//             <View style={styles.container}>
-//                 <FlatList
-//                     data={cartItems[0]}
-//                     renderItem={renderItem}
-//                     keyExtractor={keyExtractor}
-//                     numColumns={2}
-//                 />
-//             </View>
-//         </>
-//     );
-// };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         padding: 16,
-//     },
-//     cartItem: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         margin: 8,
-//         padding: 16,
-//         borderRadius: 10,
-//         elevation: 2,
-//     },
-//     quantityInput: {
-//         width: 50,
-//         height: 30,
-//         borderWidth: 1,
-//         borderColor: 'gray',
-//         textAlign: 'center',
-//         marginVertical: 8,
-//     },
-//     itemImage: {
-//         width: 100,
-//         height: 100,
-//         resizeMode: 'cover',
-//         // margin:8
-//         marginTop: moderateScale(2)
-//     },
-// });
-
-// export default Cart;
-
-
-// import React, { useCallback } from 'react';
-// import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-// import { useSelector, useDispatch } from 'react-redux';
-// import HeaderComp from '../../../../Components/HeaderCompo';
-// import { BASE_URL } from '../../../../config/Base_Url';
-// import { moderateScale } from '../../../../styles/responsiveSize';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-// const Cart = () => {
-//   const dispatch = useDispatch();
-//   const { cartItems } = useSelector((state) => state?.cartReducer);
-
-//   const handleUpdateQuantity = useCallback((itemId, newQuantity) => {
-//     // Dispatch the action to update the quantity
-//     // dispatch(updateCartItemQuantity({ itemId, newQuantity }));
-//   }, [dispatch]);
-
-//   const renderQuantityControls = useCallback((item) => (
-//     <View style={styles.quantityControls}>
-//       <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.productQty - 1)}>
-//         <MaterialCommunityIcons name="minus" size={20} color="black" />
-//       </TouchableOpacity>
-//       <Text>{item.productQty}</Text>
-//       <TouchableOpacity onPress={() => handleUpdateQuantity(item.id, item.productQty + 1)}>
-//         <MaterialCommunityIcons name="plus" size={20} color="black" />
-//       </TouchableOpacity>
-//     </View>
-//   ), [handleUpdateQuantity]);
-
-//   const renderItem = useCallback(({ item }) => (
-//     <View style={styles.cartItem}>
-//       <Image
-//         source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
-//         style={styles.itemImage}
-//         resizeMode='contain'
-//       />
-//       <Text>{item.itemName}</Text>
-//       <Text>Price: ${item.price}</Text>
-//       {renderQuantityControls(item)}
-//     </View>
-//   ), [renderQuantityControls]);
-
-//   const keyExtractor = useCallback((item, index) => index.toString(), []);
-
-//   return (
-//     <>
-//       <HeaderComp screenName={'Cart'} />
-//       <View style={styles.container}>
-//         <FlatList
-//           data={cartItems[0]}
-//           renderItem={renderItem}
-//           keyExtractor={keyExtractor}
-//           numColumns={2}
-//         />
-//       </View>
-//     </>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//   },
-//   cartItem: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     margin: 8,
-//     padding: 16,
-//     borderRadius: 10,
-//     elevation: 2,
-//   },
-//   quantityControls: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginTop: 8,
-//   },
-//   itemImage: {
-//     width: 100,
-//     height: 100,
-//     resizeMode: 'cover',
-//     marginTop: moderateScale(2),
-//   },
-// });
-
-// export default Cart;
-
-
-
-// import React, { useCallback } from 'react';
-// import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-// import { useSelector, useDispatch } from 'react-redux';
-// import HeaderComp from '../../../../Components/HeaderCompo';
-// import { BASE_URL } from '../../../../config/Base_Url';
-// import { moderateScale, textScale } from '../../../../styles/responsiveSize';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { useNavigation } from '@react-navigation/native';
-// import SelectPaymentMethod from '../../../../Components/SelectPaymentMethod';
-
-// const Cart = () => {
-//     const dispatch = useDispatch();
-//     const navigation = useNavigation()
-//     const { cartItems } = useSelector((state) => state?.cartReducer);
-
-
-//     const handleUpdateQuantity = useCallback((itemId, newQuantity) => {
-//         // Dispatch the action to update the quantity
-//         // dispatch(updateCartItemQuantity({ itemId, newQuantity }));
-//     }, [dispatch]);
-
-//     const renderQuantityControls = useCallback((item) => (
-//         <View style={styles.quantityControls}>
-//             <TouchableOpacity
-//                 style={styles.controlButton}
-//                 onPress={() => handleUpdateQuantity(item.id, item.productQty - 1)}
-//             >
-//                 <MaterialCommunityIcons name="minus" size={20} color="black" />
-//             </TouchableOpacity>
-//             <Text style={styles.quantityText} numberOfLines={1} ellipsizeMode="tail">{item.productQty}</Text>
-//             <TouchableOpacity
-//                 style={styles.controlButton}
-//                 onPress={() => handleUpdateQuantity(item.id, item.productQty + 1)}
-//             >
-//                 <MaterialCommunityIcons name="plus" size={20} color="black" />
-//             </TouchableOpacity>
-//         </View>
-//     ), [handleUpdateQuantity]);
-
-//     const renderItem = useCallback(({ item }) => (
-//         <View style={styles.cartItem}>
-//             <Image
-//                 source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
-//                 style={styles.itemImage}
-//                 resizeMode='contain'
-//             />
-//             <Text>{item.itemName}</Text>
-//             <Text>Price: ${item.price}</Text>
-//             {renderQuantityControls(item)}
-
-//         </View>
-//     ), [renderQuantityControls]);
-
-//     const keyExtractor = useCallback((item, index) => index.toString(), []);
-
-//     return (
-//         <>
-//             <HeaderComp screenName={'Cart'} />
-//             <View style={styles.container}>
-//                 <FlatList
-//                     data={cartItems[0]}
-//                     renderItem={renderItem}
-//                     keyExtractor={keyExtractor}
-//                     numColumns={2}
-//                 />
-//             </View>
-//             <View style={{ width: '95%', alignSelf: 'center', marginBottom: moderateScale(8) }}>
-//                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SelectPaymentMethod', { itemId: '1' })}>
-//                     <Text style={styles.buttonText}>Buy</Text>
-//                 </TouchableOpacity>
-//             </View>
-//         </>
-//     );
-// };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         // padding: 16,
-//         backgroundColor: '#f4f4f4', // Light background color
-//     },
-//     cartItem: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         margin: 8,
-//         padding: 16,
-//         borderRadius: 10,
-//         elevation: 2,
-//     },
-//     quantityControls: {
-//         flexDirection: 'row',
-//         alignItems: 'center',
-//         marginTop: moderateScale(6),
-//         overflow: 'hidden'
-//     },
-//     controlButton: {
-//         backgroundColor: '#ddd', // Light button background color
-//         borderRadius: 5,
-//         padding: 8,
-//         marginHorizontal: moderateScale(16),
-//     },
-//     quantityText: {
-//         fontSize: textScale(20),
-//         fontWeight: 'bold',
-//     },
-//     itemImage: {
-//         width: 110,
-//         height: 100,
-//         resizeMode: 'cover',
-//         marginTop: moderateScale(2),
-//         borderRadius: 8
-//     },
-//     button: {
-//         backgroundColor: '#ECE447',
-//         padding: moderateScale(4),
-//         borderRadius: 5,
-//         alignItems: 'center',
-//         marginTop: moderateScale(12)
-//     },
-//     buttonText: {
-//         color: 'black', // You can adjust the text color as needed
-//         fontSize: 16,
-//         fontWeight: 'bold',
-//     },
-// });
-
-// export default Cart;
-
-
-
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -386,6 +72,7 @@ const Cart = () => {
                     style={styles.controlButton}
                     onPress={() =>
                         handleUpdateQuantity(item.id, item.productQty + 1)
+                        // handleUpdateQuantity(item.id, item.productQty)
                     }
                 >
                     <MaterialCommunityIcons name="plus" size={20} color="black" />
@@ -425,15 +112,27 @@ const Cart = () => {
                             <MaterialCommunityIcons name="delete" size={26} color="black" />
                         </TouchableOpacity>
                     </View>
-
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ alignSelf: 'center' }} numberOfLines={1}>
-                            Price:
+                            Price/pcs:
+                        </Text>
+                        <Text style={{ alignSelf: 'center' }} numberOfLines={1}>
+                            {/* ₹{item.price} */}
+                            ₹{item.new_price}
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Text style={{ alignSelf: 'center' }} numberOfLines={1}>
+                            Total:
                         </Text>
                         <Text style={{ alignSelf: 'center' }} numberOfLines={1}>
                             ₹{item.price}
+                            {/* ₹{item.new_price} */}
                         </Text>
                     </View>
+
+                 
+                   
                 </View>
 
 
@@ -478,6 +177,8 @@ const Cart = () => {
         }
 
     }
+
+    console.log("cartItems",cartItems)
 
     return (
         <>
