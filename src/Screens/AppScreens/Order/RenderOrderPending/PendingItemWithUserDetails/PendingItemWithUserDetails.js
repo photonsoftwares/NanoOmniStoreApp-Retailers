@@ -399,7 +399,7 @@ const PendingItemWithUserDetails = ({ route }) => {
                 <Text style={styles.valueStyle}>{order.order_date}</Text>
               </View>
 
-          
+
 
               <View style={styles.divider}></View>
             </View>
@@ -458,7 +458,7 @@ const PendingItemWithUserDetails = ({ route }) => {
   );
 
 
-  console.log("customerBookedOrders",customerBookedOrders)
+  // console.log("customerBookedOrders", customerBookedOrders)
 
   const renderItemDetails = () => {
     return (
@@ -484,7 +484,8 @@ const PendingItemWithUserDetails = ({ route }) => {
 
               <View style={styles.allView}>
                 <Text style={styles.titleStyle}>{`Quantity: `}</Text>
-                <Text style={styles.valueStyle}>{order.item_qty}</Text>
+                {/* <Text style={styles.valueStyle}>{order.item_qty}</Text> */}
+                <Text style={styles.valueStyle}>{order.bill_qty}</Text>
               </View>
 
               <View style={styles.allView}>
@@ -510,7 +511,7 @@ const PendingItemWithUserDetails = ({ route }) => {
         item_name: obj?.item_name,
         description: null,
         special_description: null,
-        price: obj?.item_price/obj?.item_qty,
+        price: obj?.item_price / obj?.item_qty,
         brand: null,
         sub_price: null,
         actual_price: obj?.item_price,

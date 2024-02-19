@@ -30,7 +30,6 @@ export const OrderViewOrderMethod = (page = 1) => async (dispatch, getState) => 
     // console.log(page)
 
     try {
-        // const endUrl = `http://3.7.230.172:8088/test/api/v1/search/recommended-item/80001/8/${page}`;
         const endUrl = `${BASE_URL}order/view-order/${saasId}/${storeId}`;
 
         const method = "GET";
@@ -56,14 +55,14 @@ export const OrderViewOrderMethod = (page = 1) => async (dispatch, getState) => 
                 // }
                 return response?.data;
             } else {
-                throw new Error("No products found in the response");
+                showToast("No Orders")
+
             }
 
 
 
         } catch (error) {
-            // console.error("TestMethod API request error:", error);
-            showToast("Error fetching data")
+            console.error("TestMethod API request error:", error);
 
             // showMessage({
             //     message: "Error fetching data",
@@ -97,7 +96,7 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
         let response = await ApiRequest(endUrl, method, headers);
 
         console.log("OrderViewOneMethod_url", endUrl)
-        // console.log('OrderViewOneMethod_resp', response);
+        console.log('OrderViewOneMethod_resp', response);
 
         if (response?.status) {
             await dispatch(setBookedOrders(response?.data));
@@ -177,7 +176,6 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
 
     try {
         const endUrl = `${BASE_URL}transaction/save-transaction`;
-
         const headers = {};
         const body = data;
         const method = 'Post';
@@ -193,7 +191,6 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
             })
             await dispatch(DeleteAllCartMethod())
             await dispatch(UpdateOrderStatusMethod(orderIdd))
-            // await dispatch(UpdateOrderMasterMethod(response?.data?.transaction_id));
 
         } else {
             showMessage({
@@ -307,13 +304,9 @@ export const UpdateOrderStatusMethod = (orderIdd) => async (dispatch, getState) 
         const headers = {};
         const method = 'Put';
         let response = await ApiRequest(endUrl, method, headers,);
-
         console.log('UpdateOrderStatusMethod_resp', response?.data);
-        if (response?.status) {
-            // showMessage({
-            //     message: `${response.message}kkk`,
-            //     type: "success",
-            // })
+
+        if (response?.status === true) {
             dispatch(OrderViewOrderMethod())
         } else {
             showMessage({
@@ -336,7 +329,6 @@ export const UpdateOrderStatusMethod = (orderIdd) => async (dispatch, getState) 
 
 export const RecommendedItemMethod = (storeId, saasId, page = 1) => async dispatch => {
     // console.log('RecommendedItemMethod_props', storeId, saasId, page);
-    // console.log(page)
 
     dispatch(setLoadingState(true));
 
@@ -348,8 +340,6 @@ export const RecommendedItemMethod = (storeId, saasId, page = 1) => async dispat
         try {
             const response = await ApiRequest(endUrl, method, headers);
 
-            // console.log(endUrl)
-            // console.log('RecommendedItemMethod_resp', response?.data.length);
             if (response?.status === true) {
                 // console.log("RecommendedItemMethod_resp", response?.data?.length);
 
@@ -409,9 +399,10 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
         const body = data
 
         try {
+            console.log('ItemUpdateMethod_body', endUrl, body);
             const response = await ApiRequest(endUrl, method, headers, body);
 
-            console.log('ItemUpdateMethod_resp', response, endUrl);
+            // console.log('ItemUpdateMethod_resp', response, endUrl);
             if (response?.status === true) {
 
                 // console.log("ItemUpdateMethod", response?.data?.length);
@@ -649,7 +640,8 @@ export const AddToCartMethod = (data) => async (dispatch, getState) => {
 
                 return true;
             } else {
-                throw new Error("No products found in the response");
+                showToast("No  Data Availabel")
+
             }
 
         } catch (error) {
@@ -711,13 +703,8 @@ export const GetCartMethod = (data) => async (dispatch, getState) => {
             }
 
         } catch (error) {
-            // console.error("TestMethod API request error:", error);
-            showMessage({
-                message: "Error fetching data",
-                // description: error.message || "Unknown error occurred",
-                description: "No More Data Availabe",
-                type: "danger",
-            });
+            showToast("No More Data Availabel")
+
         } finally {
             dispatch(setLoadingState(false));
         }
@@ -744,7 +731,6 @@ export const DeleteAllCartMethod = () => async (dispatch, getState) => {
         const method = "delete";
         const headers = {};
         const endUrl = `${BASE_URL}price-check/delete-all-products/${saasId}/${storeId}/${userId}`;
-        // const endUrl = `http://3.111.70.84:8089/prod/api/v1/price-check/delete-all-products/${saasId}/${storeId}/${id}`;
 
 
         try {
@@ -752,25 +738,9 @@ export const DeleteAllCartMethod = () => async (dispatch, getState) => {
 
             console.log('DeleteAllCartMethod_resp', response?.data?.products?.length);
             if (response?.status === true) {
-                // console.log("TestMethod", response?.data?.length);
-
-
                 dispatch(GetCartMethod());
 
-
-                // if (categoryItemsCurrentPage === 1) {
-                //     dispatch(setCurrentCategoryItemPage(page + 1))
-                // } else {
-
-                //     dispatch(addCategoriesItemPageData(response?.data));
-                //     dispatch(setCurrentCategoryItemPage(page + 1))
-
-
-                // }
-
                 return response?.data;
-            } else {
-                throw new Error("No products found in the response");
             }
 
         } catch (error) {
@@ -956,12 +926,14 @@ export const CreateOrderMethod = (data) => async (dispatch, getState) => {
 
         } catch (error) {
             // console.error("TestMethod API request error:", error);
-            showMessage({
-                message: "Error fetching data",
-                // description: error.message || "Unknown error occurred",
-                description: "No More Data Availabe",
-                type: "danger",
-            });
+            // showMessage({
+            //     message: "Error fetching data",
+            //     // description: error.message || "Unknown error occurred",
+            //     description: "No More Data Availabe",
+            //     type: "danger",
+            // });
+            showToast("No More Data Availabel")
+
         } finally {
             dispatch(setLoadingState(false));
         }
@@ -1131,6 +1103,7 @@ export const AddNewItemMethod = (data) => async (dispatch, getState) => {
         const endUrl = `${BASE_URL}item/add-item`;
 
         try {
+            console.log("AddNewItemMethod_body", body)
             const response = await ApiRequest(endUrl, method, headers, body);
 
             console.log('AddNewItemMethod_resp', response);
@@ -1185,14 +1158,14 @@ export const GetCategoryMethod = (data) => async (dispatch, getState) => {
         // const endUrl = `${BASE_URL}category/get-list/6/60001`;
 
         try {
-            const response = await ApiRequest(endUrl, method, headers, );
+            const response = await ApiRequest(endUrl, method, headers,);
             // console.log('GetCategoryMethod_resp', response);
 
             if (response?.status) {
 
-               
-                dispatch(setCategoryData( response?.data))
-            } 
+
+                dispatch(setCategoryData(response?.data))
+            }
             return response?.data
         } catch (error) {
             // console.error("TestMethod API request error:", error);
@@ -1536,16 +1509,13 @@ export const setFcmTokenMethod = (data) => async (dispatch, getState) => {
 
 
     try {
-        // const endUrl = `http://103.148.165.246:8093/test/api/v1/customer/save-Fmc-Token/12/${body}`;
-
         const headers = {};
         const body = data;
         const method = 'POST';
-        const endUrl = `${BASE_URL}customer/save-Fmc-Token/${userId}/${body}`;
+        const endUrl = `${BASE_URL}customer/save-Fmc-Token-retailer/${userId}/${body}`;
 
 
         let response = await ApiRequest(endUrl, method, headers, body);
-        //   console.log("before resp",body)
         console.log("setFcmTokenAction response", response);
 
         if (response?.status) {
@@ -1587,12 +1557,9 @@ export const getOrderItemDetailMethod = (data) => async (dispatch, getState) => 
         const headers = {};
         const body = data;
         const method = 'GET';
-        // const endUrl = `http://103.139.59.233:8089/prod/api/v1/customer/save-Fmc-Token/${userId}/${body}`;
-        // const endUrl = `http://103.139.59.233:8089/prod/api/v1/order/get-order-details-list/${saasId}/${storeId}/${data}`;
         const endUrl = `${BASE_URL}order/get-order-details-list/${saasId}/${storeId}/${data}`;
 
 
-        // console.log("before resp", endUrl)
         let response = await ApiRequest(endUrl, method, headers, body);
         // console.log("getOrderItemDetailMethod response", response?.data);
 

@@ -72,7 +72,6 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.omniretailer"
@@ -80,8 +79,8 @@ android {
         applicationId "com.omniretailer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "12"
+        versionCode 14
+        versionName "14"
     }
     signingConfigs {
        release {

@@ -11,10 +11,13 @@ export const loadingSlice = createSlice({
         setLoadingState: (state, action) => {
             state.isLoading = action.payload;
         },
+        clearLoadingState: (state, action) => {
+            state.isLoading = false;
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setLoadingState } = loadingSlice.actions
+export const { setLoadingState,clearLoadingState } = loadingSlice.actions
 
 export default loadingSlice.reducer

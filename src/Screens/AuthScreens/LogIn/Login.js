@@ -22,24 +22,18 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
+  const allState=useSelector((state)=>state)
   const colors = useTheme().colors;
   const navigation = useNavigation()
+
+
+  // console.log("allState",allState)
 
 
 
   const handleSubmit = async () => {
 
-    // console.log("first")
-    // console.log(formIsValid,inputs.storeId, inputs.password)
-
-    // if (formIsValid) {
-    //   // const data = JSON.stringify({
-    //   //   user_name: inputs.storeId,
-    //   //   password: inputs.password,
-    //   // });
-
-    //   // await dispatch(LogInMethod(data))
-    // }
+  
 
     const data = JSON.stringify({
       user_name: inputs.storeId,

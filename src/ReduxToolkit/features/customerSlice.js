@@ -23,6 +23,14 @@ const customerSlice = createSlice({
     setBookedOrders: (state, action) => {
       state.customerBookedOrders = action.payload;
     },
+    clearBookedOrders: (state, action) => {
+      state.customerData = []
+        state.customerAddresses = []
+        state.customerBookedOrders = []
+        state.loading = false
+    },
+
+
   },
 });
 
@@ -30,6 +38,7 @@ export const {
   setCustomerData,
   setCustomerAddresses,
   setBookedOrders,
+  clearBookedOrders
 } = customerSlice.actions;
 
 export default customerSlice.reducer;

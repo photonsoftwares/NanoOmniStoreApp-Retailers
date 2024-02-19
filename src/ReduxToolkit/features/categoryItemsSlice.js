@@ -4,9 +4,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const categoryItemsSlice = createSlice({
     name: 'categoryItems',
     initialState: {
-        categoryItemsData: [],       // List of category items
-        categoryItemsCurrentPage: 1, // Current page for category items
-        categoryItemsTotalPages: 1,  // Total pages for category items
+        categoryItemsData: [],
+        categoryItemsCurrentPage: 1,
+        categoryItemsTotalPages: 1,
     },
     reducers: {
         setCategoryItemsData: (state, action) => {
@@ -33,8 +33,13 @@ const categoryItemsSlice = createSlice({
                 categoryItemsTotalPages: action.payload,
             };
         },
+        clearCategoryItemPages: (state, action) => {
+            state.categoryItemsData = [],
+                state.categoryItemsCurrentPage = 1,
+                state.categoryItemsTotalPages = 1
+        }
     },
 });
 
-export const { setCategoryItemsData, setCurrentCategoryItemPage, setTotalCategoryItemPages, addCategoriesItemPageData } = categoryItemsSlice.actions;
+export const { setCategoryItemsData, setCurrentCategoryItemPage, setTotalCategoryItemPages, addCategoriesItemPageData ,clearCategoryItemPages} = categoryItemsSlice.actions;
 export default categoryItemsSlice.reducer;

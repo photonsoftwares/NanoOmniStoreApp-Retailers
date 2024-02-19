@@ -3,13 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale } from '../../../styles/responsiveSize';
-import { logoutSuccess } from '../../../ReduxToolkit/features/authSlice';
 import { useTheme } from '@react-navigation/native';
 import ImagePath from '../../../constants/ImagePath';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { clearAuth, logoutSuccess } from '../../../ReduxToolkit/features/authSlice';
+import { clearProducts } from '../../../ReduxToolkit/features/productSlice';
+import { clearUserDetails } from '../../../ReduxToolkit/features/userProfileSlice';
+import { clearLoadingState } from '../../../ReduxToolkit/features/loadingSlice';
+import { clearOrders } from '../../../ReduxToolkit/features/orderSlice';
+import { clearBookedOrders } from '../../../ReduxToolkit/features/customerSlice';
 import { clearRecommended } from '../../../ReduxToolkit/features/recommendedSlice';
-import { clearOrders, clearOrderss } from '../../../ReduxToolkit/features/orderSlice';
+import { clearCategoryData } from '../../../ReduxToolkit/features/categoriesSlice';
+import { clearCategoryItemPages } from '../../../ReduxToolkit/features/categoryItemsSlice';
 import { clearCartt } from '../../../ReduxToolkit/features/cartSlice';
+import { clearSalesReport } from '../../../ReduxToolkit/features/salesReport';
+import { clearSalesSummary } from '../../../ReduxToolkit/features/salesSummary';
 import { clearSearch } from '../../../ReduxToolkit/features/searchSlice';
 import { clearExtraDeliveryCharges } from '../../../ReduxToolkit/features/extraChargesSlice';
 
@@ -28,23 +36,22 @@ const Profile = () => {
   const colors = useTheme().colors;
 
 
-const a=useSelector((state) => state?.authReducer?.user)
 
-const handleUserLogout = async () => {
-  try {
-    // Clear AsyncStorage data
-    await AsyncStorage.clear();
-    // Perform other logout actions (e.g., navigate to login screen)
-    // For example:
-    // navigation.navigate('Login');
-    dispatch(logoutSuccess())
-    dispatch(clearRecommended())
-    dispatch(clearOrders())
+  const handleUserLogout = async () => {
+    try {
+      // Clear AsyncStorage data
+      await AsyncStorage.clear();
+      // Perform other logout actions (e.g., navigate to login screen)
+      // For example:
+      // navigation.navigate('Login');
+      dispatch(logoutSuccess())
+      dispatch(clearRecommended())
+      dispatch(clearOrders())
 
-  } catch (error) {
-    console.error('Error clearing AsyncStorage:', error);
-  }
-};
+    } catch (error) {
+      console.error('Error clearing AsyncStorage:', error);
+    }
+  };
 
 
 
@@ -67,16 +74,25 @@ const handleUserLogout = async () => {
   });
 
   const handleLogout = () => {
-    // Handle logout logic here
-    console.log('User logged out');
-    dispatch(logoutSuccess())
     // You can navigate to the login screen or perform any other logout actions
-    dispatch(logoutSuccess())
+
+    dispatch(clearAuth())
+    dispatch(clearProducts())
+    dispatch(clearUserDetails())
+    dispatch(clearLoadingState())
+    dispatch(clearOrders())
+    dispatch(clearBookedOrders())
     dispatch(clearRecommended())
-    dispatch(clearOrderss())
+    dispatch(clearCategoryData())
+    dispatch(clearCategoryItemPages())
     dispatch(clearCartt())
     dispatch(clearSearch())
+    dispatch(clearSalesReport())
     dispatch(clearExtraDeliveryCharges())
+    dispatch(clearSalesSummary())
+
+
+
 
   };
 
@@ -102,7 +118,7 @@ const handleUserLogout = async () => {
             {/* <Text style={[styles.avatarText, { color: colors.grey900 }]}>{editedUser.storeName[0]}</Text> */}
             <Image
               source={ImagePath.avtar}
-              style={[{ width: '100%', height: '100%' ,borderColor:'#ECE447',borderWidth:1,borderRadius:300}]}
+              style={[{ width: '100%', height: '100%', borderColor: '#ECE447', borderWidth: 1, borderRadius: 300 }]}
               resizeMode='cover'
             />
           </View>

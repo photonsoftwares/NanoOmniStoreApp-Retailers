@@ -100,10 +100,16 @@ export const salesSummarySlice = createSlice({
                 salesSummaryTotalPages: action.payload,
             };
         },
+        clearSalesSummary: (state, action) => {
+            state.salesSummaryData = [],
+                state.salesSummaryCurrentPage = 1,
+                state.salesSummaryTotalPages = 1
+
+        },
     },
 });
 
-export const { setSalesSummary, addSalesSummaryPageData, setSalesSummaryCurrentPage, setSalesSummaryTotalPages } = salesSummarySlice.actions;
+export const { setSalesSummary, addSalesSummaryPageData, setSalesSummaryCurrentPage, setSalesSummaryTotalPages, clearSalesSummary } = salesSummarySlice.actions;
 
 // export const selectSales = (state) => state.sales.salesData;
 // export const selectSalesCurrentPage = (state) => state.sales.salesCurrentPage;

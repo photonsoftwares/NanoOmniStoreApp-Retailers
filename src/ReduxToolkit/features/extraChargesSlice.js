@@ -35,10 +35,10 @@ const extraChargesSlice = createSlice({
             };
         },
         clearExtraDeliveryCharges: (state) => {
-            return {
-                ...state,
-                extraDeliveryChargesValue: '0',
-            };
+            state.extraDeliveryCharges = false,
+                state.extraDeliveryChargesValue = '0',
+                state.extraMinOrderValueEnabled = false,
+                state.extraMinOrderValue = '0'
         },
     },
 });

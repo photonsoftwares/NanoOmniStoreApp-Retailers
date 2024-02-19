@@ -258,7 +258,7 @@ export async function notificationListeners() {
         );
         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Notification") {
             setTimeout(() => {
-                NavigationService.navigate("Notification", { data: remoteMessage?.data })
+                NavigationServices.navigate("Notification", { data: remoteMessage?.data })
             }, 1200);
         }
 

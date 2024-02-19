@@ -14,7 +14,6 @@ const Home = () => {
 
   const dispatch = useDispatch()
   const colors = useTheme().colors;
-  // console.log(userId,"LL")
 
   // RecommendedItemMethod
   useEffect(() => {
@@ -29,7 +28,6 @@ const Home = () => {
 
   const GetCategoryItemFunct = async () => {
     const GetCategoryItemMethod_res = await dispatch(GetCategoryItemMethod())
-    // console.log("<CI>", GetCategoryItemMethod_res)
 
     if (GetCategoryItemMethod_res && GetCategoryItemMethod_res.length > 0) {
       dispatch(GetSelectedCategoryItemsMethod(GetCategoryItemMethod_res[0].category_name))

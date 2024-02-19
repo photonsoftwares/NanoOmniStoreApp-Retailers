@@ -41,10 +41,16 @@ export const productsSlice = createSlice({
         categoryData: action.payload,
       };
     },
+    clearProducts: (state, action) => {
+      state.productsData = [],
+        state.productsCurrentPage = 1,
+        state.productsTotalPages = 1,
+        state.categoryData = []
+    },
   },
 });
 
-export const { setProducts, addPageData, setCurrentPage, setTotalPages,setCategoryData } = productsSlice.actions;
+export const { setProducts, addPageData, setCurrentPage, setTotalPages, setCategoryData, clearProducts } = productsSlice.actions;
 
 export const selectProducts = state => state.products.data;
 export const selectCurrentPage = state => state.products.currentPage;

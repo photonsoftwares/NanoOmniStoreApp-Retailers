@@ -57,10 +57,15 @@ export const salesReportSlice = createSlice({
                 startDate: action.payload,
             };
         },
+        clearSalesReport: (state, action) => {
+            state.salesReportData = [],
+                state.salesReportCurrentPage = 1,
+                state.salesReportTotalPages = 1
+        },
     },
 });
 
-export const { setSalesReport, addSalesReportPageData, setSalesReportCurrentPage, setSalesReportTotalPages, setStartDate } = salesReportSlice.actions;
+export const { setSalesReport, addSalesReportPageData, setSalesReportCurrentPage, setSalesReportTotalPages, setStartDate,clearSalesReport } = salesReportSlice.actions;
 
 export const selectSalesReport = (state) => state.salesReport.salesReportData;
 export const selectSalesReportCurrentPage = (state) => state.salesReport.salesReportCurrentPage;

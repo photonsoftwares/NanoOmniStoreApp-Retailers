@@ -62,10 +62,10 @@ const cartSlice = createSlice({
             };
         },
         clearCartt: (state, action) => {
-            return {
-                ...state,
-                cartItems: [],
-            };
+
+            state.cartItems = [],
+                state.totalInvoiceAmount = null
+
         },
         removeItemCart: (state, action) => {
             const itemIdToRemove = action.payload;
@@ -83,7 +83,7 @@ const cartSlice = createSlice({
     },
 });
 
-export const { addItemCart, removeItemCart, clearCart, totalInVoiceCart ,clearCartt} = cartSlice.actions;
+export const { addItemCart, removeItemCart, clearCart, totalInVoiceCart, clearCartt } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;
 

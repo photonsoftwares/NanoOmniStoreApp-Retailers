@@ -360,13 +360,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderComp from '../../../../../Components/HeaderCompo';
-import { GetCategoryItemMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, ItemUpdateMethod, RecommendedItemMethod, uploadImageMethod } from '../../../../../config/userApiMethods';
+import { GetCategoryItemMethod, GetCategoryMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, ItemUpdateMethod, RecommendedItemMethod, uploadImageMethod } from '../../../../../config/userApiMethods';
 import { useNavigation } from '@react-navigation/native';
 import { moderateScale } from '../../../../../styles/responsiveSize';
 import { showMessage } from 'react-native-flash-message';
 import axios from 'axios';
 import { BASE_URL } from '../../../../../config/Base_Url';
 import Loader from '../../../../../Components/Loader';
+import Home from '../../Home';
+import CustomDropDown from '../../../../../Components/CustomDropDown';
 
 const UpdateItemScreen = ({ route }) => {
     const { itemId } = route?.params;
@@ -376,6 +378,8 @@ const UpdateItemScreen = ({ route }) => {
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
     const [description, setDescription] = useState(itemToUpdate?.description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
+    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
+    const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price || '');
     const [status, setStatus] = useState(itemToUpdate?.status);
     const [category, setCategory] = useState(itemToUpdate?.category || '');
     const [isOpen, setOpen] = useState(false);
@@ -388,7 +392,17 @@ const UpdateItemScreen = ({ route }) => {
     const [error, setError] = useState(null);
 
     const imageData = selectedImage?.assets[0]
+    const { categoryData } = useSelector((state) => state?.productReducer);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
+
+
+    console.log("itemToUpdate", selectedCategory)
+
+    // Function to handle selection of category
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
 
 
     // Dummy data for the status options
@@ -402,7 +416,7 @@ const UpdateItemScreen = ({ route }) => {
     };
 
     const handleUpdate = async () => {
-        setIsLoading(true)
+        // setIsLoading(true)
 
         const data = {
             "item_name": itemName,
@@ -411,7 +425,7 @@ const UpdateItemScreen = ({ route }) => {
             "price": newprice,
             "discount": 0,
             "acutal_price": newprice,
-            "special_description": "lpoop",
+            "special_description": "no description",
             "tax": "00",
             "status": status,
             "saas_id": saasId,
@@ -419,7 +433,7 @@ const UpdateItemScreen = ({ route }) => {
             "hsn_code": "00",
             "promo_id": 0,
             "sku": 0,
-            "category": category,
+            "category": selectedCategory,
             "barcode": 0,
             "mrp": 0,
             "stock_quantity": 0,
@@ -427,9 +441,16 @@ const UpdateItemScreen = ({ route }) => {
             "selling_price": "00",
             "opening_quantity": "00",
             "closing_quantity": 0,
-            "received_quantity": "00"
+
+
+            "received_quantity": receivedQty,
+            "actual_price": actualPrice,
+
         }
         const jsonString = JSON.stringify(data);
+
+        // console.log("jsonString", jsonString)
+
         const ItemUpdateMethod_resp = await dispatch(ItemUpdateMethod(jsonString,
             itemId,
             storeId,
@@ -451,7 +472,7 @@ const UpdateItemScreen = ({ route }) => {
 
             // Log true if 'uri' exists, otherwise log false
             if (hasURI === true) {
-                console.log("hasURI === true", hasURI === true)
+                // console.log("hasURI === true", hasURI === true)
                 imgUpload(url)
 
 
@@ -469,7 +490,7 @@ const UpdateItemScreen = ({ route }) => {
     };
 
     const imgUpload = async (url) => {
-        console.log("imgUpload_props", url)
+        // console.log("imgUpload_props", url)
 
         const formData = new FormData();
         formData.append('file', {
@@ -491,8 +512,8 @@ const UpdateItemScreen = ({ route }) => {
                     setIsLoading(false)
 
                 }, 1500)
-                navigation.goBack()
-                setIsLoading(false)
+                // navigation.navigate(Home)
+                // setIsLoading(false)
 
             })
             .catch(error => {
@@ -500,8 +521,6 @@ const UpdateItemScreen = ({ route }) => {
             });
 
     }
-
-
 
 
     const pickImage = async () => {
@@ -526,6 +545,16 @@ const UpdateItemScreen = ({ route }) => {
             console.error('Error picking image:', error);
         }
     };
+
+    useEffect(() => {
+        getCategoryDropDown()
+    }, [])
+
+    const getCategoryDropDown = async () => {
+        const resp = await dispatch(GetCategoryMethod())
+        // setdropdownData(resp)
+
+    }
 
     return (
         <>
@@ -595,6 +624,16 @@ const UpdateItemScreen = ({ route }) => {
                             placeholder='Description'
                         />
 
+                        {/* <TextInput
+                            style={styles.input}
+                            value={category}
+                            onChangeText={(text) => setCategory(text)}
+                            placeholderTextColor="#666"
+                            placeholder='Category'
+                            
+                        /> */}
+
+
                         <Text style={styles.label}>Price</Text>
                         <TextInput
                             style={styles.input}
@@ -604,6 +643,26 @@ const UpdateItemScreen = ({ route }) => {
                             placeholderTextColor="#666"
                             placeholder='Price'
 
+                        />
+
+                        <Text style={styles.label}>Actual Price</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={actualPrice}
+                            onChangeText={(text) => setActualPrice(text)}
+                            keyboardType="numeric"
+                            placeholderTextColor="#666"
+                            placeholder='Actual Price'
+                        />
+
+                        <Text style={styles.label}>Received Quantity</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={receivedQty}
+                            onChangeText={(text) => setReceivedQty(text)}
+                            keyboardType="numeric"
+                            placeholderTextColor="#666"
+                            placeholder='Quantity'
                         />
 
                         <Text style={styles.label}>Status</Text>
@@ -621,16 +680,24 @@ const UpdateItemScreen = ({ route }) => {
                             placeholder="Select Status"
                             searchable={false}
                         />
+                        {categoryData.length > 0 ?
+                            <View style={{marginTop:8,paddingVertical:8}}>
+                                <Text style={[styles.label,{marginBottom:8}]}>Category</Text>
+                                < CustomDropDown onSelect={handleCategorySelect} />
+                            </View>
+                            :
+                            null
+                        }
 
-                        <Text style={styles.label}>Category</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={category}
-                            onChangeText={(text) => setCategory(text)}
-                            placeholderTextColor="#666"
-                            placeholder='Category'
 
-                        />
+
+
+
+
+
+
+
+
 
 
                         <TouchableOpacity style={styles.button} onPress={handleUpdate}>
@@ -668,6 +735,7 @@ const styles = StyleSheet.create({
     dropdownContainer: {
         height: 40,
         marginTop: 8,
+        // marginTop:10
     },
     dropdownStyle: {
         backgroundColor: '#fafafa',

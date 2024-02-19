@@ -1,11 +1,9 @@
 import React, { useCallback, memo, useState } from 'react';
 import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import ImagePath from '../../../../constants/ImagePath';
 import { moderateScale, textScale } from '../../../../styles/responsiveSize';
 import { useDispatch, useSelector } from 'react-redux';
 import { BASE_URL } from '../../../../config/Base_Url';
 import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
-import UpdateItems from './UpdateItems/UpdateItems';
 import { RecommendedItemMethod } from '../../../../config/userApiMethods';
 import MyImgCompo from '../../../../Components/MyImgCompo';
 import { FlashList } from "@shopify/flash-list";
@@ -36,7 +34,7 @@ const ServiceItem = memo(({ service }) => {
                 <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(11.5), }]} numberOfLines={2} >{service?.item_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
-                    <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900, fontWeight: '400', fontSize: 12 }]} numberOfLines={1}>Qty{service?.product_qty}</Text>
+                    {/* <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900, fontWeight: '400', fontSize: 12 }]} numberOfLines={1}>Qty{service?.product_qty}</Text> */}
                 </View>
             </View>
 
@@ -58,12 +56,12 @@ const ServicesList = ({ ProductsScreen }) => {
     const dispatch = useDispatch()
     const colors = useTheme().colors;
     const handleEndReached = () => {
-        // Fetch more data when reaching the end of the list
         dispatch(RecommendedItemMethod(storeId, saasId, recommendedCurrentPage));
 
 
-    };
+    }
 
+    // console.log("recommendedData",recommendedData)
     return (
         <>
             {ProductsScreen ? null :
@@ -78,10 +76,9 @@ const ServicesList = ({ ProductsScreen }) => {
                 renderItem={renderItem}
                 horizontal={false}
                 numColumns={3}
-
                 onEndReached={handleEndReached}
                 onEndReachedThreshold={0.1}
-                estimatedItemSize={200}
+                estimatedItemSize={50}
 
 
             />

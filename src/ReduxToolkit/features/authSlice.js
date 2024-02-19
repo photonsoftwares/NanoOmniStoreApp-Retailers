@@ -19,10 +19,15 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
     },
+    clearAuth: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.isFirstTime = false
+    },
   },
 });
 
-export const { loginSuccess, logoutSuccess } = authSlice.actions;
+export const { loginSuccess, logoutSuccess, clearAuth } = authSlice.actions;
 export const selectAuthState = (state) => state.auth;
 
 export default authSlice.reducer;
