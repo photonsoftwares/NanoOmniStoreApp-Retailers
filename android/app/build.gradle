@@ -79,8 +79,8 @@ android {
         applicationId "com.omniretailer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "14"
+        versionCode 16
+        versionName "16"
     }
     signingConfigs {
        release {

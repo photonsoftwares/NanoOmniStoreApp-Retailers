@@ -97,7 +97,7 @@ export async function requestUserPermission() {
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-        console.log('Authorization status:', authStatus);
+        // console.log('Authorization status:', authStatus);
         getFcmToken()
     }
 }
@@ -252,10 +252,10 @@ export async function notificationListeners() {
 
 
     messaging().onNotificationOpenedApp(remoteMessage => {
-        console.log(
-            'Notification caused app to open from background state:',
-            remoteMessage,
-        );
+        // console.log(
+        //     'Notification caused app to open from background state:',
+        //     remoteMessage,
+        // );
         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Notification") {
             setTimeout(() => {
                 NavigationServices.navigate("Notification", { data: remoteMessage?.data })
@@ -267,7 +267,7 @@ export async function notificationListeners() {
     // 
 
     messaging().onMessage(async remoteMessage => {
-        console.log("forground notification", remoteMessage)
+        // console.log("forground notification", remoteMessage)
         alert(`forground notification${remoteMessage?.notification?.title}`,)
         // if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Notification") {
         //     setTimeout(() => {
@@ -281,12 +281,12 @@ export async function notificationListeners() {
         .getInitialNotification()
         .then(remoteMessage => {
 
-            console.log("kill State Remote Message", remoteMessage)
+            // console.log("kill State Remote Message", remoteMessage)
             if (remoteMessage) {
-                console.log(
-                    'Notification caused app to open from quit state:',
-                    remoteMessage.notification,
-                );
+                // console.log(
+                //     'Notification caused app to open from quit state:',
+                //     remoteMessage.notification,
+                // );
 
                 if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Notification") {
                     setTimeout(() => {
@@ -306,7 +306,7 @@ export async function notificationListeners() {
 
     // Handle messages received when the app is in the background or terminated
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log('setBackgroundMessageHandler message:', remoteMessage);
+        // console.log('setBackgroundMessageHandler message:', remoteMessage);
     });
 
     return unsubscribe;

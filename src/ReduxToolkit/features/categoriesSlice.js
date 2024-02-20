@@ -7,12 +7,19 @@ const categoriesSlice = createSlice({
         categoryData: [],
         categoryCurrentPage: 1,
         categoryTotalPages: 1,
+        selectedCategory: ''
     },
     reducers: {
         setCategoriesData: (state, action) => {
             return {
                 ...state,
                 categoryData: action.payload,
+            };
+        },
+        setSelectedCategory: (state, action) => {
+            return {
+                ...state,
+                selectedCategory: action.payload,
             };
         },
         addCategoriesPageData: (state, action) => {
@@ -22,6 +29,7 @@ const categoriesSlice = createSlice({
             };
         },
         setCurrentCategoryPage: (state, action) => {
+            // console.log("mm",action.payload)
             return {
                 ...state,
                 categoryCurrentPage: action.payload,
@@ -42,5 +50,5 @@ const categoriesSlice = createSlice({
     },
 });
 
-export const { setCategoriesData, setCurrentCategoryPage, setTotalCategoryPages, addCategoriesPageData, clearCategoryData } = categoriesSlice.actions;
+export const { setCategoriesData, setCurrentCategoryPage, setTotalCategoryPages, addCategoriesPageData, clearCategoryData,setSelectedCategory } = categoriesSlice.actions;
 export default categoriesSlice.reducer;

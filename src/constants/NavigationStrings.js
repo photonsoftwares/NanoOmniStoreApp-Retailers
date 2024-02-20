@@ -25,6 +25,7 @@ export default {
 
 
     UPDATEITEMS: "UpdateItems",
+    UPDATECATEGORYITEMS: "UpdateCategoryItems",
 
     // Product
     PRODUCTS: "Products",

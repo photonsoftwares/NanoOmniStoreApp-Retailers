@@ -1,55 +1,39 @@
-
-//Test.js
-
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import CustomCheckBox from '../../Components/CustomCheckBox';
+import { Button, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import CustomDropDown from '../../Components/CustomDropDown';
 
 const Test = () => {
-  const [checkBoxes, setCheckBoxes] = useState([
-    { id: 4, label: 'Select All', isChecked: false },
-    { id: 1, label: 'Option 1', isChecked: false },
-    { id: 2, label: 'Option 2', isChecked: false },
-    { id: 3, label: 'Option 3', isChecked: false },
-  ]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const toggleCheckBox = (id) => {
-    if (id === 4) {
-      // Select All logic
-      const allChecked = checkBoxes.every((checkbox) => checkbox.isChecked);
-      console.log("allChecked",allChecked)
-      setCheckBoxes((prevCheckboxes) =>
-        prevCheckboxes.map((checkbox) => ({
-          ...checkbox,
-          isChecked: !allChecked,
-        }))
-      );
-    } else {
-      setCheckBoxes((prevCheckboxes) =>
-        prevCheckboxes.map((checkbox) =>
-          checkbox.id === id
-            ? { ...checkbox, isChecked: !checkbox.isChecked }
-            : checkbox
-        )
-      );
-    }
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    // console.log(">><<<<>>>>>", category)
   };
+  const handlePress = () => {
+    const body = {
+      tax: 0,
+      tax_code: 0,
+      status: 'active',
+      hsn_code: 0,
+      promo_id: 0,
+      sku: 0,
+      category: selectedCategory,
+    }
 
+    console.log(">><<<<>>>>>", body)
+  }
   return (
-    <View style={{ flex: 1, marginHorizontal: 20 }}>
-      {checkBoxes.map((checkbox) => (
-        <CustomCheckBox
-          key={checkbox.id}
-          label={checkbox.label}
-          isChecked={checkbox.isChecked}
-          onToggle={() => toggleCheckBox(checkbox.id)}
-        />
-      ))}
+    <View style={{flex:1}}>
+      <Text>Test</Text>
+      <View style={{ marginTop: 8, paddingVertical: 8 }}>
+        <Button title='as' onPress={()=>handlePress()}/>
+        <Text style={[styles.label, { marginBottom: 8 }]}>Category</Text>
+        < CustomDropDown onSelect={handleCategorySelect} />
+      </View>
     </View>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test
 
-const styles = StyleSheet.create({});
-
+const styles = StyleSheet.create({})

@@ -12,7 +12,7 @@ import { BASE_URL } from '../../../../../../config/Base_Url';
 
 const GenratePdfBilling = ({ route }) => {
     const pdf_file_name = route?.params
-    console.log("<GenrateInvoicePdf>", pdf_file_name)
+    // console.log("<GenrateInvoicePdf>", pdf_file_name)
     const dispatch = useDispatch();
     const navigation = useNavigation()
     const source = { uri: `${BASE_URL}transaction/pdf/${pdf_file_name}`, cache: true };
@@ -51,9 +51,9 @@ const GenratePdfBilling = ({ route }) => {
 
         try {
             const ShareResponse = await Share.open(shareOptions);
-            console.log(JSON.stringify(ShareResponse));
+            // console.log(JSON.stringify(ShareResponse));
         } catch (error) {
-            console.log('Error => ', error);
+            // console.log('Error => ', error);
         }
     };
 

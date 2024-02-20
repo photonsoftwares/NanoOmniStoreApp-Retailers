@@ -24,6 +24,7 @@ import ExtraCharges from '../Screens/AppScreens/Setting/Dashboard/ExtraCharges/E
 import Test1 from '../Screens/Test/Test1'
 import DeliveredItemDetail from '../Screens/AppScreens/Order/RenderOrderDelivery/DeliveredItemDetail'
 import Test from '../Screens/Test/Test'
+import UpdateCategoryItems from '../Screens/AppScreens/Home/Services/UpdateItems/UpdateCategoryItems'
 
 const AppStack = (Stack) => {
   return (
@@ -71,6 +72,10 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.UPDATEITEMS}
         component={UpdateItems}
+      />
+      <Stack.Screen
+        name={NavigationStrings.UPDATECATEGORYITEMS}
+        component={UpdateCategoryItems}
       />
 
       {/* Products */}

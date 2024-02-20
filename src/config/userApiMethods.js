@@ -95,8 +95,7 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        console.log("OrderViewOneMethod_url", endUrl)
-        console.log('OrderViewOneMethod_resp', response);
+        // console.log('OrderViewOneMethod_resp', response);
 
         if (response?.status) {
             await dispatch(setBookedOrders(response?.data));
@@ -123,9 +122,8 @@ export const OrderMasterDetailsMethod = (storeId, saasId, order_id) => async (di
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        console.log('GetOrderMasterDetails_Resp', response?.data);
+        // console.log('GetOrderMasterDetails_Resp', response?.data);
         if (response?.status) {
-            console.log("more then one", response)
             await dispatch(setCustomerData(response?.data));
             await dispatch(GetCustomerAddressMethod(storeId, saasId, response?.data?.address_id))
 
@@ -180,10 +178,10 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
         const body = data;
         const method = 'Post';
 
-        console.log("SaveTransaction_before", endUrl, body)
+        // console.log("SaveTransaction_before", endUrl, body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        console.log('SaveTransaction_resp', response);
+        // console.log('SaveTransaction_resp', response);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -222,7 +220,7 @@ export const SaveTransactionBillingMethod = (data, orderIdd) => async (dispatch,
         // console.log("SaveTransaction_before", endUrl, body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        console.log('SaveTransaction_resp', response);
+        // console.log('SaveTransaction_resp', response);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -251,7 +249,7 @@ export const SaveTransactionBillingMethod = (data, orderIdd) => async (dispatch,
 };
 
 export const UpdateOrderMasterMethod = (orderId) => async (dispatch, getState) => {
-    console.log("UpdateOrderMasterMethod_props", orderId)
+    // console.log("UpdateOrderMasterMethod_props", orderId)
 
     const data = {
         "order_id": `${orderId}`,
@@ -268,7 +266,7 @@ export const UpdateOrderMasterMethod = (orderId) => async (dispatch, getState) =
         const method = 'Put';
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        console.log('UpdateOrderMasterMethod_resp', response);
+        // console.log('UpdateOrderMasterMethod_resp', response);
         if (response?.status) {
             showMessage({
                 message: `${response.message}`,
@@ -304,7 +302,7 @@ export const UpdateOrderStatusMethod = (orderIdd) => async (dispatch, getState) 
         const headers = {};
         const method = 'Put';
         let response = await ApiRequest(endUrl, method, headers,);
-        console.log('UpdateOrderStatusMethod_resp', response?.data);
+        // console.log('UpdateOrderStatusMethod_resp', response?.data);
 
         if (response?.status === true) {
             dispatch(OrderViewOrderMethod())
@@ -362,12 +360,12 @@ export const RecommendedItemMethod = (storeId, saasId, page = 1) => async dispat
             // console.error("TestMethod API request error:", error);
 
             // showMessage({
-            //     message: "No More Data Availabel",
+            //     message: "No More Data available",
             //     // description: error.message || "Unknown error occurred",
             //     // description: "No More Data Availabe",
             //     type: "info",
             // });
-            showToast("No More Data Availabel")
+            showToast("No More Data available")
 
         } finally {
             dispatch(setLoadingState(false));
@@ -391,7 +389,6 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
     dispatch(setLoadingState(true));
 
     try {
-        // const endUrl = `${BASE_URL}search/recommended-item/${storeId}/${saasId}/${page}`;
         const endUrl = `${BASE_URL}item/update-item/${itemId}`;
 
         const method = "PUT";
@@ -399,14 +396,68 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
         const body = data
 
         try {
-            console.log('ItemUpdateMethod_body', endUrl, body);
             const response = await ApiRequest(endUrl, method, headers, body);
 
-            // console.log('ItemUpdateMethod_resp', response, endUrl);
+            // console.log('ItemUpdateMethod_resp', response, endUrl);s
             if (response?.status === true) {
 
                 // console.log("ItemUpdateMethod", response?.data?.length);
                 dispatch(RecommendedItemMethod(storeId, saasId, 1));
+                // dispatch(GetCartMethod());
+
+
+                return response
+            } else {
+                throw new Error("No products found in the response");
+            }
+
+        } catch (error) {
+            // console.error("TestMethod API request error:", error);
+            showMessage({
+                message: "Error fetching data",
+                description: error.message || "Unknown error occurred",
+                type: "danger",
+            });
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+    } catch (error) {
+        // console.error("TestMethod unexpected error:", error);
+        showMessage({
+            message: "Error fetching data",
+            description: error.message || "Unknown error occurred",
+            type: "danger",
+        });
+        dispatch(setLoadingState(false));
+    }
+
+};
+
+export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async (dispatch, getState) => {
+    // console.log('ItemUpdateMethod_props', data, itemId);
+    const { categoryCurrentPage, selectedCategory, } = getState().categoriesReducer;
+
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const endUrl = `${BASE_URL}item/update-item/${itemId}`;
+
+        const method = "PUT";
+        const headers = {};
+        const body = data
+
+        try {
+            // console.log('CategoryItemUpdateMethod_body', endUrl, body);
+            const response = await ApiRequest(endUrl, method, headers, body);
+
+            console.log('CategoryItemUpdateMethod_resp', response, endUrl);
+
+            if (response?.status === true) {
+
+                // console.log("ItemUpdateMethod", response?.data?.length);
+                dispatch(setCurrentCategoryItemPage(1))
+                dispatch(GetSelectedCategoryItemsMethod(selectedCategory));
                 // dispatch(GetCartMethod());
 
 
@@ -464,19 +515,14 @@ export const GetCategoryItemMethod = () => async (dispatch, getState) => {
 
                 return response?.data;
             } else {
-                throw new Error("No products found in the response");
+                showToast("No Category item available")
+
             }
 
         } catch (error) {
-            // console.error("TestMethod API request error:", error);
-            // showToast("Error fetching data")
 
-            showMessage({
-                message: "Error fetching data",
-                // description: error.message || "Unknown error occurred",
-                description: "No Category Availabe",
-                type: "danger",
-            });
+            showToast("No Category item available")
+
         } finally {
             dispatch(setLoadingState(false));
         }
@@ -496,15 +542,16 @@ export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch,
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     const { categoryItemsCurrentPage } = getState().categoryItemsReducer;
 
-    // console.log('GetSelectedCategoryItemsMethod_props', storeId, saasId, categoryItemsCurrentPage,categoryName,"<>");
+    // console.log('GetSelectedCategoryItemsMethod_props', storeId, saasId, categoryItemsCurrentPage, categoryName, "<>");
 
     dispatch(setLoadingState(true));
 
     try {
-        const endUrl = `${BASE_URL}item/get-category-list/${saasId}/${storeId}/${categoryName}/${categoryItemsCurrentPage}`;
         const method = "GET";
         const headers = {};
+        const endUrl = `${BASE_URL}item/get-category-list/${saasId}/${storeId}/${categoryName}/${categoryItemsCurrentPage}`;
 
+        // console.log("GetSelectedCategoryItemsMethod_endurl", endUrl)
         try {
             const response = await ApiRequest(endUrl, method, headers);
 
@@ -524,7 +571,7 @@ export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch,
                 }
                 return response?.data;
             } else {
-                throw new Error("No products found in the response");
+                // showToast("No More Category data available")
             }
 
         } catch (error) {
@@ -620,7 +667,7 @@ export const AddToCartMethod = (data) => async (dispatch, getState) => {
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
 
-            console.log('AddToCartMethod_resp', response?.data?.products?.length);
+            // console.log('AddToCartMethod_resp', response?.data?.products?.length);
             if (response?.status === true) {
                 // console.log("AddToCartMethod_resp_inside", response);
 
@@ -640,7 +687,7 @@ export const AddToCartMethod = (data) => async (dispatch, getState) => {
 
                 return true;
             } else {
-                showToast("No  Data Availabel")
+                showToast("No  Data available")
 
             }
 
@@ -703,7 +750,7 @@ export const GetCartMethod = (data) => async (dispatch, getState) => {
             }
 
         } catch (error) {
-            showToast("No More Data Availabel")
+            showToast("No More Data available")
 
         } finally {
             dispatch(setLoadingState(false));
@@ -736,7 +783,7 @@ export const DeleteAllCartMethod = () => async (dispatch, getState) => {
         try {
             const response = await ApiRequest(endUrl, method, headers,);
 
-            console.log('DeleteAllCartMethod_resp', response?.data?.products?.length);
+            // console.log('DeleteAllCartMethod_resp', response?.data?.products?.length);
             if (response?.status === true) {
                 dispatch(GetCartMethod());
 
@@ -786,7 +833,7 @@ export const DeleteOneMethod = (itemId) => async (dispatch, getState) => {
             // console.log('DeleteOneMethod_resp', response?.data?.products?.length);
             // console.log('DeleteOneMethod_resp', response?.data);
             if (response?.status === true) {
-                console.log('DeleteOneMethod_resp', response?.data?.products?.length);
+                // console.log('DeleteOsneMethod_resp', response?.data?.products?.length);
 
 
                 dispatch(GetCartMethod());
@@ -842,10 +889,10 @@ export const UpdateCartItemQntyMethod = (itemId, qty,) => async (dispatch, getSt
 
         try {
             const response = await ApiRequest(endUrl, method, headers,);
-            console.log("UpdateCartItemQntyMethod_response", response)
+            // console.log("UpdateCartItemQnstyMethod_response", response)
 
             if (response?.status === true) {
-                console.log('UpdateCartItemQntyMethod', response?.data?.products?.length);
+                // console.log('UpdateCsartItemQntyMethod', response?.data?.products?.length);
 
                 dispatch(GetCartMethod());
 
@@ -903,7 +950,7 @@ export const CreateOrderMethod = (data) => async (dispatch, getState) => {
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
 
-            console.log('CreateOrderMethod_resp', response?.data?.products.length);
+            ('CreateOrderMethod_resp', response?.data?.products.length);
             if (response?.status === true) {
                 // console.log("TestMethod", response?.data?.length);
 
@@ -932,7 +979,7 @@ export const CreateOrderMethod = (data) => async (dispatch, getState) => {
             //     description: "No More Data Availabe",
             //     type: "danger",
             // });
-            showToast("No More Data Availabel")
+            showToast("No More Data available")
 
         } finally {
             dispatch(setLoadingState(false));
@@ -965,7 +1012,7 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
                 name: selectedImage.assets[0].fileName,
             });
 
-            console.log("formData", formData)
+            // console.log("formData", formData)
             const response = await axios.post(
                 `${BASE_URL}item/save-image/${itemId}`,
                 formData,
@@ -976,7 +1023,7 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
                 }
             );
 
-            console.log('Upload response:', response.data);
+            // console.log('Upload response:', response.data);
             showMessage({
                 message: "Item Added Succesfully",
                 type: "success",
@@ -1103,7 +1150,7 @@ export const AddNewItemMethod = (data) => async (dispatch, getState) => {
         const endUrl = `${BASE_URL}item/add-item`;
 
         try {
-            console.log("AddNewItemMethod_body", body)
+            // console.log("AddNewItemMethod_body", body)
             const response = await ApiRequest(endUrl, method, headers, body);
 
             console.log('AddNewItemMethod_resp', response);
@@ -1146,7 +1193,7 @@ export const AddNewItemMethod = (data) => async (dispatch, getState) => {
 
 export const GetCategoryMethod = (data) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-    console.log('GetCategoryMethod_props', storeId, saasId, data);
+    // console.log('GetCategoryMethod_props', storeId, saasId, data);
 
     dispatch(setLoadingState(true));
 
@@ -1155,7 +1202,6 @@ export const GetCategoryMethod = (data) => async (dispatch, getState) => {
         const headers = {};
         const body = JSON.stringify(data);
         const endUrl = `${BASE_URL}category/get-list/${saasId}/${storeId}`;
-        // const endUrl = `${BASE_URL}category/get-list/6/60001`;
 
         try {
             const response = await ApiRequest(endUrl, method, headers,);
@@ -1217,7 +1263,7 @@ export const GetgetSalesReportMethod = (startDate_props) => async (dispatch, get
 
             // console.log('GetgetSalesReportMethod_resp', response?.list_sales_report?.length)
             if (response?.status === true) {
-                console.log("GetgetSalesReportMethod_resp_inside", response?.list_sales_report?.length);
+                // console.log("GetgetSalesReportMethod_resp_inside", response?.list_sales_report?.length);
                 await dispatch(setSalesReport(response?.list_sales_report))
 
                 return response?.status
@@ -1316,11 +1362,11 @@ export const UpdateDeliveryChargesMethod = (charges) => async (dispatch, getStat
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
-            console.log("UpdateDeliveryChargesMethod_endUrl", endUrl)
+            // console.log("UpdateDeliveryChargesMethod_endUrl", endUrl)
 
             // console.log('GetgetSalesReportMethod_resp', response?.list_sales_report?.length)
             if (response?.status === true) {
-                console.log("UpdateDeliveryChargesMethod_resp_inside", response);
+                // console.log("UpdateDeliveryChargesMethod_resp_inside", response);
                 await dispatch(GetDelivryChargesMethod())
                 showMessage({
                     message: "Delivery charges succesfully updated ",
@@ -1369,10 +1415,10 @@ export const UpdateMinOrderValueMethod = (charges) => async (dispatch, getState)
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
-            console.log("UpdateMinOrderValueMethod_endUrl", endUrl)
+            // console.log("UpdateMinOrderValueMethod_endUrl", endUrl)
 
             if (response?.status === true) {
-                console.log("UpdateMinOrderValueMethod_resp_inside", response);
+                // console.log("UpdateMinOrderValueMethod_resp_inside", response);
                 await dispatch(GetMinOrderValueMethod())
                 showMessage({
                     message: "Minimum value succesfully updated ",
@@ -1409,7 +1455,7 @@ export const GetMinOrderValueMethod = () => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
 
-    console.log("GetMinOrderValueMethod")
+    // console.log("GetMinOrderValueMethod")
     dispatch(setLoadingState(true));
 
     try {
@@ -1422,7 +1468,7 @@ export const GetMinOrderValueMethod = () => async (dispatch, getState) => {
             const response = await ApiRequest(endUrl, method, headers,)
 
             if (response?.status === true) {
-                console.log("GetMinOrderValueMethod_resp_inside", response?.data?.deliver_charges);
+                // console.log("GetMinOrderValueMethod_resp_inside", response?.data?.deliver_charges);
                 dispatch(setExtraMinOrderValue(response?.data?.minimum_order_response))
 
 
@@ -1455,7 +1501,7 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
 
-    console.log("GetDelivryChargesMethod")
+    // console.log("GetDelivryChargesMethod")
     dispatch(setLoadingState(true));
 
     try {
@@ -1467,7 +1513,7 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
             const response = await ApiRequest(endUrl, method, headers,)
 
             if (response?.status === true) {
-                console.log("GetMinOrderValueMethod_resp_inside", response?.data?.deliver_charges);
+                // console.log("GetMinOrderValueMethod_resp_inside", response?.data?.deliver_charges);
                 dispatch(setExtraDeliveryChargesValue(response?.data?.deliver_charges))
                 // showMessage({
                 //     message: "Delivery charges succesfully updated ",
@@ -1480,7 +1526,6 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
             }
 
         } catch (error) {
-            console.log(error.message)
             showMessage({
                 message: "Error fetching data ",
                 description: error.message || "Unknown error occurred",
@@ -1516,7 +1561,7 @@ export const setFcmTokenMethod = (data) => async (dispatch, getState) => {
 
 
         let response = await ApiRequest(endUrl, method, headers, body);
-        console.log("setFcmTokenAction response", response);
+        // console.log("setFcmTokenAction response", response);
 
         if (response?.status) {
 

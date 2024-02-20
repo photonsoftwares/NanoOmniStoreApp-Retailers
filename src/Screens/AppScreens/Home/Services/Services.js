@@ -7,6 +7,7 @@ import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/nativ
 import { RecommendedItemMethod } from '../../../../config/userApiMethods';
 import MyImgCompo from '../../../../Components/MyImgCompo';
 import { FlashList } from "@shopify/flash-list";
+import CategoryItemList from '../../../../Components/CategoryItemList';
 
 
 
@@ -64,6 +65,7 @@ const ServicesList = ({ ProductsScreen }) => {
     // console.log("recommendedData",recommendedData)
     return (
         <>
+
             {ProductsScreen ? null :
                 <View style={styles.headerContainer}>
                     <Text style={[styles.headerText, { color: colors.grey900 }]}>All Recommended Items</Text>

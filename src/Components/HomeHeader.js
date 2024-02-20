@@ -78,8 +78,6 @@ const HomeHeader = () => {
     );
     const navigation = useNavigation()
 
-    console.log("storenammoe", storeName)
-    // console.log("storenammoe", userType)
     return (
         <View style={styles.container}>
             <View style={styles.top}>
