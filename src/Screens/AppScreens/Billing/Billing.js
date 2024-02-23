@@ -43,7 +43,7 @@ const Billing = () => {
       new_price: item?.price,
       discount: item?.discount,
       status: 'In Stock',
-      department: 'Electronics',
+      department: 'department',
       saas_id: saasId,
       store_id: storeId,
       promoId: item?.promo_id,
@@ -70,11 +70,7 @@ const Billing = () => {
     setSelectedCategory(selectedCategoryItem)
   }
 
-  // const renderCategoryItem = useCallback(({ item }) => (
-  //   <TouchableOpacity style={[styles.categoryItem,]} onPress={() => selectedCategoryFunc(item.category_name)}>
-  //     <Text style={styles.categoryItemText} numberOfLines={1}>{item.category_name}</Text>
-  //   </TouchableOpacity>
-  // ), []);
+
 
 
   const renderCategoryItemsItem = useCallback(({ item }) => (
@@ -84,7 +80,20 @@ const Billing = () => {
         resizeMode='cover'
         ImgCompoStyle={styles.serviceImage}
       />
-      <Text style={styles.itemPrice} numberOfLines={1}>₹{item.price}</Text>
+      <View style={{ width: '80%', justifyContent: 'space-between', flexDirection: 'row' }}>
+        <Text style={styles.itemPrice} numberOfLines={1}>₹{item.price}</Text>
+        {/* <Text style={styles.itemPrice} numberOfLines={1}>₹{item.discount}</Text> */}
+        {
+          item?.discount > 0 ?
+            <Text style={[styles.itemPrice, { backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{item.discount}%</Text>
+            :
+            null
+            // <Text style={[styles.itemPrice, { backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{item.discount}%</Text>
+
+        }
+      </View>
+
+
       <Text style={styles.itemName} numberOfLines={1}>
         {item.item_name.charAt(0).toUpperCase() + item.item_name.slice(1)}
       </Text>

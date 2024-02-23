@@ -25,6 +25,7 @@ import Test1 from '../Screens/Test/Test1'
 import DeliveredItemDetail from '../Screens/AppScreens/Order/RenderOrderDelivery/DeliveredItemDetail'
 import Test from '../Screens/Test/Test'
 import UpdateCategoryItems from '../Screens/AppScreens/Home/Services/UpdateItems/UpdateCategoryItems'
+import SearchItemUpdate from '../Screens/AppScreens/Search/SearchItemUpdate'
 
 const AppStack = (Stack) => {
   return (
@@ -77,6 +78,11 @@ const AppStack = (Stack) => {
         name={NavigationStrings.UPDATECATEGORYITEMS}
         component={UpdateCategoryItems}
       />
+      <Stack.Screen
+        name={NavigationStrings.SEARCHITEMUPDATE}
+        component={SearchItemUpdate}
+      />
+     
 
       {/* Products */}
       <Stack.Screen

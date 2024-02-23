@@ -6,6 +6,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../../../config/Base_Url';
 import { scale, textScale } from '../../../styles/responsiveSize';
+import SearchItemUpdate from './SearchItemUpdate';
 
 
 const SearchBar = () => {
@@ -34,9 +35,28 @@ const SearchBar = () => {
     }
   }, [dispatch]);
 
-  const renderItem = useMemo(() => ({ item }) => (
+  // const renderItem = useMemo(() => ({ item }) => (
+  //   <View>
+  //     {/* <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('SearchItemUpdate', { itemId: item.item_id })}> */}
+  //     <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate(SearchItemUpdate)}>
+  //       <Image
+  //         source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
+  //         style={styles.itemImage}
+  //       />
+  //       <View style={styles.itemDetails}>
+  //         <Text numberOfLines={1} style={styles.itemName}>{item.item_name}</Text>
+  //         <Text numberOfLines={1} style={styles.itemCategory}>{item.category}</Text>
+  //         <Text numberOfLines={1} style={styles.itemPrice}>Price: ₹{item.price}</Text>
+  //       </View>
+  //     </TouchableOpacity>
+  //   </View>
+  // ), [storeData]);
+
+
+  const renderItem = ({ item }) => {
     <View>
-      <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('UpdateItems', { itemId: item.item_id })}>
+      {/* <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('SearchItemUpdate', { itemId: item.item_id })}> */}
+      <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('UpdateItemScreen', { itemId: item.item_id })}>
         <Image
           source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
           style={styles.itemImage}
@@ -48,7 +68,7 @@ const SearchBar = () => {
         </View>
       </TouchableOpacity>
     </View>
-  ), [storeData]);
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -60,7 +80,8 @@ const SearchBar = () => {
         alignItems: 'center',
         marginHorizontal: scale(8),
         borderRadius: scale(10),
-        borderBottomWidth: 3
+        borderBottomWidth: 3,
+
       }}>
         <Icon
           name={'magnify'}

@@ -31,11 +31,14 @@ const Profile = () => {
     city,
     country,
     state,
+    address
 
   } = useSelector((state) => state?.authReducer?.user?.store_data)
   const colors = useTheme().colors;
 
+  const userData = useSelector((state) => state?.authReducer?.user);
 
+  // console.log("userData",address)
 
   const handleUserLogout = async () => {
     try {
@@ -176,7 +179,8 @@ const Profile = () => {
             </>
           ) : (
             <>
-              <Text style={[styles.addressText, { color: colors.grey900 }]}>{editedUser.address}</Text>
+              {/* {/* <Text style={[styles.addressText, { color: colors.grey900 }]}>{editedUser.address}</Text> */}
+              <Text style={[styles.addressText, { color: colors.grey900 }]} >{address}</Text>
             </>
           )}
         </View>
@@ -185,7 +189,7 @@ const Profile = () => {
           <Text style={styles.editButtonText}>{isEditing ? 'Save' : 'Edit'}</Text>
         </TouchableOpacity> */}
 
-        <Text>Address Update Feature is not Included Currenty</Text>
+        {/* <Text>Address Update Feature is not Included Currenty</Text> */}
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>

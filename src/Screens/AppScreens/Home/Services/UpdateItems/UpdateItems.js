@@ -1,28 +1,32 @@
-
-
 // import React, { useEffect, useState } from 'react';
-// import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+// import { View, Text, TextInput, TouchableOpacity, StyleSheet,  Image, ScrollView } from 'react-native';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { launchImageLibrary } from 'react-native-image-picker';
 // import { useDispatch, useSelector } from 'react-redux';
 // import HeaderComp from '../../../../../Components/HeaderCompo';
-// import { GetCategoryItemMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, ItemUpdateMethod, RecommendedItemMethod, uploadImageMethod } from '../../../../../config/userApiMethods';
+// import { GetCategoryItemMethod, GetCategoryMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, ItemUpdateMethod, RecommendedItemMethod, uploadImageMethod } from '../../../../../config/userApiMethods';
 // import { useNavigation } from '@react-navigation/native';
 // import { moderateScale } from '../../../../../styles/responsiveSize';
 // import { showMessage } from 'react-native-flash-message';
 // import axios from 'axios';
 // import { BASE_URL } from '../../../../../config/Base_Url';
 // import Loader from '../../../../../Components/Loader';
+// import Home from '../../Home';
+// import CustomDropDown from '../../../../../Components/CustomDropDown';
 
 // const UpdateItemScreen = ({ route }) => {
 //     const { itemId } = route?.params;
 //     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
 //     const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
 
+//     // console.log("itemId",itemId)
+
 //     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
 //     const [description, setDescription] = useState(itemToUpdate?.description || '');
 //     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
+//     const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
+//     const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price || '');
 //     const [status, setStatus] = useState(itemToUpdate?.status);
 //     const [category, setCategory] = useState(itemToUpdate?.category || '');
 //     const [isOpen, setOpen] = useState(false);
@@ -35,7 +39,16 @@
 //     const [error, setError] = useState(null);
 
 //     const imageData = selectedImage?.assets[0]
+//     const { categoryData } = useSelector((state) => state?.productReducer);
+//     const [selectedCategory, setSelectedCategory] = useState(null);
 
+
+
+
+//     // Function to handle selection of category
+//     const handleCategorySelect = (category) => {
+//         setSelectedCategory(category);
+//     };
 
 
 //     // Dummy data for the status options
@@ -49,7 +62,7 @@
 //     };
 
 //     const handleUpdate = async () => {
-//         setIsLoading(true)
+//         // setIsLoading(true)
 
 //         const data = {
 //             "item_name": itemName,
@@ -58,7 +71,7 @@
 //             "price": newprice,
 //             "discount": 0,
 //             "acutal_price": newprice,
-//             "special_description": "lpoop",
+//             "special_description": "no description",
 //             "tax": "00",
 //             "status": status,
 //             "saas_id": saasId,
@@ -66,7 +79,7 @@
 //             "hsn_code": "00",
 //             "promo_id": 0,
 //             "sku": 0,
-//             "category": category,
+//             "category": selectedCategory,
 //             "barcode": 0,
 //             "mrp": 0,
 //             "stock_quantity": 0,
@@ -74,9 +87,16 @@
 //             "selling_price": "00",
 //             "opening_quantity": "00",
 //             "closing_quantity": 0,
-//             "received_quantity": "00"
+
+
+//             "received_quantity": receivedQty,
+//             "actual_price": actualPrice,
+
 //         }
 //         const jsonString = JSON.stringify(data);
+
+//         // console.log("jsonString", jsonString)
+
 //         const ItemUpdateMethod_resp = await dispatch(ItemUpdateMethod(jsonString,
 //             itemId,
 //             storeId,
@@ -98,7 +118,14 @@
 
 //             // Log true if 'uri' exists, otherwise log false
 //             if (hasURI === true) {
+//                 // console.log("hasURI === true", hasURI === true)
 //                 imgUpload(url)
+
+
+//             } else {
+//                 setIsLoading(false)
+//                 navigation.goBack()
+
 
 //             }
 
@@ -109,7 +136,7 @@
 //     };
 
 //     const imgUpload = async (url) => {
-//         console.log("imgUpload_props", url)
+//         // console.log("imgUpload_props", url)
 
 //         const formData = new FormData();
 //         formData.append('file', {
@@ -126,13 +153,13 @@
 //         })
 //             .then(response => {
 //                 console.log('Success', response.data);
-//                 // setTimeout(() => {
-//                 //     navigation.goBack()
-//                 //     setIsLoading(false)
+//                 setTimeout(() => {
+//                     navigation.goBack()
+//                     setIsLoading(false)
 
-//                 // }, 2000)
-//                 navigation.goBack()
-//                 setIsLoading(false)
+//                 }, 1500)
+//                 // navigation.navigate(Home)
+//                 // setIsLoading(false)
 
 //             })
 //             .catch(error => {
@@ -140,8 +167,6 @@
 //             });
 
 //     }
-
-
 
 
 //     const pickImage = async () => {
@@ -167,6 +192,16 @@
 //         }
 //     };
 
+//     useEffect(() => {
+//         getCategoryDropDown()
+//     }, [])
+
+//     const getCategoryDropDown = async () => {
+//         const resp = await dispatch(GetCategoryMethod())
+//         // setdropdownData(resp)
+
+//     }
+
 //     return (
 //         <>
 //             <HeaderComp
@@ -183,13 +218,13 @@
 //                     keyboardDismissMode="interactive"
 //                     keyboardShouldPersistTaps="always"
 //                     showsVerticalScrollIndicator={false}
+//                     nestedScrollEnabled={true}
 //                 >
 //                     <View style={styles.container}>
 //                         {/* Image Update  */}
 //                         <View style={{ height: moderateScale(120), width: moderateScale(120), justifyContent: 'center', borderRadius: 8, elevation: 8, backgroundColor: "#fff", alignSelf: "center" }}>
 //                             <View style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
 
-//                                 {/* <MaterialCommunityIcons name="account" size={155} color={'#ECE447'} /> */}
 //                                 {selectedImage ?
 
 //                                     (
@@ -213,17 +248,6 @@
 //                                 }
 
 //                             </View>
-//                             {/* <Image
-//                                         source={ImagePath.penIconBG}
-//                                         style={{ height: '100%', width: '100%', left: 20 }}
-//                                     /> */}
-
-//                             {/* <TouchableOpacity style={{ height: '25%', width: '25%', alignSelf: 'flex-end', left: 20, borderWidth: 1 }} activeOpacity={0.8} onPress={() => pickImage()}>
-
-//                             <MaterialCommunityIcons name="cloud-upload" size={26} color='red' />
-
-//                         </TouchableOpacity> */}
-
 
 //                         </View>
 //                         {/* //////////// */}
@@ -247,6 +271,16 @@
 //                             placeholder='Description'
 //                         />
 
+//                         {/* <TextInput
+//                             style={styles.input}
+//                             value={category}
+//                             onChangeText={(text) => setCategory(text)}
+//                             placeholderTextColor="#666"
+//                             placeholder='Category'
+                            
+//                         /> */}
+
+
 //                         <Text style={styles.label}>Price</Text>
 //                         <TextInput
 //                             style={styles.input}
@@ -256,6 +290,26 @@
 //                             placeholderTextColor="#666"
 //                             placeholder='Price'
 
+//                         />
+
+//                         <Text style={styles.label}>Actual Price</Text>
+//                         <TextInput
+//                             style={styles.input}
+//                             value={actualPrice}
+//                             onChangeText={(text) => setActualPrice(text)}
+//                             keyboardType="numeric"
+//                             placeholderTextColor="#666"
+//                             placeholder='Actual Price'
+//                         />
+
+//                         <Text style={styles.label}>Received Quantity</Text>
+//                         <TextInput
+//                             style={styles.input}
+//                             value={receivedQty}
+//                             onChangeText={(text) => setReceivedQty(text)}
+//                             keyboardType="numeric"
+//                             placeholderTextColor="#666"
+//                             placeholder='Quantity'
 //                         />
 
 //                         <Text style={styles.label}>Status</Text>
@@ -273,16 +327,24 @@
 //                             placeholder="Select Status"
 //                             searchable={false}
 //                         />
+//                         {categoryData.length > 0 ?
+//                             <View style={{marginTop:8,paddingVertical:8}}>
+//                                 <Text style={[styles.label,{marginBottom:8}]}>Category</Text>
+//                                 < CustomDropDown onSelect={handleCategorySelect} />
+//                             </View>
+//                             :
+//                             null
+//                         }
 
-//                         <Text style={styles.label}>Category</Text>
-//                         <TextInput
-//                             style={styles.input}
-//                             value={category}
-//                             onChangeText={(text) => setCategory(text)}
-//                             placeholderTextColor="#666"
-//                             placeholder='Category'
 
-//                         />
+
+
+
+
+
+
+
+
 
 
 //                         <TouchableOpacity style={styles.button} onPress={handleUpdate}>
@@ -320,6 +382,7 @@
 //     dropdownContainer: {
 //         height: 40,
 //         marginTop: 8,
+//         // marginTop:10
 //     },
 //     dropdownStyle: {
 //         backgroundColor: '#fafafa',
@@ -348,13 +411,21 @@
 
 
 
-////////////////
 
 
 
 
+
+
+
+
+
+
+
+
+///////////////////
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,  Image, ScrollView } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -369,13 +440,15 @@ import { BASE_URL } from '../../../../../config/Base_Url';
 import Loader from '../../../../../Components/Loader';
 import Home from '../../Home';
 import CustomDropDown from '../../../../../Components/CustomDropDown';
+import CustomModal from '../../../../../Components/Modal';
 
 const UpdateItemScreen = ({ route }) => {
     const { itemId } = route?.params;
+    const [modalVisible, setModalVisible] = useState(false);
     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
     const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
 
-    // console.log("itemId",itemId)
+    // console.log("itemToUpdateFrom_UpdateItemScreen",itemToUpdate,itemId)
 
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
     const [description, setDescription] = useState(itemToUpdate?.description || '');
@@ -395,7 +468,9 @@ const UpdateItemScreen = ({ route }) => {
 
     const imageData = selectedImage?.assets[0]
     const { categoryData } = useSelector((state) => state?.productReducer);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    // const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(itemToUpdate?.category || '');
+    console.log("selectedCategory_FromUpdateItemm", selectedCategory)
 
 
 
@@ -403,6 +478,8 @@ const UpdateItemScreen = ({ route }) => {
     // Function to handle selection of category
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
+        setModalVisible(false)
+
     };
 
 
@@ -573,7 +650,7 @@ const UpdateItemScreen = ({ route }) => {
                     keyboardDismissMode="interactive"
                     keyboardShouldPersistTaps="always"
                     showsVerticalScrollIndicator={false}
-                    // nestedScrollEnabled={true}
+                    nestedScrollEnabled={true}
                 >
                     <View style={styles.container}>
                         {/* Image Update  */}
@@ -682,14 +759,33 @@ const UpdateItemScreen = ({ route }) => {
                             placeholder="Select Status"
                             searchable={false}
                         />
-                        {categoryData.length > 0 ?
-                            <View style={{marginTop:8,paddingVertical:8}}>
-                                <Text style={[styles.label,{marginBottom:8}]}>Category</Text>
-                                < CustomDropDown onSelect={handleCategorySelect} />
-                            </View>
-                            :
-                            null
-                        }
+                     <Text style={styles.label}>Category</Text>
+                        <TouchableOpacity
+                            onPress={() => setModalVisible(true)}
+                            containerStyle={styles.input}
+                        >
+                            <TextInput
+                                style={styles.input}
+                                value={selectedCategory}
+                                keyboardType="numeric"
+                                placeholderTextColor="#666"
+                                placeholder='Category'
+                                editable={false}
+                            />
+                        </TouchableOpacity>
+
+                        <CustomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
+                            {categoryData.length > 0 ?
+
+                                <View style={{ marginTop: 8, paddingVertical: 8, justifyContent: 'center', }}>
+                                    <Text style={[styles.label, { marginBottom: 8 }]}>Select Category</Text>
+                                    < CustomDropDown onSelect={handleCategorySelect} />
+                                </View>
+
+                                :
+                                null
+                            }
+                        </CustomModal>
 
 
 

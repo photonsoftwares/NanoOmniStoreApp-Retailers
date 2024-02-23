@@ -1,35 +1,17 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import CustomDropDown from '../../Components/CustomDropDown';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { useNavigation } from '@react-navigation/native'
+import SearchItemUpdate from '../AppScreens/Search/SearchItemUpdate'
 
 const Test = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    // console.log(">><<<<>>>>>", category)
-  };
-  const handlePress = () => {
-    const body = {
-      tax: 0,
-      tax_code: 0,
-      status: 'active',
-      hsn_code: 0,
-      promo_id: 0,
-      sku: 0,
-      category: selectedCategory,
-    }
-
-    console.log(">><<<<>>>>>", body)
-  }
+  const navigation = useNavigation()
   return (
-    <View style={{flex:1}}>
-      <Text>Test</Text>
-      <View style={{ marginTop: 8, paddingVertical: 8 }}>
-        <Button title='as' onPress={()=>handlePress()}/>
-        <Text style={[styles.label, { marginBottom: 8 }]}>Category</Text>
-        < CustomDropDown onSelect={handleCategorySelect} />
-      </View>
+    <View>
+      <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('SearchItemUpdate', { itemId: '123' })}>
+
+        <Text>Test</Text>
+      </TouchableOpacity>
+
     </View>
   )
 }

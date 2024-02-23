@@ -170,7 +170,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 };
 
 export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getState) => {
-    // console.log("SaveTransaction_props",)
+    console.log("SaveTransaction_props",)
 
     try {
         const endUrl = `${BASE_URL}transaction/save-transaction`;
@@ -181,7 +181,7 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
         // console.log("SaveTransaction_before", endUrl, body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        // console.log('SaveTransaction_resp', response);
+        console.log('SaveTransaction_resp', response);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -1045,91 +1045,10 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
 
     }
 
-    // try {
-    //     const formData = new FormData();
-    //     formData.append('file', {
-    //         uri: selectedImage.assets[0].uri,
-    //         type: selectedImage.assets[0].type,
-    //         name: 'potato.jpg', // Adjust filename as needed
-    //     });
 
-    //     const response = await axios.post(
-    //         `${BASE_URL}item/save-image/${itemId}`,
-    //         formData,
-    //         {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         }
-    //     );
-
-    //     console.log('Upload response:', response.data);
-    //     // Handle successful upload
-    //     // setSelectedImage(null); // Clear selected image after successful upload
-    // } catch (error) {
-    //     console.error('Upload error:', error);
-    //     setError(error);
-    // } finally {
-    //     setIsLoading(false);
-    // }
 };
 
 
-
-// // Function to upload an image
-// export const uploadImageMethod = async (itemId, selectedImage) => {
-//     try {
-//         // Extract assets from selectedImage
-//         const assets = selectedImage?.assets;
-
-//         // Check if assets are available
-//         if (assets && assets.length > 0) {
-//             // Create FormData object
-//             const formData = new FormData();
-//             formData.append('file', {
-//                 uri: assets[0].uri,
-//                 type: assets[0].type,
-//                 name: assets[0].fileName,
-//             });
-
-//             console.log("formdata",formData)
-
-//             // Send POST request to upload image
-//             const response = await axios.post(
-//                 `${BASE_URL}item/save-image/${itemId}`,
-//                 formData,
-//                 {
-//                     headers: {
-//                         'Content-Type': 'multipart/form-data',
-//                     },
-//                 }
-//             );
-
-//             // Show success message
-//             showMessage({
-//                 message: "Item Added Successfully",
-//                 type: "success",
-//             });
-
-//             // Handle successful upload
-//             console.log('Upload response:', response.data);
-//         } else {
-//             // Show message if no image is selected
-//             showMessage({
-//                 message: "Item Saved without Image",
-//                 type: "success",
-//             });
-//         }
-//     } catch (error) {
-//         // Handle upload error
-//         console.error('Upload error:', error);
-//         showMessage({
-//             message: "Failed to upload image",
-//             description: error.message,
-//             type: "danger",
-//         });
-//     }
-// };
 
 
 
@@ -1159,7 +1078,13 @@ export const AddNewItemMethod = (data) => async (dispatch, getState) => {
                     message: `${response?.message}`,
                     type: "success",
                 })
-                dispatch(DeleteAllCartMethod())
+                dispatch(setCurrentCategoryItemPage(1))
+                dispatch(GetSelectedCategoryItemsMethod(response?.data?.category))
+
+
+                console.log("dispatch(GetSelectedCategoryItemsMethod(response?.data?.category?.category))",response?.data?.category)
+
+
             } else {
                 showMessage({
                     message: `${response.message}`,

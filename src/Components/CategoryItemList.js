@@ -90,6 +90,7 @@ const ServiceItem = memo(({ service }) => {
 
 
 
+
     let url = `${BASE_URL}item/get-image/${service.item_id}?key=${new Date()}`
     return (
         <View style={[styles.serviceContainer, { elevation: 10, }]}>
@@ -105,13 +106,36 @@ const ServiceItem = memo(({ service }) => {
                 <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(11.5), }]} numberOfLines={2} >{service?.item_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
-                    {/* <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900, fontWeight: '400', fontSize: 12 }]} numberOfLines={1}>Qty{service?.product_qty}</Text> */}
+
+                    {
+                        service?.discount > 0 ?
+                            <>
+                                <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey800, backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{service?.discount}%</Text>
+
+                            </>
+                            :
+                            null
+                    }
+
+
+                    {/* {
+                        service?.discount > 0 ?
+                            <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.priceAfterDiscount}</Text>
+                            :
+                            <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
+                    }
+                    {
+                        service?.discount > 0 ?
+                            <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey800 ,backgroundColor:'#90EE90',paddingHorizontal:4}]} numberOfLines={1}>{service?.discount}%</Text>
+                            :
+                            null
+                    } */}
                 </View>
             </View>
 
             <View style={{ width: '90%' }}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UpdateCategoryItems', { itemId: service.item_id })}>
-                <Text style={[styles.buttonText, { color: colors.grey900 }]}>Update</Text>
+                    <Text style={[styles.buttonText, { color: colors.grey900 }]}>Update</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -119,45 +143,44 @@ const ServiceItem = memo(({ service }) => {
 });
 
 const CategoryItemList = () => {
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
     const { categoryItemsData, categoryItemsCurrentPage } = useSelector((state) => state?.categoryItemsReducer)
-    const { categoryData, categoryCurrentPage,selectedCategory } = useSelector((state) => state?.categoriesReducer);
-
-    //   console.log("categoryItemsData.length",categoryItemsData,categoryItemsCurrentPage)
-
-
+    const { categoryData, categoryCurrentPage, selectedCategory } = useSelector((state) => state?.categoriesReducer);
     const renderItem = useCallback(({ item }) => <ServiceItem service={item} />, []);
 
 
-    const handleCategoryPress = (category) => {
-        // Handle category press here
-        console.log('Category Pressed:', category?.category_id);
-    };
 
     const ItemSeparator = () => <View style={styles.itemSeparator} />;
-
     const handleEndReached = () => {
-        // console.log("first",categoryItemsCurrentPage,selectedCategory)
-        dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage+1))
+        dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1))
         dispatch(GetSelectedCategoryItemsMethod(selectedCategory))
-
-
     }
+
+    const itemsWithPriceAfterDiscount = categoryItemsData.map(item => {
+        // const price = item.price;
+        const actual_price = item.actual_price;
+        const discount = item.discount;
+        const priceAfterDiscount = actual_price - (actual_price * (discount / 100));
+        return {
+            ...item,
+            priceAfterDiscount: priceAfterDiscount
+        };
+    });
+
+    // console.log("itemsWithPriceAfterDiscount", itemsWithPriceAfterDiscount[3]);
+
 
     return (
         <>
             <FlashList
-
                 data={categoryItemsData || []}
-                // horizontal
+                // data={itemsWithPriceAfterDiscount || []}
                 numColumns={3}
-
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index}
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={ItemSeparator}
                 estimatedItemSize={50}
-
                 onEndReached={handleEndReached}
                 onEndReachedThreshold={0.5}
 

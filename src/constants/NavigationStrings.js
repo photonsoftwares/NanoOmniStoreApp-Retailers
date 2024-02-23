@@ -26,6 +26,7 @@ export default {
 
     UPDATEITEMS: "UpdateItems",
     UPDATECATEGORYITEMS: "UpdateCategoryItems",
+    SEARCHITEMUPDATE: "SearchItemUpdate",
 
     // Product
     PRODUCTS: "Products",
