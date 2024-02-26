@@ -56,11 +56,12 @@ export default {
 
 
 
-
+    ADDSTORE:"Addstore",
     SEARCHBAR: "SearchBar",
     NOTIFICATION: "Notification",
     PROFILE: "Profile",
     CATEGORIES: "categories",
     TEST: "Test",
     TEST1: "Test1",
+    
 }

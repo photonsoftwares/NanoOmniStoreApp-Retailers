@@ -26,6 +26,7 @@ import DeliveredItemDetail from '../Screens/AppScreens/Order/RenderOrderDelivery
 import Test from '../Screens/Test/Test'
 import UpdateCategoryItems from '../Screens/AppScreens/Home/Services/UpdateItems/UpdateCategoryItems'
 import SearchItemUpdate from '../Screens/AppScreens/Search/SearchItemUpdate'
+import Addstore from '../Screens/AppScreens/Setting/Dashboard/Store/Addstore'
 
 const AppStack = (Stack) => {
   return (
@@ -137,6 +138,10 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.SEARCHBAR}
         component={SearchBar}
+      />
+         <Stack.Screen
+        name={NavigationStrings.ADDSTORE}
+        component={Addstore}
       />
       <Stack.Screen
         name={NavigationStrings.TEST}
