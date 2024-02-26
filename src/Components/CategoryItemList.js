@@ -110,7 +110,7 @@ const ServiceItem = memo(({ service }) => {
                     {
                         service?.discount > 0 ?
                             <>
-                                <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey800, backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{service?.discount}%</Text>
+                                <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey800, backgroundColor: '#90EE90', paddingHorizontal: 2,borderRadius:2, }]} numberOfLines={1}>{service?.discount}%<Text style={{fontSize:13}}> off</Text></Text>
 
                             </>
                             :

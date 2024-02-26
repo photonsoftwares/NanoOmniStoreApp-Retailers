@@ -170,7 +170,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 };
 
 export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getState) => {
-    console.log("SaveTransaction_props",)
+    console.log("SaveTransaction_props", data)
 
     try {
         const endUrl = `${BASE_URL}transaction/save-transaction`;
@@ -384,7 +384,7 @@ export const RecommendedItemMethod = (storeId, saasId, page = 1) => async dispat
 
 
 export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async dispatch => {
-    // console.log('ItemUpdateMethod_props', data, itemId);
+    console.log('ItemUpdateMethod_props', data, itemId);
 
     dispatch(setLoadingState(true));
 
@@ -398,7 +398,7 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
 
-            // console.log('ItemUpdateMethod_resp', response, endUrl);s
+            console.log('ItemUpdateMethod_resp', response, endUrl)
             if (response?.status === true) {
 
                 // console.log("ItemUpdateMethod", response?.data?.length);
@@ -1082,7 +1082,7 @@ export const AddNewItemMethod = (data) => async (dispatch, getState) => {
                 dispatch(GetSelectedCategoryItemsMethod(response?.data?.category))
 
 
-                console.log("dispatch(GetSelectedCategoryItemsMethod(response?.data?.category?.category))",response?.data?.category)
+                console.log("dispatch(GetSelectedCategoryItemsMethod(response?.data?.category?.category))", response?.data?.category)
 
 
             } else {

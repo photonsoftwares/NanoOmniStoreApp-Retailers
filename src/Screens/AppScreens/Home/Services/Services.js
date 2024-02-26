@@ -35,7 +35,7 @@ const ServiceItem = memo(({ service }) => {
                 <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(11.5), }]} numberOfLines={2} >{service?.item_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
-                    {/* <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900, fontWeight: '400', fontSize: 12 }]} numberOfLines={1}>Qty{service?.product_qty}</Text> */}
+                    {/* <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text> */}
                 </View>
             </View>
 
@@ -58,8 +58,6 @@ const ServicesList = ({ ProductsScreen }) => {
     const colors = useTheme().colors;
     const handleEndReached = () => {
         dispatch(RecommendedItemMethod(storeId, saasId, recommendedCurrentPage));
-
-
     }
 
     // console.log("recommendedData",recommendedData)

@@ -38,7 +38,7 @@ const Profile = () => {
 
   const userData = useSelector((state) => state?.authReducer?.user);
 
-  // console.log("userData",address)
+  console.log("userData",phoneNo)
 
   const handleUserLogout = async () => {
     try {
