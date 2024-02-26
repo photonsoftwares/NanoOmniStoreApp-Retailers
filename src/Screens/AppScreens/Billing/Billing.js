@@ -85,10 +85,13 @@ const Billing = () => {
         {/* <Text style={styles.itemPrice} numberOfLines={1}>₹{item.discount}</Text> */}
         {
           item?.discount > 0 ?
-            <Text style={[styles.itemPrice, { backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{item.discount}%</Text>
+            <Text style={[styles.itemPrice, { backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{item.discount}%
+              <Text style={{ fontSize: 13 }}> off</Text>
+
+            </Text>
             :
             null
-            // <Text style={[styles.itemPrice, { backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{item.discount}%</Text>
+          // <Text style={[styles.itemPrice, { backgroundColor: '#90EE90', paddingHorizontal: 4 }]} numberOfLines={1}>{item.discount}%</Text>
 
         }
       </View>
