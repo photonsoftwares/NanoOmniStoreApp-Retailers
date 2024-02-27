@@ -257,8 +257,6 @@ export const UpdateOrderMasterMethod = (orderId) => async (dispatch, getState) =
     }
 
     try {
-        // const endUrl = `http://3.7.230.172:8088/test/api/v1/transaction/save-transaction`;
-        // const endUrl = `http://3.7.230.172:8088/test/api/v1/order/update/order/master/${orderId}`;
         const endUrl = `${BASE_URL}order/update/order/master/${orderId}`;
 
         const headers = {};
@@ -357,14 +355,7 @@ export const RecommendedItemMethod = (storeId, saasId, page = 1) => async dispat
             }
 
         } catch (error) {
-            // console.error("TestMethod API request error:", error);
 
-            // showMessage({
-            //     message: "No More Data available",
-            //     // description: error.message || "Unknown error occurred",
-            //     // description: "No More Data Availabe",
-            //     type: "info",
-            // });
             showToast("No More Data available")
 
         } finally {
@@ -1564,5 +1555,157 @@ export const getOrderItemDetailMethod = (data) => async (dispatch, getState) => 
 
 
 
+};
+
+
+
+export const AddCategoryMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    // const { categoryCurrentPage } = getState().categoriesReducer;
+
+
+    console.log("AddCategoryMethod", data)
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const endUrl = `${BASE_URL}category/store/category`;
+        const method = "POST";
+        const headers = {};
+        const body = JSON.stringify(data);
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers, body);
+            console.log('AddCategoryMethod_rep', response?.data);
+
+            if (response?.status === true) {
+                // console.log("GetCategoryItemMethod_resp", response?.data?.length);
+
+                dispatch(GetCategoryItemMethod())
+                showToast("New Category Successfully Added")
+
+
+
+                return response?.status;
+            } else {
+                showToast("New Category Added fail")
+
+
+            }
+
+        } catch (error) {
+            showToast("Error in Category add method")
+
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+        return response?.status;
+
+    } catch (error) {
+        showToast("Error in Category add method")
+
+        dispatch(setLoadingState(false));
+    }
+
+};
+
+
+export const deleteCategoryMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    // const { categoryCurrentPage } = getState().categoriesReducer;
+
+
+    console.log("deleteCategoryMethod_data", data)
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const endUrl = `${BASE_URL}category/delete-detail/${data}`;
+        const method = "DELETE";
+        const headers = {};
+        const body = JSON.stringify(data);
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers,);
+            console.log('deleteCategoryMethod_rep', response);
+
+            if (response?.status === true) {
+                // console.log("GetCategoryItemMethod_resp", response?.data?.length);
+
+                dispatch(GetCategoryItemMethod())
+                showToast("Category Successfully Deleted")
+
+
+
+                return response?.status;
+            } else {
+                showToast("New Category delete fail")
+
+
+            }
+
+        } catch (error) {
+            showToast("Error in Category delete method")
+
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+        return response?.status;
+
+    } catch (error) {
+        showToast("Error in Category delete method")
+
+        dispatch(setLoadingState(false));
+    }
+
+};
+
+export const updateCategoryMethod = (data, categoryId) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    // const { categoryCurrentPage } = getState().categoriesReducer;
+
+
+    console.log("updateCategory_data", data, categoryId)
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const endUrl = `${BASE_URL}category/update-detil/${categoryId}`;
+        const method = "PUT";
+        const headers = {};
+        const body = JSON.stringify(data);
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers, body);
+            console.log('updateCategory_rep', response);
+
+            if (response?.status === true) {
+                // console.log("GetCategoryItemMethod_resp", response?.data?.length);
+
+                dispatch(GetCategoryItemMethod())
+                showToast("Category Successfully Updated")
+
+
+
+                return response?.status;
+            } else {
+                showToast("Category Updated fail")
+
+
+            }
+
+        } catch (error) {
+            showToast("Error in Category Update method")
+
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+        return response?.status;
+
+    } catch (error) {
+        showToast("Error in Category update method")
+
+        dispatch(setLoadingState(false));
+    }
 
 };

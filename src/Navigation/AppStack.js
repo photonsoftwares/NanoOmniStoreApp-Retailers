@@ -26,6 +26,9 @@ import DeliveredItemDetail from '../Screens/AppScreens/Order/RenderOrderDelivery
 import Test from '../Screens/Test/Test'
 import UpdateCategoryItems from '../Screens/AppScreens/Home/Services/UpdateItems/UpdateCategoryItems'
 import SearchItemUpdate from '../Screens/AppScreens/Search/SearchItemUpdate'
+import CategoryUpdate from '../Screens/AppScreens/Setting/CategoryUpdate/CategoryUpdate'
+import Category from '../Screens/AppScreens/Setting/CategoryUpdate/Category'
+import CategoryAdd from '../Screens/AppScreens/Setting/CategoryUpdate/CategoryAdd'
 
 const AppStack = (Stack) => {
   return (
@@ -82,7 +85,7 @@ const AppStack = (Stack) => {
         name={NavigationStrings.SEARCHITEMUPDATE}
         component={SearchItemUpdate}
       />
-     
+
 
       {/* Products */}
       <Stack.Screen
@@ -131,6 +134,18 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.DAILYOPS}
         component={DailyOps}
+      />
+      <Stack.Screen
+        name={NavigationStrings.CATEGORY}
+        component={Category}
+      />
+      <Stack.Screen
+        name={NavigationStrings.CATEGORYADD}
+        component={CategoryAdd}
+      />
+      <Stack.Screen
+        name={NavigationStrings.CATEGORYUPDATE}
+        component={CategoryUpdate}
       />
 
       {/* SearchBar */}
