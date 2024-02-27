@@ -10,6 +10,8 @@ import Dashboard from './Dashboard/Dashboard';
 import ExtraCharges from './Dashboard/ExtraCharges/ExtraCharges';
 import Test1 from '../../Test/Test1';
 import { GetDelivryChargesMethod, GetMinOrderValueMethod } from '../../../config/userApiMethods';
+import CategoryUpdate from './CategoryUpdate/CategoryUpdate';
+import Category from './CategoryUpdate/Category';
 import Addstore from './Dashboard/Store/Addstore';
 
 const orderStatusData = [
@@ -22,6 +24,8 @@ const orderStatusData = [
   // { id: '7', status: 'Discounts & Coupons', elevation: 5, screen: Test1 },
   // { id: '8', status: 'Payment Gateways', elevation: 5, screen: Test1 },
   // { id: '9', status: 'Digital Marketing', elevation: 5, screen: Test1 },
+  { id: '10', status: 'Category', elevation: 5, screen: Category },
+  { id: '11', status: 'Extra Charges', elevation: 5, screen: ExtraCharges },
   { id: '10', status: 'Extra Charges', elevation: 5, screen: ExtraCharges },
   { id: '11', status: 'Add Store Details', elevation: 5, screen: Addstore },
   // Add more order statuses as needed

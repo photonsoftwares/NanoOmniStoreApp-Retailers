@@ -17,6 +17,9 @@ export default {
     RENDERORDERPENDING: "RenderOrderPending",
     RENDERORDERDELIVERD: "RenderOrderDelivery",
     DELIVERDITEMDETAIL: "DeliveredItemDetail",
+    CATEGORY: "Category",
+    CATEGORYADD: "CategoryAdd",
+    CATEGORYUPDATE: "CategoryUpdate",
 
 
     RENDERORDERRETURN: "RenderOrderReturn",
