@@ -29,6 +29,7 @@ import SearchItemUpdate from '../Screens/AppScreens/Search/SearchItemUpdate'
 import CategoryUpdate from '../Screens/AppScreens/Setting/CategoryUpdate/CategoryUpdate'
 import Category from '../Screens/AppScreens/Setting/CategoryUpdate/Category'
 import CategoryAdd from '../Screens/AppScreens/Setting/CategoryUpdate/CategoryAdd'
+import Addstore from '../Screens/AppScreens/Setting/Dashboard/Store/Addstore'
 
 const AppStack = (Stack) => {
   return (
@@ -152,6 +153,10 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.SEARCHBAR}
         component={SearchBar}
+      />
+         <Stack.Screen
+        name={NavigationStrings.ADDSTORE}
+        component={Addstore}
       />
       <Stack.Screen
         name={NavigationStrings.TEST}

@@ -237,7 +237,7 @@ export const SaveTransactionBillingMethod = (data, orderIdd) => async (dispatch,
             })
         }
 
-
+console.log("response?.data?.pdf_file_name",response)
         return response?.data?.pdf_file_name
     } catch (error) {
         showMessage({

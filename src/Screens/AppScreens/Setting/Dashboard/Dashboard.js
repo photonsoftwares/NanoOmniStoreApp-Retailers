@@ -14,6 +14,7 @@ import { moderateScale, textScale } from '../../../../styles/responsiveSize';
 const DashboardData = [
 
   { id: '1', status: 'Sales', screen: Sales },
+  
   // { id: '2', status: 'Tender', screen: Tender },
   // { id: '3', status: 'HourlySale', screen: HourlySale },
   // { id: '4', status: 'DailyOps', screen: DailyOps },
