@@ -76,7 +76,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FlashList } from "@shopify/flash-list";
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { BASE_URL } from '../config/Base_Url';
-import { moderateScale, textScale } from '../styles/responsiveSize';
+import { moderateScale, scale, textScale } from '../styles/responsiveSize';
 import MyImgCompo from './MyImgCompo';
 import { setCurrentCategoryItemPage } from '../ReduxToolkit/features/categoryItemsSlice';
 import { GetSelectedCategoryItemsMethod } from '../config/userApiMethods';
@@ -106,6 +106,8 @@ const ServiceItem = memo(({ service }) => {
                 <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(11.5), }]} numberOfLines={2} >{service?.item_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
+                    <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900,backgroundColor:service?.colorList[0]?.product_color,padding:4, borderRadius:scale(20),width:15,height:15}]} numberOfLines={1}></Text>
+
 
                     {
                         service?.discount > 0 ?
@@ -169,7 +171,7 @@ const CategoryItemList = () => {
 
     // console.log("itemsWithPriceAfterDiscount", itemsWithPriceAfterDiscount[3]);
 
-
+console.log("Danishnewcate",categoryItemsData[9]?.colorList[0]?.product_color)
     return (
         <>
             <FlashList

@@ -13,6 +13,8 @@ import CategoryItemList from '../../../../Components/CategoryItemList';
 
 
 const ServiceItem = memo(({ service }) => {
+    const color = service;
+    console.log("sasasa",color)
     const navigation = useNavigation()
     const colors = useTheme().colors
 

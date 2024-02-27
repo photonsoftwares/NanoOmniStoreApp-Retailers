@@ -3,7 +3,7 @@ import React from 'react';
 import { Modal, TouchableOpacity, Text, FlatList, StyleSheet, View } from 'react-native';
 
 const ColorPicker = ({ visible, onSelect, onClose }) => {
-    const colors = ['#FF5733', '#33FF57', '#5733FF', '#FF33EC', '#33ECFF', 'black'];
+    const colors = ['purple', 'blue', 'green', 'red', '#33ECFF', 'black'];
 
     const renderItem = ({ item }) => {
         return (

@@ -5,8 +5,13 @@ import TextInputCompo from '../../../../../Components/TextInputCompo'
 import { moderateScale, scale, textScale } from '../../../../../styles/responsiveSize'
 import { launchImageLibrary } from 'react-native-image-picker';
 import axios from 'axios';
+import { useSelector } from 'react-redux'
+import { BASE_URL } from '../../../../../config/Base_Url'
 
 const Addstore = ({ navigation }) => {
+    const {  saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
+    const saas1=saasId
+    console.log("khumugg",saas1)
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
@@ -64,7 +69,7 @@ const Addstore = ({ navigation }) => {
             console.log("FormData:", formData);
 
             const response = await axios.post(
-                'http://103.139.59.233:8089/prod/api/v1/saas-master/save-brandlogo/24',
+                `${BASE_URL}saas-master/save-brandlogo/${saas1}`,
                 formData,
                 {
                     headers: {
