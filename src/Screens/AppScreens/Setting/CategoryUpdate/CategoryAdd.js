@@ -47,13 +47,13 @@ const CategoryAdd = () => {
 
     // console.log("s", categoryData[0], storeId, saasId,)
     return (
-        <View>
+        <View style={{backgroundColor:"white"}}>
             <HeaderComp
                 screenName={'Add Category'}
                 onBackPress={() => navigation.goBack()}
                 onPressLefttrue={true}
             />
-            <View style={{height:'100%',marginTop:16}}>
+            <View style={{height:'100%',marginTop:16,backgroundColor:"white"}}>
 
                 <TextInputCompo
                     onChangeText={(text) => handleOnChange(text, 'category')}

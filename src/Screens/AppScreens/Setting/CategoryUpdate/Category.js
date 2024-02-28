@@ -70,7 +70,7 @@ const Category = () => {
 
     // console.log("s", categoryData[0], storeId, saasId,)
     return (
-        <View style={{ flex: 1, }}>
+        <View style={{ flex: 1,backgroundColor:"white" }}>
             <HeaderComp
                 screenName='Category'
                 onBackPress={() => navigation.goBack()}

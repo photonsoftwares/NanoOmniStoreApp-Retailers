@@ -26,7 +26,7 @@ const orderStatusData = [
   // { id: '9', status: 'Digital Marketing', elevation: 5, screen: Test1 },
   { id: '10', status: 'Category', elevation: 5, screen: Category },
   { id: '11', status: 'Extra Charges', elevation: 5, screen: ExtraCharges },
-  { id: '10', status: 'Extra Charges', elevation: 5, screen: ExtraCharges },
+  // { id: '10', status: 'Extra Charges', elevation: 5, screen: ExtraCharges },
   { id: '11', status: 'Add Store Details', elevation: 5, screen: Addstore },
   // Add more order statuses as needed
 ];
