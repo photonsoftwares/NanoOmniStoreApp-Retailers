@@ -5,6 +5,7 @@ import { FlashList } from "@shopify/flash-list";
 import { GetSelectedCategoryItemsMethod } from '../config/userApiMethods';
 import { setCurrentCategoryPage, setSelectedCategory } from '../ReduxToolkit/features/categoriesSlice';
 import { setCurrentCategoryItemPage } from '../ReduxToolkit/features/categoryItemsSlice';
+import MyImgCompo from './MyImgCompo';
 
 const CategoryList = () => {
     const { categoryData, categoryCurrentPage, selectedCategory } = useSelector((state) => state?.categoriesReducer);
@@ -13,11 +14,19 @@ const CategoryList = () => {
     // console.log("selectedCategory",selectedCategory)
 
     const dispatch = useDispatch()
+    // let url = `${BASE_URL}item/get-image/${service.item_id}?key=${new Date()}`
 
     const renderItem = ({ item }) => (
+
         <TouchableOpacity onPress={() => handleCategoryPress(item)} style={[styles.categoryButton, { backgroundColor: item.category_name === selectedCategory ? '#ECE447' : '#eee', }]}>
             <View style={styles.itemContainer}>
+                <MyImgCompo
+                    // imageUri={item.image_path}
+                    imageUri={`${item.image_path}?key=${new Date()}`}
+                    ImgCompoStyle={{ height: 50, width: 70, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, }}
+                />
                 <Text style={styles.categoryName} numberOfLines={2}>{item.category_name}</Text>
+                {/* <Text style={styles.categoryName} numberOfLines={2}>{item.image_path}</Text> */}
             </View>
         </TouchableOpacity>
     );
@@ -43,7 +52,6 @@ const CategoryList = () => {
 
     return (
         <>
-            {/* <FlashList */}
             <FlatList
                 data={categoryData || []}
                 horizontal
@@ -52,10 +60,6 @@ const CategoryList = () => {
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={ItemSeparator}
                 estimatedItemSize={50}
-
-            // onEndReached={handleEndReached}
-            // onEndReachedThreshold={0.5}
-
             />
         </>
     );
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
     itemContainer: {
         alignItems: 'center',
         marginRight: 10, // Add marginRight to create space between items
+
     },
     itemSeparator: {
         width: 10, // Adjust the width according to your desired space between items
@@ -78,11 +83,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     categoryButton: {
-        // backgroundColor: '#eee',
         borderRadius: 10,
         padding: 4,
-        width: 120, // Set a fixed width for the button container
-        // marginHorizontal: 8
-        justifyContent:'center'
+        justifyContent: 'center',
+        width: 120,
     },
 });

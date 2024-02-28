@@ -15,7 +15,7 @@ const Banner = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(`${BASE_URL}saas-master/get-brandlogos/${saasId1}?${new Date().getTime()}`);
-          console.log('Response data:', response.data);
+          // console.log('Response data:', response.data);
 
           const images = [];
           if (response.data.banner_logo) {
@@ -39,7 +39,7 @@ const Banner = () => {
     }, [saasId1])
   );
 
-  console.log('saasId', images);
+  // console.log('saasId', images);
 
   return (
     <View>
