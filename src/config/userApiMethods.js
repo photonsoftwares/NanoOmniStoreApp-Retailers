@@ -1564,7 +1564,7 @@ export const AddCategoryMethod = (data) => async (dispatch, getState) => {
     // const { categoryCurrentPage } = getState().categoriesReducer;
 
 
-    console.log("AddCategoryMethod", data)
+    // console.log("AddCategoryMethod", data)
 
     dispatch(setLoadingState(true));
 
@@ -1586,7 +1586,7 @@ export const AddCategoryMethod = (data) => async (dispatch, getState) => {
 
 
 
-                return response?.status;
+                return response;
             } else {
                 showToast("New Category Added fail")
 
@@ -1665,7 +1665,7 @@ export const updateCategoryMethod = (data, categoryId) => async (dispatch, getSt
     // const { categoryCurrentPage } = getState().categoriesReducer;
 
 
-    console.log("updateCategory_data", data, categoryId)
+    // console.log("updateCategory_data", data, categoryId)
 
     dispatch(setLoadingState(true));
 
@@ -1687,7 +1687,7 @@ export const updateCategoryMethod = (data, categoryId) => async (dispatch, getSt
 
 
 
-                return response?.status;
+                return response;
             } else {
                 showToast("Category Updated fail")
 

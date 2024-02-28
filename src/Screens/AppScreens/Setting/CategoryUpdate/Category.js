@@ -12,10 +12,12 @@ import { setCurrentCategoryItemPage } from '../../../../ReduxToolkit/features/ca
 import HeaderComp from '../../../../Components/HeaderCompo';
 import { useNavigation } from '@react-navigation/native';
 import ImagePath from '../../../../constants/ImagePath';
+import MyImgCompo from '../../../../Components/MyImgCompo';
 
 const Category = () => {
     const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
     const { categoryData, categoryCurrentPage, selectedCategory } = useSelector((state) => state?.categoriesReducer)
+
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
@@ -48,10 +50,20 @@ const Category = () => {
 
     const ItemSeparator = () => <View style={styles.itemSeparator} />;
     const renderItem = ({ item }) => (
+
         // <TouchableOpacity disabled onPress={() => handleCategoryPress(item)} style={[styles.categoryButton, { backgroundColor: item.category_name === selectedCategory ? '#ECE447' : '#eee', }]}>
         <TouchableOpacity activeOpacity={0.7} onPress={() => handleCategoryPress(item)} style={[styles.categoryButton, { backgroundColor: '#eee', }]}>
             <View style={styles.itemContainer}>
-                <Text style={styles.categoryName} numberOfLines={2}>{item.category_name}</Text>
+                <View style={{ flexDirection: 'row', gap: 10 }}>
+                    <MyImgCompo
+                        // imageUri={item.image_path}
+                        imageUri={`${item.image_path}?key=${new Date()}`}
+                        ImgCompoStyle={{ height: '100%', width: 60, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, borderWidth: 0.5 }}
+                    />
+
+                    <Text style={styles.categoryName} numberOfLines={2}>{item.category_name}</Text>
+                </View>
+                {/* <Text style={styles.categoryName} numberOfLines={2}>{item.category_id}</Text> */}
                 <TouchableOpacity onPress={() => handleDeletePress(item)}>
                     <MaterialCommunityIcons name="delete" size={26} />
                 </TouchableOpacity>
@@ -90,15 +102,6 @@ const Category = () => {
                 estimatedItemSize={50}
             />
 
-            {/* <TextInputCompo
-                onChangeText={(text) => handleOnChange(text, 'category')}
-                onFocus={() => setErrors({ ...errors, category: null })}
-                iconName="shape-plus"
-                placeholder="Enter Category Name"
-                maxLength={10}
-                error={errors.category}
-            />
-            <ButtonCompo onPress={handleSubmit} title="Update Category" style={{}} /> */}
         </View>
     );
 };
@@ -120,12 +123,14 @@ const styles = StyleSheet.create({
         marginTop: 2,
         fontSize: 16,
         fontWeight: 'bold',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        alignSelf: 'center'
     },
     categoryButton: {
         borderRadius: 10,
-        padding: 16,
-        margin: 8,
+        // padding: 16,
+        margin: 4,
+        height: 60,
         flex: 1,
     },
 });
