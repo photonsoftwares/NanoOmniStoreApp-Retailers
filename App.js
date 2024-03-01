@@ -10,6 +10,7 @@ import FlashMessage from 'react-native-flash-message'
 import { moderateScale, textScale } from './src/styles/responsiveSize'
 import SplashScreen from 'react-native-splash-screen'
 import { notificationListeners, requestUserPermission } from './src/utils/notificationServices'
+import CheckUpdate from './src/Navigation/CheckUpdate'
 
 const App = () => {
 
@@ -37,6 +38,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Routes />
+        <CheckUpdate/>
         <StatusBar backgroundColor={'#FFF'} barStyle={'dark-content'} />
         <FlashMessage
           titleStyle={{
