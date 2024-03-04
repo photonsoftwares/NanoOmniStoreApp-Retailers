@@ -1371,7 +1371,7 @@ export const GetMinOrderValueMethod = () => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
 
-    // console.log("GetMinOrderValueMethod")
+    // console.log("GetMinOrderValueMethod",store_per_id)
     dispatch(setLoadingState(true));
 
     try {
