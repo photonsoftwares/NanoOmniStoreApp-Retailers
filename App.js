@@ -200,6 +200,8 @@ import SpInAppUpdates, {
   IAUUpdateKind,
   StartUpdateOptions,
 } from 'sp-react-native-in-app-updates';
+import DeviceInfo from 'react-native-device-info';
+
 
 
 const App = () => {
@@ -210,7 +212,6 @@ const App = () => {
 
   useEffect(() => {
     SplashScreen.hide();
-
   })
 
   // const checkUpdate = () => {
@@ -243,8 +244,13 @@ const App = () => {
 
 
   useEffect(() => {
+    const curVersion =  DeviceInfo.getVersion()
+    // console.log("appaa",curVersion)
+
+
+
     async function checkForUpdate() {
-      inAppUpdates.checkNeedsUpdate({ curVersion: '0.0.8' }).then((result) => {
+      inAppUpdates.checkNeedsUpdate({ curVersion: curVersion }).then((result) => {
         if (result.shouldUpdate) {
           let updateOptions = {};
           if (Platform.OS === 'android') {
@@ -255,13 +261,12 @@ const App = () => {
           }
           // inAppUpdates.addStatusUpdateListener((onStatusUpdate)=>console.log(onStatusUpdate,"onStatusUpdate"));
           inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
-          inAppUpdates.installUpdate();
+          // inAppUpdates.installUpdate();
         }
       });
 
     }
     checkForUpdate();
-
   }, [])
 
 

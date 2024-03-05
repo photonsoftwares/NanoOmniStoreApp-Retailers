@@ -439,6 +439,7 @@ const RenderOrderPending = () => {
   const { ordersData, ordersCurrentPage } = useSelector((state) => state?.orderReducer);
   const pendingOrders = ordersData.filter(order => order.status === 'PENDING');
 
+  console.log("first",pendingOrders)
 
   return (
     <>

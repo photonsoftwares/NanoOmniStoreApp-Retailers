@@ -1,3 +1,5 @@
+
+
 // import React, { useEffect, useState } from 'react';
 // import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -71,20 +73,7 @@
 //                 <Text style={styles.valueStyle}>{order.order_date}</Text>
 //               </View>
 
-//               {/* <View style={styles.allView}>
-//                 <Text>{`Item ID: `}</Text>
-//                 <Text>{order.item_id}</Text>
-//               </View>
 
-//               <View style={styles.allView}>
-//                 <Text>{`Order Item Quantity: `}</Text>
-//                 <Text >{order.item_qty}</Text>
-//               </View>
-
-//               <View style={styles.allView}>
-//                 <Text>{`Item Price: `}</Text>
-//                 <Text>₹{order.item_price}</Text>
-//               </View> */}
 
 //               <View style={styles.divider}></View>
 //             </View>
@@ -142,6 +131,9 @@
 //     </>
 //   );
 
+
+//   // console.log("customerBookedOrders", customerBookedOrders)
+
 //   const renderItemDetails = () => {
 //     return (
 //       <>
@@ -165,7 +157,8 @@
 //               </View>
 
 //               <View style={styles.allView}>
-//                 <Text style={styles.titleStyle}>{`Item Quantity: `}</Text>
+//                 <Text style={styles.titleStyle}>{`Quantity: `}</Text>
+//                 {/* <Text style={styles.valueStyle}>{order.item_qty}</Text> */}
 //                 <Text style={styles.valueStyle}>{order.bill_qty}</Text>
 //               </View>
 
@@ -182,6 +175,7 @@
 //     );
 //   };
 
+//   console.log("customerBookedOrders", customerBookedOrders)
 
 //   const handleButtonPress = async () => {
 //     // Log or display the total
@@ -192,12 +186,16 @@
 //         item_name: obj?.item_name,
 //         description: null,
 //         special_description: null,
-//         price: obj?.item_price,
+//         price: obj?.item_price / obj?.item_qty,
+//         // price: obj?.item_price * obj?.item_qty,
 //         brand: null,
 //         sub_price: null,
 //         actual_price: obj?.item_price,
 //         price_pcs: null,
-//         product_qty: obj?.item_qty,
+//         // product_qty: obj?.item_qty,
+//         product_qty: obj?.bill_qty,
+//         // productQty: obj?.item_qty
+//         productQty: obj?.bill_qty,
 //         discount: 0,
 //         tax: null,
 //         tax_percent: null,
@@ -221,7 +219,6 @@
 //         product_av_cost: null,
 //         mrp: null,
 //         newPrice: null,
-//         productQty: obj?.item_qty
 
 //       }
 //     })
@@ -236,18 +233,20 @@
 //       cartItems: mergeBody
 //     };
 
-//     const jsonString = JSON.stringify(saveTBody);
+//     console.log("saveTBody", saveTBody)
 
-//     // console.log('jsonString_Before:',);
-//     const orderIdd = route?.params
+//     // const jsonString = JSON.stringify(saveTBody);
 
-//     const pdf_file_name = await dispatch(SaveTransactionMethod(jsonString, orderIdd))
-//     // console.log('jsonString:', pdf_file_name,transaction_id);
+//     // // console.log('jsonString_Before:',);
+//     // const orderIdd = route?.params
 
-//     if (pdf_file_name) {
-//       navigation.navigate('GenrateInvoicePdf', pdf_file_name)
-//     }
-//     // navigation.navigate('GenrateInvoicePdf', )
+//     // const pdf_file_name = await dispatch(SaveTransactionMethod(jsonString, orderIdd))
+//     // // console.log('jsonString:', pdf_file_name,transaction_id);
+
+//     // if (pdf_file_name) {
+//     //   navigation.navigate('GenrateInvoicePdf', pdf_file_name)
+//     // }
+//     // // navigation.navigate('GenrateInvoicePdf', )
 //   };
 
 
@@ -271,7 +270,8 @@
 //           </View>
 
 //           <ButtonCompo
-//             title={`Pick Pack - Total: ₹${total.toFixed(2)}`}
+//             // title={`Pick Pack - Total: ₹${total.toFixed(2)}`}
+//             title={`Pick Pack - Total: ₹${customerData.order_value}`}
 //             onPress={handleButtonPress}
 //           />
 //         </View>
@@ -324,7 +324,10 @@
 // export default PendingItemWithUserDetails;
 
 
-//////////////12/02/2024
+
+////////////////////////
+
+
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
@@ -501,34 +504,41 @@ const PendingItemWithUserDetails = ({ route }) => {
     );
   };
 
+  console.log("customerBookedOrders", customerBookedOrders)
 
   const handleButtonPress = async () => {
     // Log or display the total
     // console.log('Total Price:', total);
     const mergeBody = customerBookedOrders.map((obj) => {
       return {
+
+        colorList: null,
         item_id: obj?.item_id,
         item_name: obj?.item_name,
+        conc_id: 1,
+        UOM: null,
         description: null,
         special_description: null,
-        price: obj?.item_price / obj?.item_qty,
+        // price: obj?.item_price * obj?.bill_qty,
+        price: obj?.item_price / obj?.bill_qty,
+        // price: obj?.item_price,
         brand: null,
         sub_price: null,
-        actual_price: obj?.item_price,
+        actual_price: null,
         price_pcs: null,
-        product_qty: obj?.item_qty,
+        product_qty: obj?.bill_qty,
         discount: 0,
-        tax: null,
-        tax_percent: null,
-        status: obj?.status,
+        tax: 0,
+        tax_percent: 0,
+        status: "active",
         category: obj?.category,
         saas_id: obj?.saas_id,
         store_id: obj?.store_id,
         promo_id: null,
         image_name: null,
         hsn_code: null,
-        tax_rate: null,
-        tax_code: null,
+        tax_rate: 0,
+        tax_code: 0,
         barcode: null,
         supplier_name: null,
         opening_qty: null,
@@ -539,21 +549,47 @@ const PendingItemWithUserDetails = ({ route }) => {
         product_price: null,
         product_av_cost: null,
         mrp: null,
+        dept: null,
+        item_class: null,
+        sub_class: null,
+        item_code: null,
+        salesManId: "",
+        salesMan: "",
         newPrice: null,
-        productQty: obj?.item_qty
+        productQty: obj?.bill_qty,
+        Discountper: 0
 
       }
     })
     const saveTBody = {
       // registerId: "REG101",
+      // storeId: storeId,
+      // saasId: saasId,
+      // // tenderId: "TENDER1",
+      // tender: {
+      //   Cash: 0
+      // },
+      // cartItems: mergeBody,
+
+      //test
+      registerId: "REG1",
+      // discountAmount: 1684,
+      tillId: '',
+      userId: '',
       storeId: storeId,
+      // userName: 80001,
       saasId: saasId,
-      // tenderId: "TENDER1",
+      gv_no: "",
+      gv_type: "",
+      // tenderId: TENDER1,
       tender: {
         Cash: 0
       },
-      cartItems: mergeBody
+      cartItems: mergeBody,
+
     };
+
+    console.log("saveTBody", saveTBody)
 
     const jsonString = JSON.stringify(saveTBody);
 
@@ -566,7 +602,7 @@ const PendingItemWithUserDetails = ({ route }) => {
     if (pdf_file_name) {
       navigation.navigate('GenrateInvoicePdf', pdf_file_name)
     }
-    // navigation.navigate('GenrateInvoicePdf', )
+    // // navigation.navigate('GenrateInvoicePdf', )
   };
 
 
