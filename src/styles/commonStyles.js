@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {textScale} from './responsiveSize';
+import { StyleSheet } from 'react-native';
+import { textScale } from './responsiveSize';
 import colors from './colors';
 import fontFamily from './fontFamily';
 
@@ -96,6 +96,7 @@ export default StyleSheet.create({
     fontSize: textScale(21),
     color: colors.black,
     fontFamily: fontFamily.bold,
+    alignSelf: 'center'
   },
   loader: {
     position: 'absolute',
@@ -111,7 +112,7 @@ export default StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 4,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.4,
     shadowRadius: 2,
     elevation: 2,

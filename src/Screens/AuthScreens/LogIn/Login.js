@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme, useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import commonStyles from '../../../styles/commonStyles';
 import TextInputCompo from '../../../Components/TextInputCompo';
 import { validateLoginForm } from '../../../utils/validation';
 import { LogInMethod } from '../../../config/authApiMethods';
+import DeviceInfo from 'react-native-device-info';
 
 
 const Login = () => {
@@ -20,26 +21,31 @@ const Login = () => {
     storeId: '',
     password: '',
   });
+  const [version, setVersion] = useState()
 
   const dispatch = useDispatch();
-  const allState=useSelector((state)=>state)
+  const allState = useSelector((state) => state)
   const colors = useTheme().colors;
   const navigation = useNavigation()
 
 
-  // console.log("allState",allState)
+  console.log("allState", version)
+
+  useEffect(() => {
+    getCurrentVersion()
+  }, [])
 
 
 
   const handleSubmit = async () => {
 
-  
+
 
     const data = JSON.stringify({
       user_name: inputs.storeId,
       password: inputs.password,
     });
-    
+
 
 
     const a = await dispatch(LogInMethod(data))
@@ -48,6 +54,13 @@ const Login = () => {
 
 
   };
+  const getCurrentVersion = async () => {
+    const curVersion = await DeviceInfo.getVersion()
+    setVersion(curVersion)
+    // console.log("current version is ", curVersion);
+
+
+  }
 
 
 
@@ -76,7 +89,7 @@ const Login = () => {
       showsVerticalScrollIndicator={false}
     >
       <View style={[styles.formContainer, {}]}>
-        <Text style={[commonStyles.fontBold24, { fontWeight: 'bold', marginBottom: scale(10), alignSelf: 'center',color:colors.grey900 }]}>LogIn</Text>
+        <Text style={[commonStyles.fontBold24, { fontWeight: 'bold', marginBottom: scale(10), alignSelf: 'center', color: colors.grey900 }]}>LogIn</Text>
 
         <TextInputCompo
           onChangeText={(text) => handleOnChange(text, 'storeId')}
@@ -103,9 +116,11 @@ const Login = () => {
 
 
         <ButtonCompo onPress={() => handleSubmit()} title="Log In" style={{}} />
+        {/* <ButtonCompo onPress={() => getCurrentVersion()} title="Current Version" style={{}} /> */}
 
 
       </View>
+      <Text style={{  alignSelf: 'center' }}>Version {version}</Text>
     </ScrollView >
   );
 };
