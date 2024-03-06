@@ -106,13 +106,13 @@ const ServiceItem = memo(({ service }) => {
                 <Text style={[styles.serviceName, { textAlign: 'left', color: colors.grey900, fontWeight: '400', height: moderateScale(42), fontSize: textScale(11.5), }]} numberOfLines={2} >{service?.item_name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                     <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900 }]} numberOfLines={1}>₹{service?.price}</Text>
-                    <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900,backgroundColor:service?.colorList[0]?.product_color,padding:4, borderRadius:scale(20),width:15,height:15}]} numberOfLines={1}></Text>
+                    <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey900, backgroundColor: service?.colorList[0]?.product_color, padding: 4, borderRadius: scale(20), width: 15, height: 15 }]} numberOfLines={1}></Text>
 
 
                     {
                         service?.discount > 0 ?
                             <>
-                                <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey800, backgroundColor: '#90EE90', paddingHorizontal: 2,borderRadius:2, }]} numberOfLines={1}>{service?.discount}%<Text style={{fontSize:13}}> off</Text></Text>
+                                <Text style={[styles.serviceName, { marginTop: 0, textAlign: 'left', color: colors.grey800, backgroundColor: '#90EE90', paddingHorizontal: 2, borderRadius: 2, }]} numberOfLines={1}>{service?.discount}%<Text style={{ fontSize: 13 }}> off</Text></Text>
 
                             </>
                             :
@@ -171,7 +171,7 @@ const CategoryItemList = () => {
 
     // console.log("itemsWithPriceAfterDiscount", itemsWithPriceAfterDiscount[3]);
 
-console.log("Danishnewcate",categoryItemsData[9]?.colorList[0]?.product_color)
+    console.log("Danishnewcate", categoryItemsData[9]?.colorList[0]?.product_color)
     return (
         <>
             <FlashList

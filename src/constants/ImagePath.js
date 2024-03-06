@@ -13,11 +13,14 @@ export default {
   penIcon: require('../assets/icons/penIcon.png'),
   plusIcon: require('../assets/icons/plusIcon.png'),
   penIconBG: require('../assets/icons/penIconBG.png'),
+  Logo: require('../assets/icons/logo.png'),
+
 
   /********************* Images **********************/
   JennyWilson: require('../assets/images/JennyWilson.png'),
   avtar: require('../assets/images/avtar.jpeg'),
   NanoPosLogo: require('../assets/images/NanoPOS.png'),
+  NoImage: require('../assets/images/noImage.jpg'),
 
 
 

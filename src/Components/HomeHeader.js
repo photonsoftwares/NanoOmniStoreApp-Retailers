@@ -91,9 +91,9 @@ const HomeHeader = () => {
                         style={{ color: '#ECE447', fontSize: scale(35) }}
                     /> */}
                     <Image
-                        source={ImagePath.NanoPosLogo}
+                        source={ImagePath.Logo}
                         style={{ height: '100%', width: '100%', }}
-                        resizeMode='center'
+                        resizeMode='cover'
                     />
                 </TouchableOpacity>
                 <ScrollView style={styles.textContainer} horizontal={true} showsHorizontalScrollIndicator={false}>

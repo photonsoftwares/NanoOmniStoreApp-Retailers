@@ -20,11 +20,13 @@ const CategoryList = () => {
 
         <TouchableOpacity onPress={() => handleCategoryPress(item)} style={[styles.categoryButton, { backgroundColor: item.category_name === selectedCategory ? '#ECE447' : '#eee', }]}>
             <View style={styles.itemContainer}>
-                <MyImgCompo
-                    // imageUri={item.image_path}
-                    imageUri={`${item.image_path}?key=${new Date()}`}
-                    ImgCompoStyle={{ height: 50, width: 70, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, }}
-                />
+                <View style={{ borderRadius:200,height: 60, width: 70,overflow: 'hidden'}}>
+                    <MyImgCompo
+                        imageUri={`${item.image_path}?key=${new Date()}`}
+                        ImgCompoStyle={{ height: 60, width: 60,  paddingHorizontal: 10, marginLeft: 8,borderRadius:200 }}
+                        resizeMode= 'cover'
+                    />
+                </View>
                 <Text style={styles.categoryName} numberOfLines={2}>{item.category_name}</Text>
                 {/* <Text style={styles.categoryName} numberOfLines={2}>{item.image_path}</Text> */}
             </View>

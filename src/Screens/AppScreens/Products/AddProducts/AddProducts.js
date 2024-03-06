@@ -336,7 +336,6 @@ const AddProducts = () => {
                         style={styles.input}
                         placeholder="Description"
                         placeholderTextColor={'grey'}
-
                         value={formData.description}
                         onChangeText={(text) => handleChange('description', text)}
                     />
@@ -425,18 +424,28 @@ const AddProducts = () => {
                     />
                     <TouchableOpacity
                         onPress={() => handleOpenColorPicker()}
-                        containerStyle={styles.input}
+                        containerStyle={[styles.input, { backgroundColor: 'red' }]}
                     >
                         {/* <Text style={{ color: 'grey' }}>*</Text> */}
-                        <TextInput
-                            style={styles.input}
-                            // value={selectedCategory}
+                        {/* <TextInput
+                            style={[styles.input, { backgroundColor: selectedColor && selectedColor }]}
+                            value={selectedColor && selectedColor}
                             keyboardType="numeric"
                             placeholderTextColor="#666"
                             placeholder='Select Color'
                             editable={false}
 
+                        /> */}
+
+                        <TextInput
+                            style={[styles.input, { backgroundColor: selectedColor ? selectedColor : '#FFF' }]}
+                            value={selectedColor || ''}
+                            keyboardType="numeric"
+                            placeholderTextColor={selectedColor ? '#999' : '#666'}
+                            placeholder={selectedColor ? 'Color Selected' : 'Select Color'}
+                            editable={false}
                         />
+
                     </TouchableOpacity>
 
                     {/* <Button title="Open Color Picker" onPress={handleOpenColorPicker} /> */}

@@ -237,7 +237,7 @@ export const SaveTransactionBillingMethod = (data, orderIdd) => async (dispatch,
             })
         }
 
-console.log("response?.data?.pdf_file_name",response)
+        console.log("response?.data?.pdf_file_name", response)
         return response?.data?.pdf_file_name
     } catch (error) {
         showMessage({
@@ -529,11 +529,72 @@ export const GetCategoryItemMethod = () => async (dispatch, getState) => {
 
 };
 
+// export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch, getState) => {
+//     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+//     const { categoryItemsCurrentPage } = getState().categoryItemsReducer;
+
+//     // console.log('GetSelectedCategoryItemsMethod_props', storeId, saasId, categoryItemsCurrentPage, categoryName, "<>");
+
+//     dispatch(setLoadingState(true));
+
+//     try {
+//         const method = "GET";
+//         const headers = {};
+//         const endUrl = `${BASE_URL}item/get-category-list/${saasId}/${storeId}/${categoryName}/${categoryItemsCurrentPage}`;
+
+//         // console.log("GetSelectedCategoryItemsMethod_endurl", endUrl)
+//         try {
+//             const response = await ApiRequest(endUrl, method, headers);
+
+//             // console.log('GetSelectedCategoryItemsMethod_resp', response?.data);
+//             if (response?.status === true) {
+
+//                 if (categoryItemsCurrentPage === 1) {
+//                     dispatch(setCategoryItemsData(response?.data));
+//                     dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1))
+//                 } else {
+//                     const items = response?.data == null ? [] : response?.data
+
+
+//                     dispatch(addCategoriesItemPageData(response?.data));
+//                     dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1))
+
+
+//                 }
+//                 return response?.data;
+//             } else {
+//                 // showToast("No More Category data available")
+
+//             }
+
+//         } catch (error) {
+//             // console.error("TestMethod API request error:", error);
+//             // showToast("Error fetching data")
+
+//             // showMessage({
+//             //     message: "Error fetching data",
+//             //     // description: error.message || "Unknown error occurred",
+//             //     description: "No More Data Availabe",
+//             //     type: "danger",
+//             // });
+//         } finally {
+//             dispatch(setLoadingState(false));
+//         }
+//     } catch (error) {
+//         // console.error("TestMethod unexpected error:", error);
+//         showMessage({
+//             message: "Error fetching data",
+//             description: error.message || "Unknown error occurred",
+//             type: "danger",
+//         });
+//         dispatch(setLoadingState(false));
+//     }
+// };
+
+
 export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     const { categoryItemsCurrentPage } = getState().categoryItemsReducer;
-
-    // console.log('GetSelectedCategoryItemsMethod_props', storeId, saasId, categoryItemsCurrentPage, categoryName, "<>");
 
     dispatch(setLoadingState(true));
 
@@ -542,44 +603,30 @@ export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch,
         const headers = {};
         const endUrl = `${BASE_URL}item/get-category-list/${saasId}/${storeId}/${categoryName}/${categoryItemsCurrentPage}`;
 
-        // console.log("GetSelectedCategoryItemsMethod_endurl", endUrl)
         try {
             const response = await ApiRequest(endUrl, method, headers);
 
-            // console.log('GetSelectedCategoryItemsMethod_resp', response?.data.length);
+            // console.log("GetSelectedCategoryItemsMethod_rep",endUrl,response)
             if (response?.status === true) {
-                // console.log("GetSelectedCategoryItemsMethod", response?.data?.length);
-
                 if (categoryItemsCurrentPage === 1) {
                     dispatch(setCategoryItemsData(response?.data));
-                    dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1))
+                    dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1));
                 } else {
-
+                    const items = response?.data == null ? [] : response?.data;
                     dispatch(addCategoriesItemPageData(response?.data));
-                    dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1))
-
-
+                    dispatch(setCurrentCategoryItemPage(categoryItemsCurrentPage + 1));
                 }
                 return response?.data;
             } else {
-                // showToast("No More Category data available")
+                // Handle case when no more category data is available
             }
-
         } catch (error) {
-            // console.error("TestMethod API request error:", error);
-            // showToast("Error fetching data")
-
-            // showMessage({
-            //     message: "Error fetching data",
-            //     // description: error.message || "Unknown error occurred",
-            //     description: "No More Data Availabe",
-            //     type: "danger",
-            // });
+            // Handle API request error
         } finally {
             dispatch(setLoadingState(false));
         }
     } catch (error) {
-        // console.error("TestMethod unexpected error:", error);
+        // Handle unexpected error
         showMessage({
             message: "Error fetching data",
             description: error.message || "Unknown error occurred",
@@ -588,6 +635,7 @@ export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch,
         dispatch(setLoadingState(false));
     }
 };
+
 
 
 export const GetSearchItemsMethod = (searchText) => async (dispatch, getState) => {

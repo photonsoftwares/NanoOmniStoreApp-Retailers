@@ -7,14 +7,12 @@ import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/nativ
 import { RecommendedItemMethod } from '../../../../config/userApiMethods';
 import MyImgCompo from '../../../../Components/MyImgCompo';
 import { FlashList } from "@shopify/flash-list";
-import CategoryItemList from '../../../../Components/CategoryItemList';
 
 
 
 
 const ServiceItem = memo(({ service }) => {
     const color = service;
-    console.log("sasasa",color)
     const navigation = useNavigation()
     const colors = useTheme().colors
 

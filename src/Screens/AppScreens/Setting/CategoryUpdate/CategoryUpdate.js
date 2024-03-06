@@ -78,7 +78,7 @@ import TextInputCompo from '../../../../Components/TextInputCompo';
 import HeaderComp from '../../../../Components/HeaderCompo';
 import { useNavigation } from '@react-navigation/native';
 import { showToast } from '../../../../utils/toast';
-import { updateCategoryMethod } from '../../../../config/userApiMethods';
+import { GetCategoryItemMethod, updateCategoryMethod } from '../../../../config/userApiMethods';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { moderateScale } from '../../../../styles/responsiveSize';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -119,27 +119,33 @@ const CategoryUpdate = ({ route }) => {
         const resp = await dispatch(updateCategoryMethod(inputs, filteredCategory[0].category_id))
         if (resp?.status === true) {
             var categoryId = await resp?.data?.id
-            console.log("<>", resp,categoryId)
+            console.log("<>", resp, categoryId)
 
             if (categoryId && categoryId?.toString().length > 0) {
-                // console.log(categoryId);
+                console.log("imageData", imageData);
                 const url = `${BASE_URL}category/save-image-by-category/${categoryId}`
-                imgUpload(url)
+                if (imageData !== undefined) {
+
+                    imgUpload(url)
+                } else {
+                    navigation.goBack()
+
+                }
             } else {
                 showToast("item_id is empty or undefined")
+
             }
-            navigation.goBack()
+            // navigation.goBack()
 
         }
     };
 
     const imgUpload = async (url) => {
-
         const formData = new FormData();
         formData.append('file', {
             uri: imageData?.uri,
             name: imageData?.fileName,
-            type: imageData?.type // Adjust according to your file type
+            type: imageData?.type
         });
 
         // Axios POST request
@@ -152,9 +158,10 @@ const CategoryUpdate = ({ route }) => {
                 // console.log('Success', response.data);
                 setTimeout(() => {
                     setIsLoading(false)
+                    navigation.goBack()
 
-                }, 2000)
-
+                }, 500)
+                // dispatch(GetCategoryItemMethod())
             })
             .catch(error => {
                 console.error('Error', error);

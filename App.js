@@ -244,7 +244,7 @@ const App = () => {
 
 
   useEffect(() => {
-    const curVersion =  DeviceInfo.getVersion()
+    const curVersion = DeviceInfo.getVersion()
     // console.log("appaa",curVersion)
 
 
@@ -254,14 +254,11 @@ const App = () => {
         if (result.shouldUpdate) {
           let updateOptions = {};
           if (Platform.OS === 'android') {
-            // android only, on iOS the user will be promped to go to your app store page
             updateOptions = {
               updateType: IAUUpdateKind.IMMEDIATE,
             };
           }
-          // inAppUpdates.addStatusUpdateListener((onStatusUpdate)=>console.log(onStatusUpdate,"onStatusUpdate"));
           inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
-          // inAppUpdates.installUpdate();
         }
       });
 

@@ -178,7 +178,7 @@ const Cart = () => {
 
     }
 
-    console.log("cartItems",cartItems)
+    // console.log("cartItems",cartItems)
 
     return (
         <>
