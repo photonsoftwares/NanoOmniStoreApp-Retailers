@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme, useNavigation } from '@react-navigation/native';
 import ButtonCompo from '../../../Components/ButtonCompo';
@@ -9,6 +9,12 @@ import TextInputCompo from '../../../Components/TextInputCompo';
 import { validateLoginForm } from '../../../utils/validation';
 import { LogInMethod } from '../../../config/authApiMethods';
 import DeviceInfo from 'react-native-device-info';
+import SpInAppUpdates, {
+  NeedsUpdateResponse,
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
+
 
 
 const Login = () => {
@@ -27,6 +33,7 @@ const Login = () => {
   const allState = useSelector((state) => state)
   const colors = useTheme().colors;
   const navigation = useNavigation()
+  const inAppUpdates = new SpInAppUpdates(false)
 
 
   console.log("allState", version)
@@ -35,30 +42,38 @@ const Login = () => {
     getCurrentVersion()
   }, [])
 
+  const checkUpdate = async () => {
+    console.log("first")
+    inAppUpdates.checkNeedsUpdate({ curVersion: '0.0.8' }).then((result) => {
+      console.log("result", result)
+      if (result.shouldUpdate) {
+        let updateOptions = {};
+        if (Platform.OS === 'android') {
+          updateOptions = {
+            updateType: IAUUpdateKind.FLEXIBLE,
+          };
+        }
+        inAppUpdates.startUpdate(updateOptions);
+      }
+    });
+    console.log("last")
+
+  }
 
 
   const handleSubmit = async () => {
-
-
-
     const data = JSON.stringify({
       user_name: inputs.storeId,
       password: inputs.password,
     });
 
-
-
     const a = await dispatch(LogInMethod(data))
-
     // console.log("second",a)
-
 
   };
   const getCurrentVersion = async () => {
     const curVersion = await DeviceInfo.getVersion()
     setVersion(curVersion)
-    // console.log("current version is ", curVersion);
-
 
   }
 
@@ -116,11 +131,11 @@ const Login = () => {
 
 
         <ButtonCompo onPress={() => handleSubmit()} title="Log In" style={{}} />
-        {/* <ButtonCompo onPress={() => getCurrentVersion()} title="Current Version" style={{}} /> */}
+        {/* <ButtonCompo onPress={() => checkUpdate()} title="Check Version" style={{}} /> */}
 
 
       </View>
-      <Text style={{  alignSelf: 'center' }}>Version {version}</Text>
+      <Text style={{ alignSelf: 'center' }}>Version {version}</Text>
     </ScrollView >
   );
 };
@@ -137,13 +152,11 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     justifyContent: 'center',
-    // marginHorizontal: moderateScale(16)
   },
   signupTextContainer: {
     flexDirection: 'row',
   },
   signupText: {
-    // color: 'gray',
 
   },
 });

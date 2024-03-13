@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../styles/colors';
 import { useTheme } from '@react-navigation/native';
 import { moderateScale, moderateScaleVertical, scale, textScale } from '../styles/responsiveSize';
-// import { moderateScale } from './Matrics';
 
 
 const TextInputCompo = ({
