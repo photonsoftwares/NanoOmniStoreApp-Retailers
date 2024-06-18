@@ -87,7 +87,7 @@ const Banner = (routes) => {
   const saasId1 = useSelector((state) => state?.authReducer?.user?.user_data?.saasId);
 
 
-  console.log("route", routes)
+  // console.log("route", routes)
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {

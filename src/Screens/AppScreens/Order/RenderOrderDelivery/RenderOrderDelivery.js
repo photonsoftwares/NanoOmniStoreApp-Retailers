@@ -34,8 +34,8 @@ const PendingItem = memo(({ item }) => {
       <View style={styles.separator} />
       <View style={styles.ContainerBothView}>
         <View style={styles.quantityContainer}>
-          <Text style={styles.itemTitle}>Items</Text>
-          <Text style={[styles.itemValue, { fontWeight: '500' }]}>{item.order_qty}</Text>
+        <Text style={styles.itemTitle}>Payment</Text>
+          <Text style={[styles.itemValue, { fontWeight: '500',backgroundColor:'green',padding:4 ,color:'#fff',borderRadius:4}]}>{item.payment_type}</Text>
 
         </View>
         <View style={styles.verticalSeparator} />
@@ -76,14 +76,7 @@ const RenderOrderDelivery = () => {
       <HeaderComp screenName={'Delivered Orders'} onBackPress={() => navigation.goBack()} />
       <View style={{ flex: 1 }}>
         {deliveredOrders.length !== 0 ? (
-          // <FlatList
-          //   data={deliveredOrders}
-          //   keyExtractor={keyExtractor}
-          //   renderItem={renderItem}
-          //   numColumns={numColumns}
-          //   extraData={numColumns}
-          //   contentContainerStyle={styles.flatListContainer}
-          // />
+         
           <FlashList
             data={reversedArray}
             // data={deliveredOrders}

@@ -37,14 +37,14 @@ const PendingItem = memo(({ item }) => {
       <View style={styles.ContainerBothView}>
         <View style={styles.quantityContainer}>
           {/* <Text style={styles.itemTitle}>Quantity</Text> */}
-          <Text style={styles.itemTitle}>Items</Text>
-          <Text style={[styles.itemValue, { fontWeight: '500' }]}>{item.order_qty}</Text>
+          <Text style={styles.itemTitle}>Payment</Text>
+          <Text style={[styles.itemValue, { fontWeight: '500',backgroundColor:'green',padding:4 ,color:'#fff',borderRadius:4}]}>{item.payment_type}</Text>
         </View>
 
         <View style={styles.verticalSeparator} />
         <View style={styles.valueContainer}>
           <Text style={styles.itemTitle}>Total Value</Text>
-          <Text style={[styles.itemValue, { fontWeight: '500' }]}>{item.order_value}</Text>
+          <Text style={[styles.itemValue, { fontWeight: '500' }]}>₹{item.order_value}</Text>
         </View>
       </View>
       <View style={styles.separator} />
@@ -77,27 +77,12 @@ const RenderOrderPending = () => {
   const { ordersData, ordersCurrentPage } = useSelector((state) => state?.orderReducer);
   const pendingOrders = ordersData.filter(order => order.status === 'PENDING');
 
-  console.log("first", pendingOrders)
 
   return (
     <>
       <HeaderComp screenName={'Pending Orders'} onBackPress={() => navigation.goBack()} />
       <View style={{ flex: 1 }}>
         {pendingOrders.length !== 0 ? (
-
-          // <FlashList
-          //   data={pendingOrders}
-          //   keyExtractor={keyExtractor}
-          //   renderItem={renderItem}
-          //   numColumns={numColumns}
-          //   extraData={numColumns}
-          //   // key={numColumns.toString()} // Add a unique key based on numColumns
-          //   contentContainerStyle={styles.flatListContainer}
-          //   inverted={true}
-          //   estimatedItemSize={200}
-          // />
-          //
-
           <FlashList
             data={pendingOrders.reverse()}
             keyExtractor={keyExtractor}

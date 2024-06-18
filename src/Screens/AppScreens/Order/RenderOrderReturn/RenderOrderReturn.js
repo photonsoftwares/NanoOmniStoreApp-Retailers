@@ -67,7 +67,6 @@ const RenderOrderReturn = () => {
         {deliveredReturn.length !== 0 ? (
           <FlashList
             data={reversedArray}
-            // data={deliveredReturn}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             numColumns={numColumns}
