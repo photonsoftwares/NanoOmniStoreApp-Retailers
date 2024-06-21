@@ -14,6 +14,9 @@ import SpInAppUpdates, {
   IAUUpdateKind,
   StartUpdateOptions,
 } from 'sp-react-native-in-app-updates';
+import { getFcmToken } from '../../../utils/notificationServices';
+import messaging from '@react-native-firebase/messaging';
+
 
 
 
@@ -34,9 +37,6 @@ const Login = () => {
   const colors = useTheme().colors;
   const navigation = useNavigation()
   const inAppUpdates = new SpInAppUpdates(false)
-
-
-  console.log("allState", version)
 
   useEffect(() => {
     getCurrentVersion()
@@ -59,8 +59,6 @@ const Login = () => {
     console.log("last")
 
   }
-
-
   const handleSubmit = async () => {
     const data = JSON.stringify({
       user_name: inputs.storeId,
@@ -77,9 +75,6 @@ const Login = () => {
 
   }
 
-
-
-
   const handleOnChange = (text, input) => {
     const updatedInputs = { ...inputs, [input]: text };
     const formErrors = validateLoginForm(updatedInputs);
@@ -95,6 +90,12 @@ const Login = () => {
     setFormIsValid(isFormValid);
   };
 
+  const getFCMToken2 = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    console.log("token_login", token)
+
+  }
 
 
   return (
@@ -131,6 +132,8 @@ const Login = () => {
 
 
         <ButtonCompo onPress={() => handleSubmit()} title="Log In" style={{}} />
+        {/* <ButtonCompo onPress={() => getFcmToken()} title="GetFCM" style={{}} />
+        <ButtonCompo onPress={() => getFCMToken2()} title="getFCMToken" style={{}} /> */}
         {/* <ButtonCompo onPress={() => checkUpdate()} title="Check Version" style={{}} /> */}
 
 

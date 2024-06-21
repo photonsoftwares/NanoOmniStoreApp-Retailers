@@ -1770,7 +1770,7 @@ export const GetAllCoupanMethod = () => async (dispatch, getState) => {
 export const setFcmTokenMethod = (data) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
 
-    // console.log("setFcmTokenMethod_data", data)
+    console.log("setFcmTokenMethod_data", data,userId)
 
 
     try {
@@ -1781,7 +1781,7 @@ export const setFcmTokenMethod = (data) => async (dispatch, getState) => {
 
 
         let response = await ApiRequest(endUrl, method, headers, body);
-        // console.log("setFcmTokenAction response", response);
+        console.log("setFcmTokenAction response", response);
 
         if (response?.status) {
 
