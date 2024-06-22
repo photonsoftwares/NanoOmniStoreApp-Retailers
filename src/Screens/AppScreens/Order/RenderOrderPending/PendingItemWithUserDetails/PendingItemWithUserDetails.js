@@ -17,7 +17,7 @@ const PendingItemWithUserDetails = ({ route }) => {
   const { customerBookedOrders, customerAddresses, customerData, } = useSelector((state) => state.customerReducer);
   const [total, setTotal] = useState(0);
   const [loader, setLoader] = useState(true);
-  console.log("order_id, order_date, orderMobileNumber", order_id, order_date, orderMobileNumber)
+  // console.log("order_id, order_date, orderMobileNumber", order_id, order_date, orderMobileNumber)
 
 
   useEffect(() => {
@@ -29,12 +29,6 @@ const PendingItemWithUserDetails = ({ route }) => {
 
 
 
-
-  // useEffect(() => {
-  //   // Calculate the total whenever customerBookedOrders changes
-  //   const newTotal = customerBookedOrders.reduce((acc, order) => acc + parseFloat(order.item_price), 0);
-  //   setTotal(newTotal);
-  // }, [customerBookedOrders]);
 
 
   useEffect(() => {

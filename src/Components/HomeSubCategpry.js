@@ -3,9 +3,10 @@ import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { scale } from '../styles/responsiveSize';
 import { GetSubCategoryItemsMethod } from '../config/userApiMethods';
-import { setSelectedSubCategory } from '../ReduxToolkit/features/mainCategorySlice';
+import { setSelectedSubCategory, setSubCategoryItemsPage } from '../ReduxToolkit/features/mainCategorySlice';
 import { BASE_URL } from '../config/Base_Url';
 import MyImgCompo from './MyImgCompo';
+import { showToast } from '../utils/toast';
 
 
 const NoData = () => {
@@ -24,13 +25,14 @@ const HomeSubCategpry = () => {
   const { masterCategory, selectedMasterCategory, selectedSubCategory, subCategory, subCategoryItems } = useSelector((state) => state?.mainCategoryReducer);
   const [key, setKey] = useState(Date.now());
 
-  
+
   // console.log("HomeSubCategpry", subCategory)
   const memoizedsubCategory = useMemo(() => {
     return subCategory;
   }, [subCategory]);
 
   const SubCategoryListRender = ({ item }) => {
+    const { subCategoryItemsPage, subCategoryItemsTotalPage } = useSelector((state) => state?.mainCategoryReducer);
     const [loding, setLoading] = useState(false)
     const dispatch = useDispatch()
     const imageUrl = `${BASE_URL}category/get-category-image/${item.id}?key=${key}`;
@@ -39,14 +41,11 @@ const HomeSubCategpry = () => {
 
     const fetchData = async (category) => {
 
-      setLoading(true)
-      const response = await dispatch(GetSubCategoryItemsMethod(category))
-      setLoading(false)
 
+      dispatch(setSubCategoryItemsPage(1))
+      const response = await dispatch(GetSubCategoryItemsMethod(category))
       dispatch(setSelectedSubCategory(category))
 
-      // console.log("SubCategoryItemList_re", category)
-      // console.log("res_Items", response)
     }
 
     return (

@@ -1,11 +1,11 @@
 // import React, { useEffect, useState } from 'react';
-// import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+// import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { launchImageLibrary } from 'react-native-image-picker';
 // import { useDispatch, useSelector } from 'react-redux';
 // import HeaderComp from '../../../../../Components/HeaderCompo';
-// import { GetCategoryItemMethod, GetCategoryMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, ItemUpdateMethod, RecommendedItemMethod, uploadImageMethod } from '../../../../../config/userApiMethods';
+// import { CategoryItemUpdateMethod, GetCategoryItemMethod, GetCategoryMethod, GetSearchItemsMethod, GetSelectedCategoryItemsMethod, GetSubCategoryMethod, ItemUpdateMethod, RecommendedItemMethod, uploadImageMethod } from '../../../../../config/userApiMethods';
 // import { useNavigation } from '@react-navigation/native';
 // import { moderateScale } from '../../../../../styles/responsiveSize';
 // import axios from 'axios';
@@ -13,18 +13,21 @@
 // import Loader from '../../../../../Components/Loader';
 // import CustomDropDown from '../../../../../Components/CustomDropDown';
 // import CustomModal from '../../../../../Components/Modal';
+// import { setSelectedMasterCategory } from '../../../../../ReduxToolkit/features/mainCategorySlice';
 
 // const UpdateItemScreen = ({ route }) => {
 //     const { itemId } = route?.params;
 //     const [modalVisible, setModalVisible] = useState(false);
+//     const [subCategoryModalVisible, setSubCategoryModalVisible] = useState(false);
 //     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
 //     const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
 
+//     console.log("UpdateItemScreen",itemToUpdate)
 //     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
 //     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
 //     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
 //     const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
-//     const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price || '');
+//     const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price?.toString() || '');
 //     const [status, setStatus] = useState(itemToUpdate?.status);
 //     const [category, setCategory] = useState(itemToUpdate?.category || '');
 //     const [isOpen, setOpen] = useState(false);
@@ -40,17 +43,36 @@
 //     const { categoryData } = useSelector((state) => state?.productReducer);
 //     // const [selectedCategory, setSelectedCategory] = useState(null);
 //     const [selectedCategory, setSelectedCategory] = useState(itemToUpdate?.category || '');
-//     const { masterCategory, selectedMasterCategory, selectedSubCategory, subCategory, subCategoryItems } = useSelector((state) => state?.mainCategoryReducer);
+//     const { masterCategory, selectedMasterCategory, subCategory, subCategoryItems } = useSelector((state) => state?.mainCategoryReducer);
+//     const [selectedSubCategory, setSelectedSubCategory] = useState(subCategory[0]?.category);
 
-//     console.log("selectedCategory_FromUpdateItemm", description)
 
 
 
 
 //     // Function to handle selection of category
-//     const handleCategorySelect = (category) => {
+//     const handleCategorySelect = async (category) => {
 //         setSelectedCategory(category);
 //         setModalVisible(false)
+
+//         const masterCategoryIds = filterCategoryByName(category())
+//         const numberString = masterCategoryIds.join('');
+//         await dispatch(setSelectedMasterCategory(numberString))
+//         const resp1 = await dispatch(GetSubCategoryMethod(numberString))
+
+//         // console.log("addItem", category(), masterCategoryIds, numberString, "resp1", resp1)
+//     };
+//     const filterCategoryByName = (categoryName) => {
+//         // console.log("categoryName", categoryName)
+//         return masterCategory
+//             .filter(category => category.masterCategoryName === categoryName)
+//             .map(category => category.masterCategoryId);
+//     };
+
+//     // Function to handle selection of category
+//     const handleSubCategorySelect = (category) => {
+//         setSelectedSubCategory(category);
+//         setSubCategoryModalVisible(false)
 
 //     };
 
@@ -89,7 +111,7 @@
 //             "hsn_code": "00",
 //             "promo_id": 0,
 //             "sku": 0,
-//             "category": selectedCategory,
+//             "category": selectedSubCategory,
 //             "barcode": 0,
 //             "mrp": 0,
 //             "stock_quantity": 0,
@@ -105,9 +127,9 @@
 //         }
 //         const jsonString = JSON.stringify(data);
 
-//         console.log("jsonString", jsonString)
+//         // console.log("jsonString", jsonString)
 
-//         const ItemUpdateMethod_resp = await dispatch(ItemUpdateMethod(jsonString,
+//         const ItemUpdateMethod_resp = await dispatch(CategoryItemUpdateMethod(jsonString,
 //             itemId,
 //             storeId,
 //             saasId,
@@ -172,7 +194,6 @@
 
 //     }
 
-
 //     const pickImage = async () => {
 //         setSelectedImage(null)
 //         try {
@@ -206,6 +227,9 @@
 
 //     }
 
+
+
+//     console.log("UpdateItem", actualPrice)
 //     return (
 //         <>
 //             <HeaderComp
@@ -295,7 +319,7 @@
 //                             placeholder='Price'
 //                         />
 
-//                         <Text style={styles.label}>Mrp</Text>
+//                         <Text style={styles.label}>MRP</Text>
 //                         <TextInput
 //                             style={styles.input}
 //                             value={actualPrice}
@@ -330,11 +354,11 @@
 //                             placeholder="Select Status"
 //                             searchable={false}
 //                         />
-//                         <Text style={[styles.label, { marginTop: 20 }]}>Sub-Category</Text>
-//                         <TouchableOpacity
+//                         <Pressable
 //                             onPress={() => setModalVisible(true)}
-//                             containerStyle={styles.input}
+//                             containerStyle={[styles.input, { marginTop: 20 }]}
 //                         >
+//                             <Text style={styles.label}>Main Category</Text>
 //                             <TextInput
 //                                 style={styles.input}
 //                                 value={selectedCategory}
@@ -343,32 +367,45 @@
 //                                 placeholder='Category'
 //                                 editable={false}
 //                             />
-//                         </TouchableOpacity>
+//                         </Pressable>
 
+//                         <Text style={[styles.label, { marginTop: 20 }]}>Sub-Category</Text>
+//                         <Pressable
+//                             onPress={() => setSubCategoryModalVisible(true)}
+//                             containerStyle={styles.input}
+//                         >
+//                             <TextInput
+//                                 style={styles.input}
+//                                 value={selectedSubCategory}
+//                                 keyboardType="numeric"
+//                                 placeholderTextColor="#666"
+//                                 placeholder='Category'
+//                                 editable={false}
+//                             />
+//                         </Pressable>
 //                         <CustomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
-//                             {categoryData.length > 0 ?
-
+//                             {masterCategory.length > 0 ?
 //                                 <View style={{ marginTop: 8, paddingVertical: 8, justifyContent: 'center', }}>
+//                                     <Text style={[styles.label, { marginBottom: 8 }]}>Select Category</Text>
+//                                     < CustomDropDown onSelect={handleCategorySelect} type={'1'} data={masterCategory} />
+//                                 </View>
+//                                 :
+//                                 null
+//                             }
+//                         </CustomModal>
+
+//                         <CustomModal visible={subCategoryModalVisible} onClose={() => setSubCategoryModalVisible(false)}>
+//                             {subCategory?.length > 0 ?
+
+//                                 <View style={{ justifyContent: 'center', }}>
 //                                     <Text style={[styles.label, { marginBottom: 8 }]}>Select Sub-Category</Text>
-//                                     < CustomDropDown onSelect={handleCategorySelect} type={'2'} data={masterCategory} />
+//                                     < CustomDropDown onSelect={handleSubCategorySelect} type={'2'} data={subCategory} />
 //                                 </View>
 
 //                                 :
 //                                 null
 //                             }
 //                         </CustomModal>
-
-
-
-
-
-
-
-
-
-
-
-
 //                         <TouchableOpacity style={styles.button} onPress={handleUpdate}>
 //                             <Text style={styles.buttonText}>Update Item</Text>
 //                         </TouchableOpacity>
@@ -399,12 +436,10 @@
 //         marginTop: 8,
 //         paddingHorizontal: 8,
 //         color: '#000'
-
 //     },
 //     dropdownContainer: {
 //         height: 40,
 //         marginTop: 8,
-//         // marginTop:10
 //     },
 //     dropdownStyle: {
 //         backgroundColor: '#fafafa',
@@ -437,17 +472,7 @@
 
 
 
-
-
-
-
-//test
-/////////////////////////////
-
-
-
-
-
+/////////////////////////////////
 
 
 
@@ -469,13 +494,16 @@ import CustomModal from '../../../../../Components/Modal';
 import { setSelectedMasterCategory } from '../../../../../ReduxToolkit/features/mainCategorySlice';
 
 const UpdateItemScreen = ({ route }) => {
-    const { itemId } = route?.params;
+    // const { itemId } = route?.params;
+    const itemToUpdate = route?.params
+    const itemId=itemToUpdate?.item_id
+
     const [modalVisible, setModalVisible] = useState(false);
     const [subCategoryModalVisible, setSubCategoryModalVisible] = useState(false);
     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
-    const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
+    // const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
 
-    console.log("UpdateItemScreen",itemToUpdate?.actual_price || '')
+    // console.log("UpdateItemScreen",itemToUpdate)
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
@@ -529,11 +557,7 @@ const UpdateItemScreen = ({ route }) => {
 
     };
 
-    // if (isLoading) {
-    //     return (
-    //         <View style={{flex:1}}><Text>Loading...</Text></View>
-    //     )
-    // }
+
 
 
     // Dummy data for the status options
@@ -607,15 +631,16 @@ const UpdateItemScreen = ({ route }) => {
                 imgUpload(url)
             } else {
                 setIsLoading(false)
-                navigation.goBack()
+                // navigation.goBack()
+                navigation.popToTop()
             }
             dispatch(GetCategoryItemMethod())
         }
+        // setIsLoading(false)
 
     };
 
     const imgUpload = async (url) => {
-        // console.log("imgUpload_props", url)
 
         const formData = new FormData();
         formData.append('file', {
@@ -623,6 +648,8 @@ const UpdateItemScreen = ({ route }) => {
             name: imageData?.fileName,
             type: imageData?.type // Adjust according to your file type
         });
+
+        // console.log("imgUpload_propss", url,formData?._parts)
 
         // Axios POST request
         axios.post(url, formData, {
@@ -633,7 +660,7 @@ const UpdateItemScreen = ({ route }) => {
             .then(response => {
                 console.log('Success', response.data);
                 setTimeout(() => {
-                    navigation.goBack()
+                    navigation.popToTop()
                     setIsLoading(false)
 
                 }, 1500)
@@ -731,8 +758,6 @@ const UpdateItemScreen = ({ route }) => {
                             </View>
 
                         </View>
-                        {/* //////////// */}
-
                         <Text style={styles.label}>Item Name</Text>
                         <TextInput
                             style={styles.input}
@@ -751,17 +776,6 @@ const UpdateItemScreen = ({ route }) => {
                             placeholderTextColor="#666"
                             placeholder='Description'
                         />
-
-                        {/* <TextInput
-                            style={styles.input}
-                            value={category}
-                            onChangeText={(text) => setCategory(text)}
-                            placeholderTextColor="#666"
-                            placeholder='Category'
-                            
-                        /> */}
-
-
                         <Text style={styles.label}>Price</Text>
                         <TextInput
                             style={styles.input}
@@ -918,3 +932,24 @@ const styles = StyleSheet.create({
 });
 
 export default UpdateItemScreen;
+
+
+
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
+// import Routes from '../../../../../Navigation/Routes'
+
+// const UpdateItems = ({ route }) => {
+//     const itemToUpdate = route?.params
+
+//     console.log("first",itemToUpdate)
+//     return (
+//         <View>
+//             <Text>UpdateItems</Text>
+//         </View>
+//     )
+// }
+
+// export default UpdateItems
+
+// const styles = StyleSheet.create({})

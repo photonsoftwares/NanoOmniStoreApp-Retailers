@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import MyImgCompo from './MyImgCompo'
 import HomeSubCategpry from './HomeSubCategpry'
 import HomeSubeCategoryItem from './HomeSubeCategoryItem'
-import { setSelectedMasterCategory, setSelectedSubCategory } from '../ReduxToolkit/features/mainCategorySlice'
+import { setSelectedMasterCategory, setSelectedSubCategory, setSubCategoryItemsPage } from '../ReduxToolkit/features/mainCategorySlice'
 
 const HomeMasterCategory = () => {
     const dispatch = useDispatch()
@@ -32,6 +32,7 @@ const HomeMasterCategory = () => {
     // console.log("HomeMasterCategory", masterCategory, selectedMasterCategory, "......................", subCategory)
 
     const handleCategoryPress = (category) => {
+        dispatch(setSubCategoryItemsPage(1))
         // Handle category press here
         console.log('Category Pressed:', category?.masterCategoryId);
         // dispatch(setCurrentCategoryItemPage(1))

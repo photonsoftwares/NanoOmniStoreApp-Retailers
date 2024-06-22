@@ -8,7 +8,10 @@ const mainCategorySlice = createSlice({
         subCategory: [],
         subCategoryItems: [],
         selectedSubCategory: '',
-        selectedMasterCategory: ''
+        selectedMasterCategory: '',
+        subCategoryItemsPage: 1,
+        subCategoryItemsTotalPage: null
+
     },
     reducers: {
         setMasterCategoryData: (state, action) => {
@@ -29,6 +32,12 @@ const mainCategorySlice = createSlice({
                 subCategoryItems: action.payload,
             };
         },
+        addMoreSubCategoryItemsData: (state, action) => {
+            return {
+              ...state,
+              subCategoryItems: [...state.subCategoryItems, ...action.payload],
+            };
+          },      
 
 
         setSelectedSubCategory: (state, action) => {
@@ -43,9 +52,29 @@ const mainCategorySlice = createSlice({
                 selectedMasterCategory: action.payload,
             };
         },
+        setSubCategoryItemsPage: (state, action) => {
+            return {
+                ...state,
+                subCategoryItemsPage: action.payload,
+            };
+        },
+        setSubCategoryItemsTotalPage: (state, action) => {
+            return {
+                ...state,
+                subCategoryItemsTotalPage: action.payload,
+            };
+        },
 
     },
 });
 
-export const { setMasterCategoryData, setSubCategoryCategory, setSubCategoryItemsData, setSelectedSubCategory,setSelectedMasterCategory } = mainCategorySlice.actions;
+export const { setMasterCategoryData,
+    setSubCategoryCategory,
+    setSubCategoryItemsData,
+    setSelectedSubCategory,
+    setSelectedMasterCategory,
+    setSubCategoryItemsPage,
+    addMoreSubCategoryItemsData,
+    setSubCategoryItemsTotalPage
+} = mainCategorySlice.actions;
 export default mainCategorySlice.reducer;

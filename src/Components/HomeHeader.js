@@ -7,6 +7,8 @@ import { moderateScale, scale, textScale } from '../styles/responsiveSize';
 import ImagePath from '../constants/ImagePath';
 import SearchBar from './SearchBar';
 import Profile from '../Screens/AppScreens/Profile/Profile';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const HomeHeader = () => {
     const { storeName } = useSelector(state => state?.authReducer?.user?.store_data);
@@ -38,11 +40,8 @@ const HomeHeader = () => {
                 <TouchableOpacity
                     onPress={() => navigation.navigate(SearchBar)}
                     style={[{ height: moderateScale(35), width: moderateScale(35), alignSelf: 'center', }]}>
-                    <Image
-                        source={ImagePath.Magnifer}
-                        style={{ height: '90%', width: '90%' }}
-                        resizeMode='center'
-                    />
+                    <Icon name="magnify" style={{ color: 'grey', fontSize: 30, marginRight: 8 }} />
+
                 </TouchableOpacity>
 
             </View>

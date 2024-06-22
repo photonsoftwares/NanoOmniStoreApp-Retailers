@@ -1,13 +1,10 @@
 import React, { useCallback, memo, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { moderateScale } from '../../../../../../styles/responsiveSize';
 import Calender from '../../../../../../Components/Calender';
 import { GetgetSalesSummarytMethod } from '../../../../../../config/userApiMethods';
 import NoDataFound from '../../../../../../Components/NoDataFound';
-import { showMessage } from 'react-native-flash-message';
 import { FlashList } from "@shopify/flash-list";
 import { showToast } from '../../../../../../utils/toast';
 

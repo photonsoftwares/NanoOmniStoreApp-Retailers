@@ -18,7 +18,7 @@ import { setExtraDeliveryChargesValue, setExtraMinOrderValue } from "../ReduxToo
 import { setCustomerList } from "../ReduxToolkit/features/customerList";
 import { setWallet } from "../ReduxToolkit/features/walletSlice";
 import { setCoupan } from "../ReduxToolkit/features/coupanSlice";
-import { setMasterCategoryData, setSubCategoryCategory, setSubCategoryItemsData } from "../ReduxToolkit/features/mainCategorySlice";
+import { addMoreSubCategoryItemsData, setMasterCategoryData, setSubCategoryCategory, setSubCategoryItemsData, setSubCategoryItemsPage, setSubCategoryItemsTotalPage } from "../ReduxToolkit/features/mainCategorySlice";
 import { addInventoryMoreData, setInventory, setInventoryCurrentPage } from "../ReduxToolkit/features/InventorySlice";
 
 
@@ -181,7 +181,7 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
         // console.log("SaveTransaction_before", endUrl, body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        console.log('SaveTransaction_resp', endUrl,response);
+        console.log('SaveTransaction_resp', endUrl, response);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -338,7 +338,7 @@ export const RecommendedItemMethod = (storeIdd, saasIdd, page = 1) => async (dis
             const response = await ApiRequest(endUrl, method, headers);
 
             if (response?.status === true) {
-                // console.log("RecommendedItemMethod_resp", response?.data?.length);
+                console.log("RecommendedItemMethod_resp", response?.data?.length);
 
                 if (page === 1) {
                     dispatch(setRecommended(response?.data));
@@ -420,7 +420,7 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
 
 export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async (dispatch, getState) => {
     const { categoryCurrentPage, selectedCategory, } = getState().categoriesReducer;
-    // console.log('ItemUpdateMethod_props', data, itemId);
+    console.log('ItemUpdateMethod_props', data, itemId, storeId, saasId, recommendedCurrentPage);
 
 
 
@@ -436,8 +436,10 @@ export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommen
 
             if (response?.status == true) {
 
-                console.log("ItemUpdateMethod", endUrl, response, response?.data?.category);
+                // console.log("ItemUpdateMethod", endUrl, response, response?.data?.category);
                 dispatch(GetSubCategoryItemsMethod(response?.data?.category));
+                dispatch(RecommendedItemMethod(storeId, saasId))
+
                 return response
             } else {
                 showToast("Unknown error occurred")
@@ -1148,7 +1150,7 @@ export const GetSubCategoryMethod = (masterCategoryId) => async (dispatch, getSt
 
     try {
         const response = await ApiRequest(endUrl, method, headers);
-        console.log('GetSubCategoryMethod_resp', endUrl, response);
+        // console.log('GetSubCategoryMethod_resp', endUrl, response);
 
         if (response?.status) {
             // Handle successful response
@@ -1193,33 +1195,64 @@ export const GetMainAndSubCategoryMethod = (masterCategoryId) => async (dispatch
     }
 };
 
-export const GetSubCategoryItemsMethod = (categoryName = 'apple') => async (dispatch, getState) => {
+export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-    // console.log('GetSubCategoryItemsMethod_props', storeId, saasId,);
+    const { subCategoryItemsPage, selectedSubCategory, subCategoryItems,subCategoryItemsTotalPage } = getState()?.mainCategoryReducer
+    // console.log('GetSubCategoryItemsMethod_props', storeId, saasId, subCategoryItemsPage, selectedSubCategory);
 
     const method = "GET";
     const headers = {};
-    // const body = JSON.stringify(data);
-    const endUrl = `${BASE_URL}item/get-category-list/${saasId}/${storeId}/${categoryName}/1`;
+    const endUrl = `${BASE_URL}item/get-category-list/${saasId}/${storeId}/${categoryName}/${subCategoryItemsPage}`;
 
     try {
         const response = await ApiRequest(endUrl, method, headers);
-        // console.log('GetSubCategoryItemsMethod_resp', endUrl, response);
+        console.log('GetSubCategoryItemsMethod_resp', endUrl, response?.data?.length);
 
         if (response?.status) {
-            // Handle successful response
-            dispatch(setSubCategoryItemsData(response?.data))
-
-            return response;
-        } else {
-            if (response?.count == 0) {
-                dispatch(setSubCategoryItemsData([]))
-
+            console.log("true")
+            // dispatch(setSubCategoryItemsData(response?.data))
+            if (subCategoryItemsPage == 1) {
+                console.log("1")
+                dispatch(setSubCategoryItemsData(response?.data))
+                dispatch(setSubCategoryItemsTotalPage(response?.count/12))
             } else {
-
-                showToast(response.message);
+                console.log("2")
+                if (response?.next == null) {
+                    dispatch(addMoreSubCategoryItemsData(subCategoryItems))
+                    showToast("No More Data")
+                } else {
+                    dispatch(addMoreSubCategoryItemsData(response?.data))
+                }
             }
+
+
+        } else {
+            console.log("false")
+            dispatch(setSubCategoryItemsData([]))
         }
+
+        // if (response?.status) {
+        //     // Handle successful response
+        //     if (subCategoryItemsPage == 1) {
+        //         console.log("1")
+        //         dispatch(setSubCategoryItemsData(response?.data))
+        //         // dispatch(setSubCategoryItemsPage(subCategoryItemsPage + 1))
+        //     } else {
+        //         console.log("2")
+        //         dispatch(addMoreSubCategoryItemsData(response?.data))
+        //     }
+
+        //     return response;
+        // } else {
+        //     if (response?.count == 1) {
+        //         dispatch(setSubCategoryItemsData([]))
+        //         // showToast(`No More Data in ${categoryName}`)
+        //         // dispatch(setSubCategoryItemsPage(1))
+        //     } else {
+
+        //         // showToast(response.message);
+        //     }
+        // }
     } catch (error) {
         showToast(`${error} Error in GetSubCategoryItemsMethod`);
     }
@@ -1268,47 +1301,6 @@ export const GetCategoryMethod = (data) => async (dispatch, getState) => {
 
 };
 
-
-
-
-// export const GetgetSalesReportMethod = (startDate_props) => async (dispatch, getState) => {
-//     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
-//     const { salesReportData, startDate } = getState()?.salesReportReducer
-
-//     const date = await startDate_props == undefined ? startDate : startDate_props
-//     console.log(">", startDate,startDate_props)
-
-
-
-//     try {
-//         const method = "GET";
-//         const headers = {};
-//         const endUrl = await `${BASE_URL}tax/get-sales-report/${date}/${storeId}/${saasId}`;
-//         console.log("GetgetSalesReportMethod_End", endUrl,response)
-
-
-//         try {
-//             const response = await ApiRequest(endUrl, method, headers,)
-//             console.log("endUrl", endUrl, response)
-
-//             // console.log('GetgetSalesReportMethod_resp', response?.list_sales_report?.length)
-//             if (response?.status === true) {
-//                 // console.log("GetgetSalesReportMethod_resp_inside", response?.list_sales_report?.length);
-//                 await dispatch(setSalesReport(response?.list_sales_report))
-
-//                 return response?.status
-//             } else {
-//                 throw new Error("No Reports");
-//             }
-
-//         } catch (error) {
-
-//         } 
-//     } catch (error) {
-//         showToast("something error")
-//     }
-
-// };
 
 // Function to get sales report
 export const GetgetSalesReportMethod = (startDateprops) => async (dispatch, getState) => {
@@ -1770,7 +1762,7 @@ export const GetAllCoupanMethod = () => async (dispatch, getState) => {
 export const setFcmTokenMethod = (data) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
 
-    console.log("setFcmTokenMethod_data", data,userId)
+    console.log("setFcmTokenMethod_data", data, userId)
 
 
     try {

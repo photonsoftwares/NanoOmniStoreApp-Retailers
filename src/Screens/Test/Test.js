@@ -16,6 +16,7 @@ const Test = () => {
             <Button title='GetSubCategoryItemsMetho' onPress={() => dispatch(GetSubCategoryItemsMethod())} />
             <Button title='dispatchGetQRItemMethod' onPress={() => dispatch(GetQRItemMethod())} />
             <Button title='GetgetSalesReportMethod()' onPress={() => dispatch(GetgetSalesReportMethod())} />
+            <Button title='GetSubCategoryItemsMethod()' onPress={() => dispatch(GetSubCategoryItemsMethod())} />
         </View>
     )
 }

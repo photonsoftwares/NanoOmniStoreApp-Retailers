@@ -9,6 +9,7 @@ import { GetSearchItemsMethod } from '../config/userApiMethods';
 import { FlashList } from "@shopify/flash-list";
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ButtonCompo from './ButtonCompo';
+import FastImage from 'react-native-fast-image';
 
 
 const SearchBar = () => {
@@ -40,15 +41,13 @@ const SearchBar = () => {
     }
   }, [dispatch]);
 
-  // useFocusEffect(()=>{
 
-  // },[])
 
   const renderItem = useMemo(() => ({ item }) => (
     // <View>
     <View style={styles.itemContainer} >
 
-      <Image
+      <FastImage
         key={item?.item_id}  // Add this line to set a unique key for each Image component
         source={{ uri: `${BASE_URL}item/get-image/${item?.item_id}?timestamp=${Date.now()}` }}
 
@@ -62,7 +61,7 @@ const SearchBar = () => {
       <ButtonCompo
         title={'Update'}
         style={{ marginRight: 10, width: 100, }}
-        onPress={() => navigation.navigate('UpdateItems', { itemId: item?.item_id })}
+        onPress={() => navigation.navigate('UpdateItems', item )}
         textStyle={{ fontSize: 16 }}
       />
 
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemName: {
-    fontSize: textScale(18),
+    fontSize: textScale(14),
     fontWeight: 'bold',
     color: '#000'
   },

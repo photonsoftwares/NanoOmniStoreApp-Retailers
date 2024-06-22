@@ -18,10 +18,7 @@ const SubCategory = (props) => {
     const { subCategory, subCategoryItems, selectedSubCategory } = useSelector((state) => state?.mainCategoryReducer);
     const [loading, setLoading] = useState(true)
     let url = `${BASE_URL}category/get-category-image/}`
-    // let url = `${BASE_URL}item/get-image/}`
-
     const [key, setKey] = useState(Date.now());
-    // console.log("first", masterCategoryId, subCategory.length)
 
     const handleForceUpdate = () => {
         setKey(Date.now());
@@ -71,7 +68,6 @@ const SubCategory = (props) => {
 
     const ItemSeparator = () => <View style={styles.itemSeparator} />;
     const renderItem = ({ item }) => {
-        // const imageUrl = `${BASE_URL}category/get-category-image/${item.id}?key=${key}`;
         const imageUrl = `${BASE_URL}category/get-category-image/${item.id}?key=${new Date()}`;
 
 
@@ -80,32 +76,12 @@ const SubCategory = (props) => {
             <TouchableOpacity activeOpacity={0.7} onPress={() => handleCategoryPress(item)} style={[styles.categoryButton, { backgroundColor: '#eee', }]}>
                 <View style={styles.itemContainer}>
                     <View style={{ flexDirection: 'row', gap: 10 }}>
-
-                        {/* <MyImgCompo
-                            // imageUri={item.image_path}
-                            // imageUri={`${item.image_path}?key=${key}`}
-                            imageUri={`${url}/${item.id}`}
-                            ImgCompoStyle={{ height: '100%', width: 60, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, borderWidth: 0.5 }}
-                        /> */}
-
                         <MyImgCompo
                             imageUri={imageUrl}
                             ImgCompoStyle={{ height: '100%', width: 60, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, borderWidth: 0.5, backgroundColor: '#FFF' }}
                             resizeMode={'cover'}
                         />
-
-                        {/* <MyImgCompo
-                            imageUri={imageUrl}
-                            ImgCompoStyle={{ height: '100%', width: 60, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, borderWidth: 0.5, backgroundColor: '#FFF' }}
-                        /> */}
-
-                        {/* <Image
-                            source={{ uri: `${item.image_path}?key=${new Date()}` }}
-                            style={{ height: 60, width: 60, borderRadius: 4, paddingHorizontal: 10, marginLeft: 8, borderWidth: 0.5 }}
-                        /> */}
-
                         <Text style={styles.categoryName} numberOfLines={2}>{item.category}</Text>
-                        {/* <Text style={styles.categoryName} numberOfLines={2}>{`${url}/${item.id}?key=${key}`}</Text> */}
                     </View>
                     <TouchableOpacity onPress={() => handleDeletePress(item)}>
                         <MaterialCommunityIcons name="delete" size={26} />
