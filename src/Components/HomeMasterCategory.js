@@ -6,6 +6,7 @@ import MyImgCompo from './MyImgCompo'
 import HomeSubCategpry from './HomeSubCategpry'
 import HomeSubeCategoryItem from './HomeSubeCategoryItem'
 import { setSelectedMasterCategory, setSelectedSubCategory, setSubCategoryItemsPage } from '../ReduxToolkit/features/mainCategorySlice'
+import { BASE_URL } from '../config/Base_Url'
 
 const HomeMasterCategory = () => {
     const dispatch = useDispatch()
@@ -28,11 +29,11 @@ const HomeMasterCategory = () => {
     }, [])
 
     const { masterCategory, selectedMasterCategory, selectedSubCategory, subCategory, subCategoryItems } = useSelector((state) => state?.mainCategoryReducer);
-
     // console.log("HomeMasterCategory", masterCategory, selectedMasterCategory, "......................", subCategory)
 
     const handleCategoryPress = (category) => {
         dispatch(setSubCategoryItemsPage(1))
+
         // Handle category press here
         console.log('Category Pressed:', category?.masterCategoryId);
         // dispatch(setCurrentCategoryItemPage(1))
@@ -51,13 +52,12 @@ const HomeMasterCategory = () => {
                 <View style={{ borderRadius: 200, height: 60, width: 70, overflow: 'hidden' }}>
                     <MyImgCompo
                         // imageUri={`${item.image_path}?key=${new Date()}`}
-                        imageUri={`https://posprdapi.photonsoftwares.com/prod/api/v1/Master-category/get-master-image/${item.masterCategoryId}?key=${new Date()}`}
+                        imageUri={`${BASE_URL}Master-category/get-master-image/${item.masterCategoryId}?key=${new Date()}`}
                         ImgCompoStyle={{ height: 60, width: 60, paddingHorizontal: 10, marginLeft: 8, borderRadius: 200 }}
                         resizeMode='cover'
                     />
                 </View>
                 <Text style={styles.categoryName} numberOfLines={2}>{item.masterCategoryName}</Text>
-                {/* <Text style={styles.categoryName} numberOfLines={2}>{item.image_path}</Text> */}
             </View>
         </TouchableOpacity>
     );

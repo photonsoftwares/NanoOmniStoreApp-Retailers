@@ -20,7 +20,6 @@ import Routes from './src/Navigation/Routes'
 const App = () => {
   const inAppUpdates = new SpInAppUpdates(false)
 
-
   useEffect(() => {
     SplashScreen.hide();
 
@@ -30,25 +29,25 @@ const App = () => {
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-        // Only request POST_NOTIFICATIONS for Android 13 and above
-        if (Platform.Version >= 33) {
-            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then((res) => {
-                if (!!res && res === 'granted') {
-                    requestUserPermission();
-                    notificationListeners();
-                }
-            }).catch(error => {
-                Alert.alert('Error', 'Something went wrong while requesting notification permissions');
-            });
-        } else {
+      // Only request POST_NOTIFICATIONS for Android 13 and above
+      if (Platform.Version >= 33) {
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then((res) => {
+          if (!!res && res === 'granted') {
             requestUserPermission();
             notificationListeners();
-        }
-    } else {
+          }
+        }).catch(error => {
+          Alert.alert('Error', 'Something went wrong while requesting notification permissions');
+        });
+      } else {
         requestUserPermission();
         notificationListeners();
+      }
+    } else {
+      requestUserPermission();
+      notificationListeners();
     }
-}, []);
+  }, []);
 
 
 

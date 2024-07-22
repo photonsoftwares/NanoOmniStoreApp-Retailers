@@ -76,14 +76,13 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-\
     namespace "com.omniretailer"
     defaultConfig {
         applicationId "com.omniretailer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 34
-        versionName "1.1.8"
+        versionCode 38
+        versionName "1.2.3"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {

@@ -15,6 +15,7 @@ import Inventory from './Inventory/Inventory';
 import Customer from './Customer/Customer';
 import Wallet from './Wallet/Wallet';
 import Coupan from './Coupan/Coupan';
+import QrCode from './QrCode';
 
 const orderStatusData = [
   { id: '1', status: 'Dashboard', elevation: 5, screen: Dashboard },
@@ -26,6 +27,7 @@ const orderStatusData = [
   { id: '12', status: 'Add Store Details', elevation: 5, screen: Addstore },
   { id: '13', status: 'Wallet', elevation: 5, screen: Wallet },
   { id: '14', status: 'Coupon', elevation: 5, screen: Coupan },
+  { id: '15', status: 'Qr Code', elevation: 5, screen: QrCode },
   // Add more order statuses as needed
 ];
 

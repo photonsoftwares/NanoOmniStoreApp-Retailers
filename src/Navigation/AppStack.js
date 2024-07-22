@@ -44,6 +44,8 @@ import SubCategory from '../Screens/AppScreens/Setting/CategoryUpdate/SubCategor
 import SubCategoryAdd from '../Screens/AppScreens/Setting/CategoryUpdate/SubCategoryAdd'
 import SubCategoryUpdate from '../Screens/AppScreens/Setting/CategoryUpdate/SubCategoryUpdate'
 import Scan from '../Components/Scan'
+import WalletSearch from '../Screens/AppScreens/Setting/Wallet/WalletSearch'
+import QrCode from '../Screens/AppScreens/Setting/QrCode'
 
 const AppStack = (Stack) => {
   return (
@@ -175,6 +177,10 @@ const AppStack = (Stack) => {
         component={Wallet}
       />
       <Stack.Screen
+        name={NavigationStrings.QRCODE}
+        component={QrCode}
+      />
+      <Stack.Screen
         name={NavigationStrings.CREATEWALLET}
         component={CreateWallet}
       />
@@ -231,6 +237,10 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.SCAN}
         component={Scan}
+      />
+      <Stack.Screen
+        name={NavigationStrings.WALLETSEARCH}
+        component={WalletSearch}
       />
 
 

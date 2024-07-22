@@ -48,7 +48,13 @@ const CustomerWallet = () => {
 
     return (
         <View style={styles.container}>
-            <HeaderComp screenName={'My Customers'} onBackPress={() => navigation.goBack()} showCustomer={true} />
+            <HeaderComp
+                screenName={'My Customers'}
+                onBackPress={() => navigation.goBack()}
+                showCustomer={true}
+                // showWalletSearch={true}
+
+            />
 
             <FlashList
                 data={customerListData || []}

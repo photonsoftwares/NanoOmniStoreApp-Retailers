@@ -1,4 +1,3 @@
-/////ColorPicker
 import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, TextInput, Alert, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Button, Pressable } from 'react-native';
 import HeaderComp from '../../../../Components/HeaderCompo';
@@ -16,8 +15,8 @@ import Home from '../../Home/Home';
 import { setCurrentCategoryItemPage } from '../../../../ReduxToolkit/features/categoryItemsSlice';
 import CustomModal from '../../../../Components/Modal';
 import { showToast } from '../../../../utils/toast';
-import ColorPicker from '../../../../Components/ColorPicker';
 import { setSelectedMasterCategory } from '../../../../ReduxToolkit/features/mainCategorySlice';
+import WeightUnitSelector from '../../../../Components/WeightUnitSelector';
 
 
 
@@ -26,22 +25,22 @@ import { setSelectedMasterCategory } from '../../../../ReduxToolkit/features/mai
 const AddProducts = () => {
     const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
     const { subCategory, subCategoryItems, masterCategory, selectedMasterCategory, } = useSelector((state) => state?.mainCategoryReducer);
+    const { storeType } = useSelector((state) => state?.authReducer?.user?.store_data)
+
     const [modalVisible, setModalVisible] = useState(false);
     const [subCategoryModalVisible, setSubCategoryModalVisible] = useState(false);
     const dispatch = useDispatch()
     const navigation = useNavigation()
-    const { categoryData } = useSelector((state) => state?.productReducer);
-    const [dropdownData, setdropdownData] = useState([])
-    // const [selectedCategory, setSelectedCategory] = useState(categoryData[0]?.category_name);
     const [selectedCategory, setSelectedCategory] = useState(masterCategory[0]?.masterCategoryName);
     const [selectedSubCategory, setSelectedSubCategory] = useState(subCategory[0]?.category);
-    const [colorPickerVisible, setColorPickerVisible] = useState(false);
     const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedUnit, setSelectedUnit] = useState('KG');
 
 
 
 
-    // console.log('AddProducts', masterCategory)
+
+    console.log('AddProducts', storeType, selectedUnit)
     const [formData, setFormData] = useState({
         item_name: '',
         description: '',
@@ -76,8 +75,6 @@ const AddProducts = () => {
     };
 
 
-
-
     useEffect(() => {
         getCategoryDropDown()
     }, [])
@@ -85,7 +82,6 @@ const AddProducts = () => {
     const getCategoryDropDown = async () => {
         const resp = await dispatch(GetCategoryMethod())
         setdropdownData(resp)
-
     }
 
     // Function to handle selection of category
@@ -114,13 +110,12 @@ const AddProducts = () => {
     const handleSubCategorySelect = (category) => {
         setSelectedSubCategory(category);
         setSubCategoryModalVisible(false)
-
     };
 
 
     const [selectedImage, setSelectedImage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const imageData = selectedImage?.assets[0]
+    const [isLoading, setIsLoading] = useState(false);
 
     // console.log(imageData)
 
@@ -193,6 +188,9 @@ const AddProducts = () => {
         product_color: selectedColor,
         status: "available"
     }
+    const handleUnitChange = (unit) => {
+        setSelectedUnit(unit);
+    };
 
     const handleAddProduct = async () => {
 
@@ -204,8 +202,6 @@ const AddProducts = () => {
             showToast('Please enter item price');
             return;
         }
-
-
 
         const body = {
             item_name: formData.item_name,
@@ -231,11 +227,11 @@ const AddProducts = () => {
             opening_qty: formData.opening_quantity,
             closing_qty: formData.closing_quantity,
             received_qty: formData.received_quantity,
-            UOM: "pieces",
+            UOM: storeType == 'Vegitable' ? selectedUnit : '',
             colorList: [SelectedColor],
         };
 
-        console.log("AddItem", body)
+        // console.log("AddItem", body)
 
         const resp = await dispatch(AddNewItemMethod(body))
         if (resp?.status === true) {
@@ -245,8 +241,6 @@ const AddProducts = () => {
                 console.log(itemId);
                 const url = `${BASE_URL}item/save-image/${itemId}`
                 imgUpload(url)
-
-
             } else {
                 showToast("item_id is empty or undefined")
             }
@@ -260,7 +254,7 @@ const AddProducts = () => {
 
     }
 
-    // console.log("categoryData", categoryData)
+    console.log("categoryData", storeType)
 
 
     return (
@@ -387,23 +381,17 @@ const AddProducts = () => {
                         value={formData.price}
                         onChangeText={(text) => handleChange('price', text)}
                         keyboardType='numeric'
-
                     />
 
 
 
                     <TextInput
                         style={styles.input}
-                        placeholder="Description"
+                        placeholder={storeType == 'medical' ? "Composotion/Description" : "Description"}
                         placeholderTextColor={'grey'}
                         value={formData.description}
                         onChangeText={(text) => handleChange('description', text)}
                     />
-
-
-
-
-
 
                     <TextInput
                         style={styles.input}
@@ -412,6 +400,15 @@ const AddProducts = () => {
                         onChangeText={(text) => handleChange('opening_quantity', text)}
                         keyboardType='numeric'
                     />
+
+                    {
+                        storeType == 'Vegitable' ?
+                            <WeightUnitSelector onUnitChange={handleUnitChange} />
+                            :
+                            null
+                    }
+                    {/* <Text style={styles.selectedUnitText}>Selected Unit: {selectedUnit}</Text> */}
+
 
                     {/* <TextInput
                         style={styles.input}

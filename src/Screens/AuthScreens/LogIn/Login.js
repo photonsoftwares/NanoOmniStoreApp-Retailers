@@ -131,7 +131,7 @@ const Login = () => {
 
 
 
-        <ButtonCompo onPress={() => handleSubmit()} title="Log In" style={{}} />
+        <ButtonCompo onPress={() => handleSubmit()} title="Login with Business Owner" style={{}} />
         {/* <ButtonCompo onPress={() => getFcmToken()} title="GetFCM" style={{}} />
         <ButtonCompo onPress={() => getFCMToken2()} title="getFCMToken" style={{}} /> */}
         {/* <ButtonCompo onPress={() => checkUpdate()} title="Check Version" style={{}} /> */}

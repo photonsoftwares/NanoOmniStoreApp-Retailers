@@ -70,8 +70,6 @@ const Home = () => {
           <Banner url={bannerUrl} />
         </View>
 
-
-
         <HomeMasterCategory />
 
 

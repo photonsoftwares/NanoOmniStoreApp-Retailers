@@ -5,8 +5,6 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Calender from '../../../../../../Components/Calender';
 import { GetgetSalesSummarytMethod } from '../../../../../../config/userApiMethods';
 import NoDataFound from '../../../../../../Components/NoDataFound';
-import { FlashList } from "@shopify/flash-list";
-import { showToast } from '../../../../../../utils/toast';
 
 
 const getCurrentDateInIndianFormat = () => {
@@ -72,23 +70,11 @@ const SalesSummary = () => {
     dispatch(GetgetSalesSummarytMethod(fromDate, toDate));
   }, [fromDate, toDate]);
 
-  // console.log("<>", fromDate, toDate)
 
-  useFocusEffect(() => {
-    // showMessage({
-    //   message: "Select Date",
-    //   description: "Please Select from date and to date",
-    //   type: "info",
-    // });
-
-    showToast("Please Select from date and to date")
-
-  })
+ 
   return (
     <>
       <View style={[{ flexDirection: "row", justifyContent: 'space-around', elevation: 2, backgroundColor: '#fff', borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }]}>
-        {/* <Text style={styles.listStyle}>{`Sales Summary (Business Date: ${fromDate} - ${toDate})`}</Text> */}
-        {/* <TouchableOpacity style={styles.generateButton}> */}
         <Calender
           placeholder="From Date"
           onSelect={(date) => handleSelectedDate(date, 'From Date')}
@@ -102,7 +88,6 @@ const SalesSummary = () => {
           placeholder="To Date"
           onSelect={(date) => handleSelectedDate(date, 'To Date')}
         />
-        {/* </TouchableOpacity> */}
       </View>
 
       {salesSummaryData?.length === 0 ?
@@ -117,25 +102,13 @@ const SalesSummary = () => {
         )
         :
         null}
-      {/* <FlatList
-        data={salesSummaryData}
-        // keyExtractor={keyExtractor}
-        keyExtractor={(item, index) => item.business_date}
-        renderItem={renderItem}
-        contentContainerStyle={styles.flatListContainer}
-      /> */}
 
-      <FlashList
+      <FlatList
         data={salesSummaryData}
         keyExtractor={(item, index) => item?.business_date}
         renderItem={renderItem}
-        // key={numColumns.toString()} // Add a unique key based on numColumns
         contentContainerStyle={styles.flatListContainer}
-
-
         estimatedItemSize={200}
-
-
       />
 
     </>

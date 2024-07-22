@@ -210,12 +210,27 @@ const SubCategoryItemListRender = ({ item }) => {
 
   return (
     <View style={[styles.itemContainer, {}]}>
-      {
+      {/* {
         totalOff == '-Infinity%' ?
           <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
           :
           <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
-      }
+      } */}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 6, width: '80%' }}>
+        {
+          item?.stock == 0 ?
+            <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>out of stock</Text>
+            :
+            <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, }}>Stock: {item?.stock}</Text>
+        }
+        {
+          totalOff == '-Infinity%' ?
+            <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
+            :
+            <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
+        }
+
+      </View>
 
       <FastImage
         source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
@@ -246,9 +261,9 @@ const HomeSubeCategoryItem = () => {
     return subCategoryItems;
   }, [subCategoryItems]);
 
+  // console.log("memoizedsubCategoryItems", memoizedsubCategoryItems)
+
   const loadMoreData = async () => {
-
-
     if (subCategoryItemsTotalPage > subCategoryItemsPage) {
       setLoder(true)
       dispatch(setSubCategoryItemsPage(subCategoryItemsPage + 1))

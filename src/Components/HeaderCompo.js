@@ -78,9 +78,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Scan from './Scan';
+import WalletSearch from '../Screens/AppScreens/Setting/Wallet/WalletSearch';
 
 
-const HeaderComp = ({ screenName, onBackPress, onPressLeft, onPressLefttrue, onPressLeftImage, onPressCart, cartTrue = false, showCustomer = false, showInventory = false, showScan = false, onPressScan }) => {
+const HeaderComp = ({ screenName, onBackPress, onPressLeft, onPressLefttrue, onPressLeftImage, onPressCart, cartTrue = false, showCustomer = false, showInventory = false, showScan = false, onPressScan, showWalletSearch = false }) => {
     const { cartItems } = useSelector((state) => state?.cartReducer);
     const { customerListData } = useSelector(state => state?.customerListReducer);
     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer)
@@ -97,39 +98,30 @@ const HeaderComp = ({ screenName, onBackPress, onPressLeft, onPressLefttrue, onP
                 <Text style={styles.screenName}>{screenName}</Text>
             </View>
 
-            {/* {onPressLeft == undefined ?
-                null
 
-                :
-                <TouchableOpacity onPress={() => onPressLeft} style={[{ height: moderateScale(30), width: moderateScale(30), alignSelf: 'center' }]}>
-                    <Image
-                        source={imagePath.AddPackgeService}
-                        style={{ height: '100%', width: '100%' }}
-                        resizeMode='center'
-                    />
-                </TouchableOpacity>
-            } */}
             {onPressLefttrue &&
-                <TouchableOpacity onPress={() => onPressLeft()} style={[{ height: moderateScale(30), width: moderateScale(30), alignSelf: 'center', }]}>
-                    <Image
-                        source={onPressLeftImage}
-                        style={{ height: '100%', width: '100%' }}
-                        resizeMode='center'
-                    />
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row',gap:16 }}>
+                    {showWalletSearch &&
+                        <TouchableOpacity onPress={() => navigation.navigate(WalletSearch)}>
+                            <MaterialCommunityIcons name="magnify" size={30} color={'#000'} />
+                        </TouchableOpacity>
+                    }
+                    <TouchableOpacity onPress={() => onPressLeft()} style={[{ height: moderateScale(30), width: moderateScale(30), alignSelf: 'center', }]}>
+                        <Image
+                            source={onPressLeftImage}
+                            style={{ height: '100%', width: '100%' }}
+                            resizeMode='center'
+                        />
+                    </TouchableOpacity>
+                </View>
             }
-            {/* {showScan &&
-                <TouchableOpacity onPress={() => navigation.navigate(Scan)}>
-                    <MaterialCommunityIcons name="qrcode-scan" size={30} color={'#000'} />
-                </TouchableOpacity>
-            } */}
+
 
             {/* Badge With Icon */}
             {cartTrue &&
                 <View style={{ flexDirection: 'row', gap: 16 }}>
                     {showScan &&
                         <TouchableOpacity onPress={() => navigation.navigate(Scan)}>
-                            {/* // <TouchableOpacity onPress={() => onPressScan()}> */}
                             <MaterialCommunityIcons name="qrcode-scan" size={30} color={'#000'} />
                         </TouchableOpacity>
                     }

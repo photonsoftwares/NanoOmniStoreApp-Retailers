@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import TextInputCompo from '../../../../Components/TextInputCompo'
 import { useDispatch, useSelector } from 'react-redux';
 import { validateLoginForm, validateWalletBalanceForm } from '../../../../utils/validation';
@@ -9,6 +9,7 @@ import HeaderComp from '../../../../Components/HeaderCompo';
 import { useNavigation } from '@react-navigation/native';
 import { CreateWalletMethod, UpdateWalletMethod } from '../../../../config/userApiMethods';
 import { moderateScale } from '../../../../styles/responsiveSize';
+import AddWithdrawSelector from '../../../../Components/AddWithdrawSelector';
 
 const UpdateWallet = (props) => {
     const { id } = props?.route?.params
@@ -22,7 +23,7 @@ const UpdateWallet = (props) => {
     });
     const dispatch = useDispatch();
     const navigation = useNavigation()
-    // console.log("first", props, "<>JKL:", id)
+        // console.log("first", props, "<>JKL:", id)
 
         ;
 
@@ -51,6 +52,9 @@ const UpdateWallet = (props) => {
 
 
     const handleSubmit = async () => {
+        if (selectedOption == null) {
+            return showToast("please select method")
+        }
         if (formIsValid) {
             const data = {
                 balance: inputs.balance,
@@ -60,8 +64,7 @@ const UpdateWallet = (props) => {
                 walletId: id,
             };
 
-            const resp = await dispatch(UpdateWalletMethod(data))
-
+            const resp = await dispatch(UpdateWalletMethod(data, selectedOption))
             console.log("UpdateWalletMethod",)
 
             if (resp?.status == true) {
@@ -70,13 +73,18 @@ const UpdateWallet = (props) => {
 
             }
 
-
         } else {
             showToast("enter correct value")
         }
     }
 
-    console.log("error", errors, formIsValid)
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const handleSelect = useCallback((option) => {
+        setSelectedOption(option);
+    }, []);
+
+    console.log("selectedOption", selectedOption)
     return (
         <View style={styles.container}>
             <HeaderComp screenName={'Update Wallet'} onBackPress={() => navigation.goBack()} />
@@ -92,6 +100,10 @@ const UpdateWallet = (props) => {
                     keyboardType="number-pad"
                     error={errors.balance}
                 />
+                <AddWithdrawSelector onSelect={handleSelect} />
+                {/* {selectedOption && (
+                    <Text style={styles.selectedText}>Selected: {selectedOption}</Text>
+                )} */}
 
                 <ButtonCompo onPress={() => handleSubmit()} title="Update Balance" style={{}} />
 

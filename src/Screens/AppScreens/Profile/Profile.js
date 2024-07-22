@@ -31,22 +31,17 @@ const Profile = () => {
     city,
     country,
     state,
-    address
+    address,
+    storeType
 
   } = useSelector((state) => state?.authReducer?.user?.store_data)
   const colors = useTheme().colors;
-
   const userData = useSelector((state) => state?.authReducer?.user);
-
-  // console.log("userData",phoneNo)
+console.log("storeType",storeType)
 
   const handleUserLogout = async () => {
     try {
-      // Clear AsyncStorage data
       await AsyncStorage.clear();
-      // Perform other logout actions (e.g., navigate to login screen)
-      // For example:
-      // navigation.navigate('Login');
       dispatch(logoutSuccess())
       dispatch(clearRecommended())
       dispatch(clearOrders())

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CustomCalender = ({ onDateChange }) => {
@@ -13,14 +13,8 @@ const CustomCalender = ({ onDateChange }) => {
         onDateChange(currentDate);
     };
 
-    const showDatepicker = () => {
-        setShowPicker(true);
-    };
-
     return (
         <View>
-            {/* <Button onPress={showDatepicker} title="Select Date" /> */}
-            {/* {showPicker && ( */}
             <DateTimePicker
                 testID="dateTimePicker"
                 value={date}
@@ -28,16 +22,12 @@ const CustomCalender = ({ onDateChange }) => {
                 is24Hour={true}
                 display="default"
                 onChange={onChange}
+                minimumDate={new Date()}
             />
-            {/* )} */}
         </View>
     );
 };
 
 export default CustomCalender;
-
-
-
-
 
 

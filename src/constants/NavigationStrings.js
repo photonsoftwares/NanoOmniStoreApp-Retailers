@@ -55,9 +55,11 @@ export default {
     INVENTORY: "Inventory",
     CUSTOMER: "Customer",
     WALLET: "Wallet",
+    QRCODE: "QrCode",
     CREATEWALLET: "CreateWallet",
     UPDATEWALLET: "UpdateWallet",
     CUSTOMERWALLET: "CustomerWallet",
+    WALLETSEARCH: "WalletSearch",
     
     COUPAN: "Coupan",
     CREATECOUPAN: "CreateCoupan",

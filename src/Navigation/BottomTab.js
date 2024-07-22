@@ -10,6 +10,7 @@ import Billing from '../Screens/AppScreens/Billing/Billing';
 import Setting from '../Screens/AppScreens/Setting/Setting';
 import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from '@react-navigation/native';
+import Test1 from '../Screens/Test/Test1';
 
 
 

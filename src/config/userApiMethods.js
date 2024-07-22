@@ -16,7 +16,7 @@ import axios from "axios";
 import { setSalesSummary } from "../ReduxToolkit/features/salesSummary";
 import { setExtraDeliveryChargesValue, setExtraMinOrderValue } from "../ReduxToolkit/features/extraChargesSlice";
 import { setCustomerList } from "../ReduxToolkit/features/customerList";
-import { setWallet } from "../ReduxToolkit/features/walletSlice";
+import { setAllRetailerWallet, setRetailerWallet, setWallet } from "../ReduxToolkit/features/walletSlice";
 import { setCoupan } from "../ReduxToolkit/features/coupanSlice";
 import { addMoreSubCategoryItemsData, setMasterCategoryData, setSubCategoryCategory, setSubCategoryItemsData, setSubCategoryItemsPage, setSubCategoryItemsTotalPage } from "../ReduxToolkit/features/mainCategorySlice";
 import { addInventoryMoreData, setInventory, setInventoryCurrentPage } from "../ReduxToolkit/features/InventorySlice";
@@ -432,7 +432,7 @@ export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommen
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
-            // console.log('CategoryItemUpdateMethod_resp', response, endUrl);
+            console.log('CategoryItemUpdateMethod_resp', response, endUrl);
 
             if (response?.status == true) {
 
@@ -552,11 +552,8 @@ export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch,
 
 export const GetSearchItemsMethod = (searchText) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-    const { categoryItemsCurrentPage } = getState().categoryItemsReducer;
-
     // console.log('GetSearchItemsMethod_props', storeId, saasId, page,categoryItemsCurrentPage);
 
-    dispatch(setLoadingState(true));
 
     try {
         const endUrl = `${BASE_URL}search/get-result/${storeId}/${saasId}/${searchText}`;
@@ -565,14 +562,10 @@ export const GetSearchItemsMethod = (searchText) => async (dispatch, getState) =
 
         try {
             const response = await ApiRequest(endUrl, method, headers);
-
             // console.log('GetSearchItemsMethod_resp', response?.data.length);
+
             if (response?.status === true) {
-                // console.log("GetSearchItemsMethod", response?.data.length);
-
                 dispatch(setSearch(response?.data))
-
-
                 return response?.data;
             } else {
                 throw new Error("No products found in the response");
@@ -584,12 +577,41 @@ export const GetSearchItemsMethod = (searchText) => async (dispatch, getState) =
             dispatch(setLoadingState(false));
         }
     } catch (error) {
-        // console.error("TestMethod unexpected error:", error);
         showToast("something error")
-
-        dispatch(setLoadingState(false));
     }
 };
+
+export const SearchWalletItemsMethod = (searchText) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    console.log('SearchWalletItemsMethod_props', storeId, saasId, searchText);
+
+
+    try {
+        const endUrl = `${BASE_URL}wallet/get-customer-wallet/${storeId}/${saasId}/${searchText}`;
+        const method = "GET";
+        const headers = {};
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers);
+            console.log('SearchWalletItemsMethod_resp', response);
+
+            if (response?.status === true) {
+                dispatch(setAllRetailerWallet(response?.data))
+                return response?.data;
+            } else {
+                showToast("SearchWalletItemsMethod fail")
+            }
+
+        } catch (error) {
+
+        } finally {
+            dispatch(setLoadingState(false));
+        }
+    } catch (error) {
+        showToast("something error")
+    }
+};
+
 
 export const AddToCartMethod = (data) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
@@ -1197,7 +1219,7 @@ export const GetMainAndSubCategoryMethod = (masterCategoryId) => async (dispatch
 
 export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-    const { subCategoryItemsPage, selectedSubCategory, subCategoryItems,subCategoryItemsTotalPage } = getState()?.mainCategoryReducer
+    const { subCategoryItemsPage, selectedSubCategory, subCategoryItems, subCategoryItemsTotalPage } = getState()?.mainCategoryReducer
     // console.log('GetSubCategoryItemsMethod_props', storeId, saasId, subCategoryItemsPage, selectedSubCategory);
 
     const method = "GET";
@@ -1214,7 +1236,7 @@ export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getS
             if (subCategoryItemsPage == 1) {
                 console.log("1")
                 dispatch(setSubCategoryItemsData(response?.data))
-                dispatch(setSubCategoryItemsTotalPage(response?.count/12))
+                dispatch(setSubCategoryItemsTotalPage(response?.count / 12))
             } else {
                 console.log("2")
                 if (response?.next == null) {
@@ -1599,11 +1621,12 @@ export const CreateWalletMethod = (data) => async (dispatch, getState) => {
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body)
-            console.log("CreateWalletMethod_response", response)
+            console.log("CreateWalletMethod_response", response,endUrl)
 
             if (response?.status == true) {
                 showToast("wallet created")
-
+            } else {
+                showToast(response?.message+' please update')
 
             }
             return response
@@ -1621,26 +1644,29 @@ export const CreateWalletMethod = (data) => async (dispatch, getState) => {
     }
 };
 
-export const UpdateWalletMethod = (data) => async (dispatch, getState) => {
+export const UpdateWalletMethod = (data,selectedOption) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
     const { balance, walletId } = data
-    console.log("UpdateWalletMethod_Data", data,)
+    console.log("UpdateWalletMethod_Dataa", data,)
 
 
     try {
         const method = "PUT";
         const headers = {};
         const body = data;
-        const endUrl = `${BASE_URL}wallet/update-wallet-balance/${data?.walletId}/${data?.balance}`;
+        // const endUrl = `${BASE_URL}wallet/update-wallet-balance/${data?.walletId}/${data?.balance}`;
+        // const endUrl = `${BASE_URL}wallet/update-balance/${data?.walletId}/22001/${data?.balance}/WITHDRAW`;
+        const endUrl = `${BASE_URL}wallet/update-balance/${data?.walletId}/${storeId}/${data?.balance}/${selectedOption}`;
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
             console.log("UpdateWalletMethod_response", response, endUrl)
 
             if (response?.status == true) {
-                showToast("wallet balance updated")
-
+                // showToast("wallet balance updated")
+                showToast(response?.message)
+                dispatch(GetAllWalletMethod())
 
             }
             return response
@@ -1662,7 +1688,6 @@ export const UpdateWalletMethod = (data) => async (dispatch, getState) => {
 export const GetAllWalletMethod = () => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
-    // console.log("GetAllWalletMethod")
     dispatch(setLoadingState(true));
 
 
@@ -1673,7 +1698,7 @@ export const GetAllWalletMethod = () => async (dispatch, getState) => {
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
-            // console.log("GetAllWalletMethod_Resp", response)
+            console.log("GetAllWalletMethod_Resp", response)
             dispatch(setWallet(response?.data))
 
         } catch (error) {
@@ -1687,9 +1712,97 @@ export const GetAllWalletMethod = () => async (dispatch, getState) => {
 
         dispatch(setLoadingState(false));
     }
+};
+
+export const CreateRetailerWalletMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
+    const store_per_id = getState()?.authReducer?.user?.store_per_id
+    console.log("CreateRetailerWalletMethod_props", data)
+
+    try {
+        const method = "POST";
+        const headers = {};
+        const body = JSON.stringify(data);
+        const endUrl = `${BASE_URL}wallet/create-retailer-wallet`;
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers, body)
+            console.log("CreateWalletMethod_response", response, endUrl)
+
+            if (response?.status == true) {
+                showToast("Balance added Succesfully ")
+                dispatch(GetRetailerWalletMethod())
+            } else {
+                // showToast("Balance added Succesfully ")
+
+            }
+            return response
+        } catch (error) {
+            showToast("something error in CreateRetailerWalletMethod")
+
+        } finally {
+            dispatch(setLoadingState(false))
+        }
+    } catch (error) {
+        showToast("something error in CreateRetailerWalletMethod")
+    }
+};
+
+export const GetRetailerWalletMethod = () => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
+    const store_per_id = getState()?.authReducer?.user?.store_per_id
 
 
+    try {
+        const method = "GET";
+        const headers = {};
+        const endUrl = `${BASE_URL}wallet/get-retailer-wallet/${storeId}`;
 
+        try {
+            const response = await ApiRequest(endUrl, method, headers,)
+            console.log("GetRetailerWalletMethod_Resp", response, endUrl)
+            dispatch(setRetailerWallet(response?.data?.amount))
+
+        } catch (error) {
+            showToast("something error in GetRetailerWalletMethod")
+
+        } finally {
+            dispatch(setLoadingState(false))
+        }
+    } catch (error) {
+        showToast("something error in GetRetailerWalletMethod")
+    }
+};
+
+export const UpdateRetailerWalletMethod = (data) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
+    const store_per_id = getState()?.authReducer?.user?.store_per_id
+    console.log("UpdateRetailerWalletMethod_props", data)
+
+    try {
+        const method = "PUT";
+        const headers = {};
+        const body = JSON.stringify(data);
+        const endUrl = `${BASE_URL}wallet/update-retailer-wallet`;
+
+        try {
+            const response = await ApiRequest(endUrl, method, headers, body)
+            console.log("UpdateRetailerWalletMethod_response", response)
+
+            if (response?.status == true) {
+                showToast("Balance updated Succesfully ")
+                dispatch(GetRetailerWalletMethod())
+            }
+            return response
+        } catch (error) {
+            showToast("something error in UpdateRetailerWalletMethod")
+
+        } finally {
+            dispatch(setLoadingState(false))
+        }
+    } catch (error) {
+        showToast("something error in UpdateRetailerWalletMethod")
+    }
 };
 
 export const CreateCoupanMethod = (data) => async (dispatch, getState) => {
@@ -1708,7 +1821,7 @@ export const CreateCoupanMethod = (data) => async (dispatch, getState) => {
             console.log("CreateCoupanMethod_response", response)
 
             if (response?.status == true) {
-                showToast("coupan created")
+                showToast("coupon created")
 
 
             }
@@ -1728,18 +1841,17 @@ export const CreateCoupanMethod = (data) => async (dispatch, getState) => {
 export const GetAllCoupanMethod = () => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
-    // console.log("GetAllCoupanMethod")
     dispatch(setLoadingState(true));
 
 
     try {
         const method = "GET";
         const headers = {};
-        const endUrl = `${BASE_URL}coupon/get-all-coupon/${storeId}`;
+        const endUrl = `${BASE_URL}coupon/get-all-coupon-store/${storeId}`;
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
-            console.log("GetAllCoupanMethod_Resp", response?.data)
+            console.log("GetAllCoupanMethod_Resp", response?.data?.length, endUrl)
             dispatch(setCoupan(response?.data))
 
         } catch (error) {

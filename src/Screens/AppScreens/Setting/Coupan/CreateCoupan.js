@@ -10,10 +10,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import CustomModal from '../../../../Components/Modal'
 import CustomDropDown from '../../../../Components/CustomDropDown'
 import { useNavigation } from '@react-navigation/native'
-import { CreateCoupanMethod } from '../../../../config/userApiMethods'
 import CustomCalender from '../../../../Components/CustomCalender'
 import { Customer_Eligibility } from '../../../../DataBase/db'
-import { showToast } from '../../../../utils/toast'
+import { CreateCoupanMethod } from '../../../../config/userApiMethods'
 
 
 
@@ -24,7 +23,6 @@ const CreateCoupan = () => {
     const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
     const { categoryData } = useSelector((state) => state?.productReducer);
     const [modalVisible, setModalVisible] = useState(false);
-    // const [selectedCategory, setSelectedCategory] = useState(categoryData[0]?.category_name);
     const [selectedCategory, setSelectedCategory] = useState();
     const [dropDownType, setDropDownType] = useState(null);
     const [dropDownRender, setDropDownRender] = useState('1');
@@ -40,12 +38,12 @@ const CreateCoupan = () => {
         effective_from: "",
         expiration_date: '',
         description: "",
-        discount_type: selectedOption,
+        discount_type: selectedOption == 'option1' ? "Fixed" : selectedOption,
         discount_amount: null,
         discount_percent: null,
         max_discount: null,
         Min_order_Amount: null,
-        applies_to: "",
+        applies_to: "" || "All",
         customer_eligibility: "",
         auto_apply: true,
         show_to_customer: true,
@@ -93,7 +91,7 @@ const CreateCoupan = () => {
 
 
     const handleSubmit = async () => {
-        // console.log("createCoupanLOg", inputs, inputs.coupon_name !== '',inputs)
+        // console.log("createCoupanLOg", inputs,)
 
         if (inputs.coupon_name !== '' && inputs.effective_from !== '' && inputs.expiration_date !== '' && inputs.customer_eligibility !== '') {
             const resp = await dispatch(CreateCoupanMethod(inputs))
@@ -157,7 +155,6 @@ const CreateCoupan = () => {
         } else {
             setDateVisible(false)
             handleOnChange(formattedDate, 'expiration_date')
-
         }
         setDateVisible(false)
 
@@ -220,10 +217,7 @@ const CreateCoupan = () => {
                                 selected={selectedCategoryOption === option.key}
                                 onPress={() => { setSelectedCategoryOption(option.key), handleOnChange(option.text, 'applies_to') }}
                                 label={option.text}
-                            // key={option.key}
-                            // selected={selectedOption === option.key}
-                            // onPress={() => { setSelectedOption(option.key), handleOnChange(option.text, 'discount_type') }}
-                            // label={option.text}
+
                             />
                         ))}
                     </View>
@@ -240,7 +234,6 @@ const CreateCoupan = () => {
                                 iconName="shape-plus"
                                 placeholder="Set Applies To"
                                 value={selectedCategory}
-                                maxLength={10}
                                 keyboardType="number-pad"
                                 error={errors.applies_to}
                                 editable={false}
@@ -259,7 +252,6 @@ const CreateCoupan = () => {
                     iconName="account"
                     placeholder="Select Customer Eligibility"
                     value={inputs.customer_eligibility}
-                    maxLength={10}
                     keyboardType="number-pad"
                     error={errors.customer_eligibility}
                     editable={false}
@@ -286,8 +278,6 @@ const CreateCoupan = () => {
                     </View>
 
                 </CustomModal>
-
-
                 {
                     dateVisible &&
                     <CustomCalender
@@ -309,7 +299,6 @@ const CreateCoupan = () => {
                     onFocus={() => setErrors({ ...errors, description: null })}
                     iconName="pen"
                     placeholder="Enter Description"
-                    maxLength={10}
                     error={errors.description} description
                 />
                 <View style={styles.discount}>
