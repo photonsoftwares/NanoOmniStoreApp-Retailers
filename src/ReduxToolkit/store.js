@@ -20,6 +20,7 @@ import walletSliceReducer from './features/walletSlice';
 import coupanSliceReducer from './features/coupanSlice';
 import mainCategoryReducer from './features/mainCategorySlice';
 import inventoryReducer from './features/InventorySlice';
+import dashboardReducer from './features/dashboardSlice';
 
 
 
@@ -44,6 +45,7 @@ const appReducer = combineReducers({
 
     mainCategoryReducer,
     inventoryReducer,
+    dashboardReducer,
 });
 
 const rootReducer = (state, action) => {
@@ -62,6 +64,7 @@ const persistConfig = {
         'categoryItemsReducer',
         'cartReducer',
         'extraChargesReducer',
+        'dashboardReducer',
 
 
     ], //Things you want to persist

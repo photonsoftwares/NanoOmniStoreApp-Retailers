@@ -184,7 +184,7 @@
 
 ////////////////////////////////////////////////
 
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import HeaderComp from '../../../../../Components/HeaderCompo'
 import { moderateScale, scale, textScale } from '../../../../../styles/responsiveSize'
@@ -200,6 +200,7 @@ const Addstore = ({ navigation }) => {
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     // console.log("image", selectedFile1?.assets[0]?.uri, "<>", selectedFile2?.assets[0]?.uri, "<<><><>>", selectedFile3?.assets[0]?.uri)
 
     useEffect(() => {
@@ -230,6 +231,7 @@ const Addstore = ({ navigation }) => {
     };
 
     const uploadImage = async () => {
+        setIsLoading(true)
         try {
             const formData = new FormData();
             if (selectedFile1) {
@@ -258,8 +260,10 @@ const Addstore = ({ navigation }) => {
             }
 
 
-            console.log("FormData:", formData?._parts);
-            console.log("response")
+            // console.log("FormData:", formData?._parts.length, !formData?._parts.length == 3);
+            if (formData?._parts.length < 3) {
+                showToast("Select 3 Images")
+            }
 
             const response = await axios.post(
                 `${BASE_URL}saas-master/save-brandlogo/${saas1}`,
@@ -274,18 +278,23 @@ const Addstore = ({ navigation }) => {
             console.log("responsee", response?.data)
 
             if (response.status == 200) {
-                navigation.navigate("Home");
+                setIsLoading(false)
+                navigation.goBack()
                 console.log('Image upload response:', response?.data);
             } else if (response?.status == 413) {
+                setIsLoading(false)
                 showToast("image file size too big please reduce image size")
                 console.log("image file size too big please reduce image size")
             } else {
+                setIsLoading(false)
                 showToast('Something went wrong while uploading the image')
             }
 
 
         } catch (error) {
             // showToast('Something went wrong while uploading the image')
+            setIsLoading(false)
+
         }
 
     }
@@ -301,7 +310,9 @@ const Addstore = ({ navigation }) => {
             <HeaderComp
                 screenName={'Add Banner'}
                 onBackPress={() => navigation.goBack()} />
-            <ScrollView style={{ backgroundColor: '#FFF', marginVertical: scale(20) }}>
+
+            <ScrollView style={{ backgroundColor: '#FFF', marginVertical: scale(10) }}>
+                <Text style={{ marginTop: moderateScale(8), color: 'red', fontSize: 12, alignSelf: 'center' }}>JPG or PNG images, maximum 20KB</Text>
                 {[selectedFile1, selectedFile2, selectedFile3].map((file, index) => (
                     <View key={index} style={styles.boxContainer}>
                         {file?.assets?.[0]?.uri ? (
@@ -314,7 +325,11 @@ const Addstore = ({ navigation }) => {
                     </View>
                 ))}
                 <TouchableOpacity style={styles.button2} onPress={uploadImage}>
-                    <Text style={styles.buttonText}>Submit</Text>
+                    {
+                        isLoading ?
+                            <ActivityIndicator size={20} /> :
+                            <Text style={styles.buttonText}>Submit</Text>
+                    }
                 </TouchableOpacity>
             </ScrollView>
         </View>

@@ -171,6 +171,9 @@ import { AddToCartMethod, GetCartMethod, GetQRItemMethod } from '../config/userA
 import { useNavigation } from '@react-navigation/native';
 import Cart from '../Screens/AppScreens/Billing/Cart/Cart';
 import { showToast } from '../utils/toast';
+import { clearCategoryData } from '../ReduxToolkit/features/categoriesSlice';
+import HeaderComp from './HeaderCompo';
+import { showSuccess } from '../utils/helperFunctions';
 
 const Scan = () => {
   const [lastScan, setLastScan] = useState('');
@@ -198,6 +201,7 @@ const Scan = () => {
 
   const onSuccess = async (e) => {
     const { data } = e;
+    console.log("OnSuccess",data)
     setLastScan(data);
     await getItem(data);
   };
@@ -243,7 +247,8 @@ const Scan = () => {
       if (resp) {
         await dispatch(GetCartMethod());
         // navigation.navigate(Cart);
-        showToast("item added to cart")
+        // showToast("item added to cart")
+        showSuccess("item added to cart")
       }
     } catch (error) {
       console.error('Error adding item to cart:', error);
@@ -252,6 +257,14 @@ const Scan = () => {
 
   return (
     <View style={{ flex: 1 }}>
+       <HeaderComp
+        screenName={'Scan'}
+        onBackPress={() => navigation.goBack()}
+        cartTrue
+        onPressCart={() => navigation.navigate(Cart)}
+        // showScan={true}
+        // onPressScan={() => navigation.navigate(Scan)}
+      />
       <QRCodeScanner
         ref={scannerRef}
         onRead={onSuccess}
@@ -294,11 +307,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 21,
-    color: 'rgb(0,122,255)'
+    color: 'rgb(0,122,255)',
+    marginTop:10
   },
   buttonTouchable: {
     padding: 16,
-    marginVertical: 10
+    marginVertical: 10,
+    marginTop:20
+
   },
   scanResult: {
     padding: 20,

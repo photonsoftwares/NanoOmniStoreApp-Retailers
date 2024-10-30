@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme, useNavigation } from '@react-navigation/native';
 import ButtonCompo from '../../../Components/ButtonCompo';
@@ -31,6 +31,7 @@ const Login = () => {
     password: '',
   });
   const [version, setVersion] = useState()
+  const [loading, setIsloading] = useState(false)
 
   const dispatch = useDispatch();
   const allState = useSelector((state) => state)
@@ -60,6 +61,7 @@ const Login = () => {
 
   }
   const handleSubmit = async () => {
+    setIsloading(true)
     const data = JSON.stringify({
       user_name: inputs.storeId,
       password: inputs.password,
@@ -67,6 +69,7 @@ const Login = () => {
 
     const a = await dispatch(LogInMethod(data))
     // console.log("second",a)
+    setIsloading(false)
 
   };
   const getCurrentVersion = async () => {
@@ -130,8 +133,12 @@ const Login = () => {
 
 
 
-
-        <ButtonCompo onPress={() => handleSubmit()} title="Login with Business Owner" style={{}} />
+        {
+          loading ?
+            <ActivityIndicator size={25} />
+            :
+            <ButtonCompo onPress={() => handleSubmit()} title="Login with Business Owner" style={{}} />
+        }
         {/* <ButtonCompo onPress={() => getFcmToken()} title="GetFCM" style={{}} />
         <ButtonCompo onPress={() => getFCMToken2()} title="getFCMToken" style={{}} /> */}
         {/* <ButtonCompo onPress={() => checkUpdate()} title="Check Version" style={{}} /> */}

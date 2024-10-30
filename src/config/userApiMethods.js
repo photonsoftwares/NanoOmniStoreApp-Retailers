@@ -20,6 +20,7 @@ import { setAllRetailerWallet, setRetailerWallet, setWallet } from "../ReduxTool
 import { setCoupan } from "../ReduxToolkit/features/coupanSlice";
 import { addMoreSubCategoryItemsData, setMasterCategoryData, setSubCategoryCategory, setSubCategoryItemsData, setSubCategoryItemsPage, setSubCategoryItemsTotalPage } from "../ReduxToolkit/features/mainCategorySlice";
 import { addInventoryMoreData, setInventory, setInventoryCurrentPage } from "../ReduxToolkit/features/InventorySlice";
+import { setDashboard } from "../ReduxToolkit/features/dashboardSlice";
 
 
 
@@ -1621,12 +1622,12 @@ export const CreateWalletMethod = (data) => async (dispatch, getState) => {
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body)
-            console.log("CreateWalletMethod_response", response,endUrl)
+            console.log("CreateWalletMethod_response", response, endUrl)
 
             if (response?.status == true) {
                 showToast("wallet created")
             } else {
-                showToast(response?.message+' please update')
+                showToast(response?.message + ' please update')
 
             }
             return response
@@ -1644,7 +1645,7 @@ export const CreateWalletMethod = (data) => async (dispatch, getState) => {
     }
 };
 
-export const UpdateWalletMethod = (data,selectedOption) => async (dispatch, getState) => {
+export const UpdateWalletMethod = (data, selectedOption) => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data
     const store_per_id = getState()?.authReducer?.user?.store_per_id
     const { balance, walletId } = data
@@ -1931,7 +1932,7 @@ export const getOrderItemDetailMethod = (data) => async (dispatch, getState) => 
         // console.log("getOrderItemDetailMethod response", response?.data);
 
         if (response?.status) {
-
+            7
             await dispatch(setDeliveredItems(response?.data?.order_sub_details))
             // showMessage({
             //   message: response?.message,
@@ -2139,3 +2140,50 @@ export const GetInventoryMethod = () => async (dispatch, getState) => {
 
 /////////
 
+export const DashboardMMethod = () => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+
+    const method = "GET";
+    const headers = {};
+
+    const baseUrl = `${BASE_URL}dashboard`;
+
+    const urls = [
+        `${baseUrl}/today-sales/${storeId}/${new Date().toISOString().split('T')[0]}`,
+        `${baseUrl}/yesterday-sales/${storeId}`,
+        `${baseUrl}/last-week-sales/${storeId}`,
+        `${baseUrl}/last-fourteen-days-sales/${storeId}`,
+        `${baseUrl}/last-month-sales/${storeId}`,
+        `${baseUrl}/last-sixty-days-sales/${storeId}`,
+    ];
+
+    try {
+        const responses = await Promise.all(urls.map(url => ApiRequest(url, method, headers)));
+
+        // Combine or handle the responses as needed
+        const [todaySales, yesterdaySales, lastWeekSales, lastFourteenDaysSales, lastMonthSales, lastSixtyDaysSales] = responses;
+        const data = {
+            todaySales: todaySales?.data ||0,
+            yesterdaySales: yesterdaySales?.data || 0,
+            lastWeekSales: lastWeekSales?.data || 0,
+            lastFourteenDaysSales: lastFourteenDaysSales?.data || 0,
+            lastMonthSales: lastMonthSales?.data || 0,
+            lastSixtyDaysSales: lastSixtyDaysSales?.data || 0
+        }
+        // console.log("Dashboard Resp", data)
+
+        dispatch(setDashboard(data))
+
+        return {
+            todaySales,
+            yesterdaySales,
+            lastWeekSales,
+            lastFourteenDaysSales,
+            lastMonthSales,
+            lastSixtyDaysSales,
+        };
+
+    } catch (error) {
+        showToast(`${error} Error in DashboardMMethod`);
+    }
+};

@@ -1,5 +1,5 @@
-import React, { useCallback, memo, useEffect } from 'react';
-import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useCallback, memo, useEffect, useRef } from 'react';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import HeaderComp from '../../../Components/HeaderCompo';
 import Products from '../Products/Products';
 import Dashboard from './Dashboard/Dashboard';
 import ExtraCharges from './Dashboard/ExtraCharges/ExtraCharges';
-import { GetCustomerMethod, GetDelivryChargesMethod, GetMinOrderValueMethod } from '../../../config/userApiMethods';
+import { DashboardMMethod, GetCustomerMethod, GetDelivryChargesMethod, GetMinOrderValueMethod } from '../../../config/userApiMethods';
 import Category from './CategoryUpdate/Category';
 import Addstore from './Dashboard/Store/Addstore';
 import Inventory from './Inventory/Inventory';
@@ -16,52 +16,82 @@ import Customer from './Customer/Customer';
 import Wallet from './Wallet/Wallet';
 import Coupan from './Coupan/Coupan';
 import QrCode from './QrCode';
+import BusinessSummary from './BusinessSummary/BusinessSummary';
 
 const orderStatusData = [
-  { id: '1', status: 'Dashboard', elevation: 5, screen: Dashboard },
-  { id: '2', status: 'Product', elevation: 5, screen: Products },
-  { id: '3', status: 'Inventory', elevation: 5, screen: Inventory },
-  { id: '4', status: 'Customer', elevation: 5, screen: Customer },
-  { id: '10', status: 'Category', elevation: 5, screen: Category },
-  { id: '11', status: 'Extra Charges', elevation: 5, screen: ExtraCharges },
-  { id: '12', status: 'Add Store Details', elevation: 5, screen: Addstore },
-  { id: '13', status: 'Wallet', elevation: 5, screen: Wallet },
-  { id: '14', status: 'Coupon', elevation: 5, screen: Coupan },
-  { id: '15', status: 'Qr Code', elevation: 5, screen: QrCode },
+  { id: '1', status: 'Dashboard', elevation: 1, screen: Dashboard },
+  { id: '2', status: 'Product', elevation: 1, screen: Products },
+  { id: '3', status: 'Inventory', elevation: 1, screen: Inventory },
+  { id: '4', status: 'Customer', elevation: 1, screen: Customer },
+  { id: '10', status: 'Category', elevation: 1, screen: Category },
+  { id: '11', status: 'Extra Charges', elevation: 1, screen: ExtraCharges },
+  { id: '12', status: 'Store Banner', elevation: 1, screen: Addstore },
+  { id: '13', status: 'Wallet', elevation: 1, screen: Wallet },
+  { id: '14', status: 'Coupon', elevation: 1, screen: Coupan },
+  { id: '15', status: 'Qr Code', elevation: 1, screen: QrCode },
   // Add more order statuses as needed
 ];
 
 
 
-const OrderStatusItem = memo(({ orderStatus }) => {
-  const navigation = useNavigation()
-  const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
+
+
+const OrderStatusItem = React.memo(({ orderStatus, index }) => {
+  const navigation = useNavigation();
+  const animatedValue = useRef(new Animated.Value(0)).current;
+
+
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 300, // Animation duration
+      delay: index * 300, // Delay based on index
+      useNativeDriver: true,
+    }).start();
+  }, [index, animatedValue]);
+
+  const containerStyle = {
+    ...styles.itemContainer,
+    opacity: animatedValue,
+    transform: [
+      {
+        translateY: animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [30, 0], // Slide from 30 units down to 0
+        }),
+      },
+    ],
+
+    // backgroundColor:'red',
+    // bottom:moderateScale(20)
+  };
+
   return (
-    <TouchableOpacity activeOpacity={2} style={styles.itemContainer}>
-      <View style={[styles.serviceContainer, { elevation: orderStatus.elevation }]}>
+    <Animated.View style={containerStyle}>
+      <TouchableOpacity activeOpacity={2} style={styles.serviceContainer} onPress={() => navigation.navigate(orderStatus.screen)}>
         <Text style={styles.serviceName}>{orderStatus.status}</Text>
         <TouchableOpacity onPress={() => navigation.navigate(orderStatus.screen)}>
-
           <MaterialIcons name="keyboard-arrow-right" size={30} color="black" />
         </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Animated.View>
   );
 });
 
 const Setting = () => {
   const keyExtractor = useCallback((item) => item.id, []);
-  const renderItem = useCallback(({ item }) => <OrderStatusItem orderStatus={item} />, []);
+  const renderItem = useCallback(({ item, index }) => <OrderStatusItem orderStatus={item} index={index} />, []);
   const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { ordersData, ordersCurrentPage } = useSelector((state) => state?.orderReducer)
 
 
   useEffect(() => {
     dispatch(GetMinOrderValueMethod())
     dispatch(GetDelivryChargesMethod())
     dispatch(GetCustomerMethod())
+    dispatch(DashboardMMethod())
   }, []);
 
 
@@ -71,15 +101,15 @@ const Setting = () => {
         <HeaderComp
           screenName='Manage'
           onBackPress={() => navigation.goBack()}
-
         />
+
         <FlatList
           data={orderStatusData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           horizontal={false}
           contentContainerStyle={styles.flatListContainer}
-        // pagingEnabled={true}
+          ListHeaderComponent={<BusinessSummary />}
         />
 
       </View>
@@ -91,6 +121,7 @@ const styles = StyleSheet.create({
   container: {
   },
   flatListContainer: {
+    paddingVertical:moderateScale(15)
   },
   serviceContainer: {
     flexDirection: 'row',
@@ -111,6 +142,18 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     margin: moderateScale(8),
+    backgroundColor:'#fff'
+
+  },
+  serviceContainer: {
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    elevation: 1, // Add elevation for shadow (Android)
+    bottom:25
   },
 });
 

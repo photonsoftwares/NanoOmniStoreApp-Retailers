@@ -93,20 +93,7 @@ const Billing = () => {
 
     return (
       <View style={styles.categoryItemsItem}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 6, width: '80%' }}>
-          {
-            item?.stock == 0 ?
-              <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>out of stock</Text>
-              :
-              <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, }}>Stock: {item?.stock}</Text>
-          }
-          {
-            totalOff == '-Infinity%' ?
-              <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
-              :
-              <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
-          }
-        </View>
+
         <MyImgCompo
           imageUri={`${BASE_URL}item/get-image/${item.item_id}`}
           resizeMode='cover'
@@ -123,6 +110,23 @@ const Billing = () => {
             {item.actual_price > item.price ? item.actual_price : ''}
           </Text>
           <Text style={styles.itemPrice} numberOfLines={1}>₹{item.price}</Text>
+        </View>
+
+
+        {/* Stock && DIscount */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around',  width: '100%' }}>
+          {
+            item?.stock == 0 ?
+              <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>OOS</Text>
+              :
+              <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, }}>Stock: {item?.stock}</Text>
+          }
+          {
+            totalOff == '-Infinity%' ?
+              <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
+              :
+              <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
+          }
         </View>
 
         <TouchableOpacity style={styles.button} onPress={() => {
@@ -144,7 +148,6 @@ const Billing = () => {
   };
 
 
-  console.log("Billing", recommendedData?.length)
   return (
 
     <>
@@ -155,8 +158,8 @@ const Billing = () => {
         onPressCart={() => navigation.navigate(Cart)}
         showScan={true}
         onPressScan={() => navigation.navigate(Scan)}
-
       />
+
       <FlashList
         data={recommendedData || []}
         renderItem={renderCategoryItemsItem}
@@ -208,6 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 4,
     elevation: 2, // Add elevation for a shadow effect
+    gap: 8
   },
   serviceImage: {
     width: 100,

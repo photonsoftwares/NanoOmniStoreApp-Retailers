@@ -51,7 +51,6 @@ const HomeMasterCategory = () => {
             <View style={styles.itemContainer}>
                 <View style={{ borderRadius: 200, height: 60, width: 70, overflow: 'hidden' }}>
                     <MyImgCompo
-                        // imageUri={`${item.image_path}?key=${new Date()}`}
                         imageUri={`${BASE_URL}Master-category/get-master-image/${item.masterCategoryId}?key=${new Date()}`}
                         ImgCompoStyle={{ height: 60, width: 60, paddingHorizontal: 10, marginLeft: 8, borderRadius: 200 }}
                         resizeMode='cover'
@@ -65,7 +64,6 @@ const HomeMasterCategory = () => {
 
 
 
-    // console.log("masterCategory", masterCategory[0])
     return (
         <View style={{ flex: 1 }}>
 

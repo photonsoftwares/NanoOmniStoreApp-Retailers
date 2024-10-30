@@ -25,8 +25,6 @@ const App = () => {
 
   })
 
-
-
   useEffect(() => {
     if (Platform.OS === 'android') {
       // Only request POST_NOTIFICATIONS for Android 13 and above

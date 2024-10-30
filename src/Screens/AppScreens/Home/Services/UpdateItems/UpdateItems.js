@@ -22,17 +22,16 @@ const UpdateItemScreen = ({ route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [subCategoryModalVisible, setSubCategoryModalVisible] = useState(false);
     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
-    // const itemToUpdate = recommendedData.find((item) => item?.item_id === itemId);
-
-    // console.log("UpdateItemScreen",itemToUpdate)
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
-    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
+    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.stock || '');
     const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price?.toString() || '');
     const [status, setStatus] = useState(itemToUpdate?.status);
     const [category, setCategory] = useState(itemToUpdate?.category || '');
     const [isOpen, setOpen] = useState(false);
+
+    // console.log("itemToUpdate",itemToUpdate?.stock)
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -279,6 +278,8 @@ const UpdateItemScreen = ({ route }) => {
                             </View>
 
                         </View>
+                        <Text style={{ marginTop: moderateScale(8), color: 'red',fontSize:12 ,alignSelf:'center'}}>JPG or PNG images, maximum 20KB</Text>
+
                         <Text style={styles.label}>Item Name</Text>
                         <TextInput
                             style={styles.input}

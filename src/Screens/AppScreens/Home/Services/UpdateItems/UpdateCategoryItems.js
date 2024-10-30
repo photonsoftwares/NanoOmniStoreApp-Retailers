@@ -13,6 +13,7 @@ import { BASE_URL } from '../../../../../config/Base_Url';
 import Loader from '../../../../../Components/Loader';
 import CustomDropDown from '../../../../../Components/CustomDropDown';
 import CustomModal from '../../../../../Components/Modal';
+import { showToast } from '../../../../../utils/toast';
 
 const UpdateCategoryItems = ({ route }) => {
     const { itemId } = route?.params;
@@ -31,10 +32,12 @@ const UpdateCategoryItems = ({ route }) => {
     const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price.toString() || '');
     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
-    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
+    // const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
+    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.stock || '');
     const [status, setStatus] = useState(itemToUpdate?.status);
     const [category, setCategory] = useState(itemToUpdate?.category || '');
     const [isOpen, setOpen] = useState(false);
+    // console.log("receivedQty",itemToUpdate,"<>",itemToUpdate?.stock)
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -67,6 +70,9 @@ const UpdateCategoryItems = ({ route }) => {
 
     const handleUpdate = async () => {
         // setIsLoading(true)
+        if (receivedQty == 0) {
+            showToast("please add quantity")
+        }
 
         const data = {
             "item_name": itemName,
@@ -97,7 +103,6 @@ const UpdateCategoryItems = ({ route }) => {
 
         }
         const jsonString = JSON.stringify(data);
-        console.log("jsonString", jsonString, itemId)
 
         const ItemUpdateMethod_resp = await dispatch(CategoryItemUpdateMethod(jsonString, itemId,
             storeId,
@@ -250,6 +255,8 @@ const UpdateCategoryItems = ({ route }) => {
                             </View>
 
                         </View>
+                        <Text style={{ marginTop: moderateScale(8), color: 'red',fontSize:12 ,alignSelf:'center'}}>JPG or PNG images, maximum 20KB</Text>
+
                         {/* //////////// */}
 
                         <Text style={styles.label}>Item Name</Text>

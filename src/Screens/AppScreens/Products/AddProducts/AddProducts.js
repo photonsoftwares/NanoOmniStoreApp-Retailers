@@ -40,7 +40,6 @@ const AddProducts = () => {
 
 
 
-    console.log('AddProducts', storeType, selectedUnit)
     const [formData, setFormData] = useState({
         item_name: '',
         description: '',
@@ -298,7 +297,7 @@ const AddProducts = () => {
 
 
                         </View>
-                        <Text style={{ marginTop: moderateScale(8), color: '#000' }}>Please Upload Item Image</Text>
+                        <Text style={{ marginTop: moderateScale(8), color: 'red',fontSize:12 }}>JPG or PNG images, maximum 20KB</Text>
                     </View>
                     <Text style={{ color: 'grey' }}>*</Text>
                     <TextInput

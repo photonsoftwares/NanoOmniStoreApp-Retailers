@@ -366,7 +366,6 @@ const CustomerListData = memo(({ item }) => {
                 <TouchableOpacity
                     onPress={() => navigation.push('UpdateWallet', { id: item.wallet_id })}
                 >
-
                     <MaterialCommunityIcons name="book-edit" size={26} color={'grey'} />
                 </TouchableOpacity>
             </View>
@@ -380,7 +379,6 @@ const ListHeader = memo(() => {
     return (
         <View style={styles.listheader} >
             <View>
-
                 <Text style={styles.listHeaderTitle}>Customer Wallet</Text>
             </View>
 
@@ -444,10 +442,7 @@ const Wallet = () => {
             setAmount('');
         } else {
             showToast('Please enter a valid amount to add.')
-
         }
-
-
     };
 
     // console.log("balance",amount)

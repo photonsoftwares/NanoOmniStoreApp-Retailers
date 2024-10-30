@@ -31,21 +31,7 @@ const ServiceItem = memo(({ service }) => {
     }
     return (
         <View style={[styles.serviceContainer, { elevation: 10 }]}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 6, width: '80%' }}>
-                {
-                    service?.stock == 0 ?
-                        <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>out of stock</Text>
-                        :
-                        <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, }}>Stock: {service?.stock}</Text>
-                }
-                {
-                    totalOff == '-Infinity%' ?
-                        <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
-                        :
-                        <Text style={{ alignSelf: 'flex-end', backgroundColor: service?.actual_price > service?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{service?.actual_price > service?.price ? totalOff : null}</Text>
-                }
 
-            </View>
 
             <MyImgCompo
                 imageUri={url}
@@ -62,6 +48,22 @@ const ServiceItem = memo(({ service }) => {
                 </View>
             </View>
 
+            {/* Stock */}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
+                {
+                    service?.stock == 0 ?
+                        <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>OOS</Text>
+                        :
+                        <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, }}>Stock: {service?.stock}</Text>
+                }
+                {
+                    totalOff == '-Infinity%' ?
+                        <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
+                        :
+                        <Text style={{ alignSelf: 'flex-end', backgroundColor: service?.actual_price > service?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{service?.actual_price > service?.price ? totalOff : null}</Text>
+                }
+
+            </View>
             <View style={{ width: '90%' }}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UpdateItems', service)}>
                     <Text style={[styles.buttonText, { color: colors.grey900 }]}>Update</Text>
@@ -123,8 +125,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
-        // backgroundColor: 'red',
-        paddingVertical: moderateScale(4)
+        paddingVertical: moderateScale(4),
+        gap:8
     },
     serviceImage: {
         width: 100,
