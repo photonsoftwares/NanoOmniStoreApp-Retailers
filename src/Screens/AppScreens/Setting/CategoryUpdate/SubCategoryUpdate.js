@@ -47,7 +47,6 @@ const SubCategoryUpdate = ({ route }) => {
             showToast('Please Input category name');
             return;
         }
-        console.log('handle', inputs, filteredCategory);
         // Your logic for handling the submission
         const resp = await dispatch(updateCategoryMethod(inputs, filteredCategory[0]?.id))
         if (resp?.status === true) {

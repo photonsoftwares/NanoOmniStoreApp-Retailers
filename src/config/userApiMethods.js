@@ -96,7 +96,7 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        // console.log('OrderViewOneMethod_resp', response);
+        console.log('OrderViewOneMethod_resp', endUrl,response);
 
         if (response?.status) {
             await dispatch(setBookedOrders(response?.data));
@@ -123,7 +123,7 @@ export const OrderMasterDetailsMethod = (storeId, saasId, order_id) => async (di
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        // console.log('GetOrderMasterDetails_Resp', response?.data);
+        console.log('GetOrderMasterDetails_Resp', endUrl,response?.data);
         if (response?.status) {
             await dispatch(setCustomerData(response?.data));
             await dispatch(GetCustomerAddressMethod(storeId, saasId, response?.data?.address_id))
@@ -170,7 +170,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 
 };
 
-export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getState) => {
+export const SaveTransactionMethod = (data, orderIdd,selectedOption) => async (dispatch, getState) => {
     console.log("SaveTransaction_props", data)
 
     try {
@@ -189,7 +189,7 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
                 type: "success",
             })
             await dispatch(DeleteAllCartMethod())
-            await dispatch(UpdateOrderStatusMethod(orderIdd))
+            await dispatch(UpdateOrderStatusMethod(orderIdd,selectedOption))
 
         } else {
             showMessage({
@@ -289,20 +289,16 @@ export const UpdateOrderMasterMethod = (orderId) => async (dispatch, getState) =
 };
 
 
-export const UpdateOrderStatusMethod = (orderIdd) => async (dispatch, getState) => {
+export const UpdateOrderStatusMethod = (orderIdd,status='DELIVERYBOY') => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-
-    // console.log("UpdateOrderStatusMethod_props",)
-
-
+console.log("UpdateOrderStatusMethod",orderIdd,status)
 
     try {
-        const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/delivered`;
+        const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/${status}`;
         const headers = {};
         const method = 'Put';
         let response = await ApiRequest(endUrl, method, headers,);
-        // console.log('UpdateOrderStatusMethod_resp', response?.data);
-
+console.log("UpdateOrderStatusMethod_Resp",response)
         if (response?.status === true) {
             dispatch(OrderViewOrderMethod())
         } else {
@@ -1229,7 +1225,7 @@ export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getS
 
     try {
         const response = await ApiRequest(endUrl, method, headers);
-        console.log('GetSubCategoryItemsMethod_resp', endUrl, response?.data?.length);
+        console.log('GetSubCategoryItemsMethod_resp', response?.data?.length,endUrl);
 
         if (response?.status) {
             console.log("true")
@@ -2023,7 +2019,6 @@ export const updateCategoryMethod = (data, categoryId) => async (dispatch, getSt
     // const { categoryCurrentPage } = getState().categoriesReducer;
 
 
-    console.log("updateCategory_data", data, categoryId)
 
     dispatch(setLoadingState(true));
 
@@ -2035,7 +2030,7 @@ export const updateCategoryMethod = (data, categoryId) => async (dispatch, getSt
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
-            console.log('updateCategory_rep', response);
+            console.log('updateSUbCategory_rep', response,endUrl,body);
 
             if (response?.status === true) {
                 // console.log("GetCategoryItemMethod_resp", response?.data?.length);

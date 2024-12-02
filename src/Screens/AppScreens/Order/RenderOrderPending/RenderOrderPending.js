@@ -78,9 +78,10 @@ const RenderOrderPending = () => {
   const pendingOrders = ordersData.filter(order => order.status === 'PENDING');
 
 
+  // console.log("pendingOrders",pendingOrders.reverse()[0])
   return (
     <>
-      <HeaderComp screenName={'Pending Orders'} onBackPress={() => navigation.goBack()} />
+      <HeaderComp screenName={'Pending Ordes'} onBackPress={() => navigation.goBack()} />
       <View style={{ flex: 1 }}>
         {pendingOrders.length !== 0 ? (
           <FlashList

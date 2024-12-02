@@ -19,7 +19,7 @@ const GenrateInvoicePdf = ({ route }) => {
     const navigation = useNavigation()
 
     const source = { uri: `${BASE_URL}transaction/pdf/${pdf_file_name}`, cache: true };
-    console.log("<GenrateInvoicePdf>", pdf_file_name,"pdf", `${BASE_URL}transaction/pdf/${pdf_file_name}`)
+    // console.log("<GenrateInvoicePdf>", pdf_file_name,"pdf", `${BASE_URL}transaction/pdf/${pdf_file_name}`)
 
 
     const convertPdfToBase64 = async () => {

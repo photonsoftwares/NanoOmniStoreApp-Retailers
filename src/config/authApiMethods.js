@@ -17,7 +17,6 @@ export const SignUpMethod = data => async (dispatch) => {
     const headers = {};
     const body = data;
     const method = 'POST';
-    // let response = await ApiRequest(endUrl, method, headers, body);
     const response = await ApiRequest(endUrl, method, headers, body);
 
     console.log("SignUpAction response", response);
@@ -30,7 +29,6 @@ export const SignUpMethod = data => async (dispatch) => {
     }
     else {
       showMessage({
-        // message: "User already register!",
         message: `${response.message}`,
         type: "danger",
       })
@@ -62,8 +60,8 @@ export const LogInMethod = data => async dispatch => {
       data,
     })
 
-    console.log('LoginAction response', response?.data?.data);
-    // console.log('LoginAction response', response?.data?.data?.user_data?.userType);
+    // console.log('LoginAction response', response?.data?.data);
+    console.log('LoginAction response', response?.data?.data?.store_data?.storeType);
     if (response?.data?.status === true) {
       if (response?.data?.data?.user_data?.userType === 'RETAILER') {
         dispatch(loginSuccess(response?.data?.data));

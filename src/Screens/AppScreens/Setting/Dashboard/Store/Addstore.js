@@ -260,7 +260,7 @@ const Addstore = ({ navigation }) => {
             }
 
 
-            // console.log("FormData:", formData?._parts.length, !formData?._parts.length == 3);
+            console.log("FormData:", formData?._parts.length, !formData?._parts.length == 3);
             if (formData?._parts.length < 3) {
                 showToast("Select 3 Images")
             }
