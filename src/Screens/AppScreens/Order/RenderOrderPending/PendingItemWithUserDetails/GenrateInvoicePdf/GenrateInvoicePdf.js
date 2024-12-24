@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from 'react';
+// import React, { } from 'react';
 import { StyleSheet, Dimensions, View, Button } from 'react-native';
 import Pdf from 'react-native-pdf';
 import Share from 'react-native-share';
-import { useDispatch } from 'react-redux';
 import ButtonCompo from '../../../../../../Components/ButtonCompo';
 import HeaderComp from '../../../../../../Components/HeaderCompo';
 import { moderateScale } from '../../../../../../styles/responsiveSize';
 import { useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../../../../../../config/Base_Url';
+import RNPrint from 'react-native-print';
+
 
 
 const GenrateInvoicePdf = ({ route }) => {
     const pdf_file_name = route?.params
-    // const { pdf_file_name, transaction_id } = pdf_file_namee
-    // const pdf_file_name = '6jEcswXeeXXaaIbC'
-
-    const dispatch = useDispatch();
     const navigation = useNavigation()
-
     const source = { uri: `${BASE_URL}transaction/pdf/${pdf_file_name}`, cache: true };
-    // console.log("<GenrateInvoicePdf>", pdf_file_name,"pdf", `${BASE_URL}transaction/pdf/${pdf_file_name}`)
 
+// console.log("a",source.uri)
 
     const convertPdfToBase64 = async () => {
         try {
@@ -34,13 +30,11 @@ const GenrateInvoicePdf = ({ route }) => {
             const arrayBuffer = await response.arrayBuffer();
             const uint8Array = new Uint8Array(arrayBuffer);
 
-            // Convert the Uint8Array to base64
             const base64 =
                 typeof btoa === 'function'
-                    ? btoa(String.fromCharCode(...uint8Array)) // For browsers
-                    : require('buffer').Buffer.from(uint8Array).toString('base64'); // For Node.js
+                    ? btoa(String.fromCharCode(...uint8Array)) 
+                    : require('buffer').Buffer.from(uint8Array).toString('base64'); 
 
-            // console.log(base64);
             return base64;
         } catch (error) {
             console.error('Error fetching or converting PDF:', error);
@@ -56,18 +50,25 @@ const GenrateInvoicePdf = ({ route }) => {
 
         try {
             const ShareResponse = await Share.open(shareOptions);
-            // console.log(JSON.stringify(ShareResponse));
         } catch (error) {
-            // console.log('Error => ', error);s
+            console.log('Error => ', error);
         }
     };
 
-    // Usage
     const customeShare = async () => {
         const base64Data = await convertPdfToBase64();
         myCustomShare(base64Data);
     }
 
+  const printFromURL = async () => {
+  try {
+    await RNPrint.print({
+      filePath: source.uri
+    });
+  } catch (error) {
+    console.error('Print Error:', error);
+  }
+};
     return (
         <>
             <HeaderComp
@@ -93,6 +94,7 @@ const GenrateInvoicePdf = ({ route }) => {
                 />
                 <View style={{ width: '100%' }}>
                     <ButtonCompo title="Share PDF" onPress={customeShare} />
+                    <ButtonCompo title="Print PDF" onPress={printFromURL} />
                     <ButtonCompo title="Go To Home" onPress={() => navigation.popToTop()} />
                 </View>
             </View>
@@ -107,7 +109,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#FFF',
-        // backgroundColor: 'red',
         marginTop: moderateScale(2)
     },
     pdf: {

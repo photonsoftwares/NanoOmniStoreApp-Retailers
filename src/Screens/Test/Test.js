@@ -2,7 +2,6 @@ import { Button, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { GetAllCoupanMethod, GetAllWalletMethod, GetMasterCategoryMethod, GetQRItemMethod, GetSubCategoryItemsMethod, GetSubCategoryMethod, GetgetSalesReportMethod } from '../../config/userApiMethods'
-import HomeSubeCategoryItem from '../../Components/HomeSubeCategoryItem'
 
 const Test = () => {
     const dispatch = useDispatch()
@@ -28,21 +27,4 @@ const styles = StyleSheet.create({})
 
 
 
-
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-// import CategoryList from '../../Components/CategoryList'
-
-// const Test = () => {
-//     return (
-//         <View>
-//             <Text>Test</Text>
-//             <CategoryList />
-//         </View>
-//     )
-// }
-
-// export default Test
-
-// const styles = StyleSheet.create({})
 

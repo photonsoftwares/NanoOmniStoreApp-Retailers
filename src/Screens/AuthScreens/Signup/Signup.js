@@ -34,15 +34,7 @@ const Signup = () => {
   const product = useSelector(state => state?.auth?.data?.customer_data);
   const accessToken = useSelector(state => state?.auth?.data?.jwt_response);
   const token = null;
-  // console.log('TOKENLogIn__', accessToken)
-
-  // console.log("product", product)
-  // const LoaderFunv = () => {
-  //   setTimeout(() => {
-
-  //     <Loader />
-  //   }, [1000])
-  // }
+ 
 
 
 
@@ -123,31 +115,12 @@ const Signup = () => {
         email: inputs.email,
         store_id: inputs.store_id,
         saas_id: inputs.saas_id
-
-        // store_id: '70001',
-        // saas_id: '7'
       })
 
-      // console.log(">?",data)
 
       try {
 
         const res = await dispatch(SignUpMethod(data))
-
-        // if (res.status !== true) {
-        //   // showMessage({
-        //   //   message: "User already register!",
-        //   //   type: "danger"
-        //   // })
-        //   console.log("False SignUp")
-        // } else {
-        //   // navigation.goBack();
-        //   navigation.navigate('OtpVerification', {
-        //     mobile_number: inputs.mobile_number,
-
-        //   });
-
-        // }
 
         if (res.status == true) {
           navigation.goBack()
@@ -156,8 +129,6 @@ const Signup = () => {
       } catch (error) {
         console.error('Error during sign up:', error);
       }
-
-
     }
 
   }

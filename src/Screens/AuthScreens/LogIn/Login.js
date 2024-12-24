@@ -57,7 +57,6 @@ const Login = () => {
         inAppUpdates.startUpdate(updateOptions);
       }
     });
-    console.log("last")
 
   }
   const handleSubmit = async () => {
@@ -66,12 +65,11 @@ const Login = () => {
       user_name: inputs.storeId,
       password: inputs.password,
     });
-
     const a = await dispatch(LogInMethod(data))
-    // console.log("second",a)
     setIsloading(false)
-
   };
+
+
   const getCurrentVersion = async () => {
     const curVersion = await DeviceInfo.getVersion()
     setVersion(curVersion)

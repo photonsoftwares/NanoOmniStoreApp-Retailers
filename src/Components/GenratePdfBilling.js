@@ -8,11 +8,11 @@ import HeaderComp from '../../../../../../Components/HeaderCompo';
 import { moderateScale } from '../../../../../../styles/responsiveSize';
 import { useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../../../../../../config/Base_Url';
+import RNPrint from 'react-native-print';
 
 
 const GenratePdfBilling = ({ route }) => {
     const pdf_file_name = route?.params
-    // console.log("<GenrateInvoicePdf>", pdf_file_name)
     const dispatch = useDispatch();
     const navigation = useNavigation()
     const source = { uri: `${BASE_URL}transaction/pdf/${pdf_file_name}`, cache: true };
@@ -63,6 +63,16 @@ const GenratePdfBilling = ({ route }) => {
         myCustomShare(base64Data);
     }
 
+    const printFromURL = async () => {
+        try {
+          await RNPrint.print({
+            filePath: source.uri
+          });
+        } catch (error) {
+          console.error('Print Error:', error);
+        }
+      };
+
     return (
         <>
             <HeaderComp
@@ -86,6 +96,7 @@ const GenratePdfBilling = ({ route }) => {
                 />
                 <View style={{ width: '100%' }}>
                     <ButtonCompo title="Share PDF" onPress={customeShare} />
+                    <ButtonCompo title="PDF Print" onPress={printFromURL} />
                     <ButtonCompo title="Go To Home" onPress={() => navigation.popToTop()} />
                 </View>
             </View>

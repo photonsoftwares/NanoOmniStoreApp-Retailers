@@ -110,11 +110,9 @@ const UpdateCategoryItems = ({ route }) => {
             recommendedCurrentPage
         ))
         if (ItemUpdateMethod_resp?.status) {
-            // dispatch(CategoryItemUpdateMethod(ItemUpdateMethod_resp?.data?.category));
 
             const itemId = ItemUpdateMethod_resp?.data?.item_id
 
-            // console.log("ItemUpdatea", itemId)
             if (itemId?.length > 0) {
             }
             const url = `${BASE_URL}item/save-image/${itemId}`

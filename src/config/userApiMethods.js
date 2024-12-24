@@ -44,19 +44,9 @@ export const OrderViewOrderMethod = (page = 1) => async (dispatch, getState) => 
 
             // console.log('OrderViewOrderMethod_resp', response?.data.length);
             if (response?.status === true && response?.data?.length > 0) {
-                // console.log("TestMethod", response);
 
                 dispatch(setOrders(response?.data));
-                // if (page === 1) {
-                //     dispatch(setOrdersCurrentPage(page + 1));
 
-                // } else {
-
-                //     dispatch(addOrdersPageData(response?.data));
-                //     dispatch(setOrdersCurrentPage(page + 1));
-
-
-                // }
                 return response?.data;
             } else {
                 showToast("No Orders")
@@ -68,11 +58,6 @@ export const OrderViewOrderMethod = (page = 1) => async (dispatch, getState) => 
         } catch (error) {
             console.error("TestMethod API request error:", error);
 
-            // showMessage({
-            //     message: "Error fetching data",
-            //     description: error.message || "Unknown error occurred",
-            //     type: "danger",
-            // });
         } finally {
             dispatch(setLoadingState(false));
         }
@@ -96,7 +81,7 @@ export const OrderViewOneMethod = (storeId, saasId, order_id) => async (dispatch
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        console.log('OrderViewOneMethod_resp', endUrl,response);
+        console.log('OrderViewOneMethod_resp', endUrl, response);
 
         if (response?.status) {
             await dispatch(setBookedOrders(response?.data));
@@ -123,7 +108,7 @@ export const OrderMasterDetailsMethod = (storeId, saasId, order_id) => async (di
         const method = 'GET';
         let response = await ApiRequest(endUrl, method, headers);
 
-        console.log('GetOrderMasterDetails_Resp', endUrl,response?.data);
+        console.log('GetOrderMasterDetails_Resp', endUrl, response?.data);
         if (response?.status) {
             await dispatch(setCustomerData(response?.data));
             await dispatch(GetCustomerAddressMethod(storeId, saasId, response?.data?.address_id))
@@ -170,7 +155,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 
 };
 
-export const SaveTransactionMethod = (data, orderIdd,selectedOption) => async (dispatch, getState) => {
+export const SaveTransactionMethod = (data, orderIdd, selectedOption) => async (dispatch, getState) => {
     console.log("SaveTransaction_props", data)
 
     try {
@@ -189,7 +174,7 @@ export const SaveTransactionMethod = (data, orderIdd,selectedOption) => async (d
                 type: "success",
             })
             await dispatch(DeleteAllCartMethod())
-            await dispatch(UpdateOrderStatusMethod(orderIdd,selectedOption))
+            await dispatch(UpdateOrderStatusMethod(orderIdd, selectedOption))
 
         } else {
             showMessage({
@@ -289,16 +274,16 @@ export const UpdateOrderMasterMethod = (orderId) => async (dispatch, getState) =
 };
 
 
-export const UpdateOrderStatusMethod = (orderIdd,status='DELIVERYBOY') => async (dispatch, getState) => {
+export const UpdateOrderStatusMethod = (orderIdd, status = 'DELIVERYBOY') => async (dispatch, getState) => {
     const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
-console.log("UpdateOrderStatusMethod",orderIdd,status)
+    console.log("UpdateOrderStatusMethod", orderIdd, status)
 
     try {
         const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/${status}`;
         const headers = {};
         const method = 'Put';
         let response = await ApiRequest(endUrl, method, headers,);
-console.log("UpdateOrderStatusMethod_Resp",response)
+        console.log("UpdateOrderStatusMethod_Resp", response)
         if (response?.status === true) {
             dispatch(OrderViewOrderMethod())
         } else {
@@ -333,9 +318,10 @@ export const RecommendedItemMethod = (storeIdd, saasIdd, page = 1) => async (dis
 
         try {
             const response = await ApiRequest(endUrl, method, headers);
+            console.log("RecommendedItemMethod", endUrl, response.data.length)
 
             if (response?.status === true) {
-                console.log("RecommendedItemMethod_resp", response?.data?.length);
+                // console.log("RecommendedItemMethod_resp", response?.data?.length);
 
                 if (page === 1) {
                     dispatch(setRecommended(response?.data));
@@ -370,7 +356,6 @@ export const RecommendedItemMethod = (storeIdd, saasIdd, page = 1) => async (dis
 
 
 export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async dispatch => {
-    // console.log('ItemUpdateMethod_props', data, itemId);
 
     dispatch(setLoadingState(true));
 
@@ -383,12 +368,9 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
 
-            // console.log('ItemUpdateMethod_resp', response, endUrl)
             if (response?.status === true) {
 
-                // console.log("ItemUpdateMethod", response?.data?.length);
                 dispatch(RecommendedItemMethod(storeId, saasId, 1));
-                // dispatch(GetCartMethod());
 
 
                 return response
@@ -417,7 +399,6 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
 
 export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async (dispatch, getState) => {
     const { categoryCurrentPage, selectedCategory, } = getState().categoriesReducer;
-    console.log('ItemUpdateMethod_props', data, itemId, storeId, saasId, recommendedCurrentPage);
 
 
 
@@ -433,7 +414,6 @@ export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommen
 
             if (response?.status == true) {
 
-                // console.log("ItemUpdateMethod", endUrl, response, response?.data?.category);
                 dispatch(GetSubCategoryItemsMethod(response?.data?.category));
                 dispatch(RecommendedItemMethod(storeId, saasId))
 
@@ -470,7 +450,7 @@ export const GetCategoryItemMethod = () => async (dispatch, getState) => {
 
         try {
             const response = await ApiRequest(endUrl, method, headers);
-            // console.log('GetCategoryItemMethod_resp', response?.data?.length);
+            console.log('GetCategoryItemMethod_resp', endUrl, response?.data?.length);
 
             if (response?.status === true) {
                 // console.log("GetCategoryItemMethod_resp", response?.data?.length);
@@ -516,8 +496,8 @@ export const GetSelectedCategoryItemsMethod = (categoryName) => async (dispatch,
 
         try {
             const response = await ApiRequest(endUrl, method, headers);
+            console.log("GetSelectedCategoryItemsMethod_rep", endUrl, response)
 
-            // console.log("GetSelectedCategoryItemsMethod_rep", endUrl, response)
 
             if (response?.status === true) {
                 if (categoryItemsCurrentPage === 1) {
@@ -1225,17 +1205,13 @@ export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getS
 
     try {
         const response = await ApiRequest(endUrl, method, headers);
-        console.log('GetSubCategoryItemsMethod_resp', response?.data?.length,endUrl);
+        console.log('GetSubCategoryItemsMethod_resp', response?.data?.length, endUrl);
 
         if (response?.status) {
-            console.log("true")
-            // dispatch(setSubCategoryItemsData(response?.data))
             if (subCategoryItemsPage == 1) {
-                console.log("1")
                 dispatch(setSubCategoryItemsData(response?.data))
                 dispatch(setSubCategoryItemsTotalPage(response?.count / 12))
             } else {
-                console.log("2")
                 if (response?.next == null) {
                     dispatch(addMoreSubCategoryItemsData(subCategoryItems))
                     showToast("No More Data")
@@ -1406,9 +1382,6 @@ export const UpdateDeliveryChargesMethod = (charges) => async (dispatch, getStat
 
         try {
             const response = await ApiRequest(endUrl, method, headers,)
-            // console.log("UpdateDeliveryChargesMethod_endUrl", endUrl)
-
-            // console.log('GetgetSalesReportMethod_resp', response?.list_sales_report?.length)
             if (response?.status === true) {
                 // console.log("UpdateDeliveryChargesMethod_resp_inside", response);
                 await dispatch(GetDelivryChargesMethod())
@@ -2030,7 +2003,7 @@ export const updateCategoryMethod = (data, categoryId) => async (dispatch, getSt
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
-            console.log('updateSUbCategory_rep', response,endUrl,body);
+            console.log('updateSUbCategory_rep', response, endUrl, body);
 
             if (response?.status === true) {
                 // console.log("GetCategoryItemMethod_resp", response?.data?.length);
@@ -2158,7 +2131,7 @@ export const DashboardMMethod = () => async (dispatch, getState) => {
         // Combine or handle the responses as needed
         const [todaySales, yesterdaySales, lastWeekSales, lastFourteenDaysSales, lastMonthSales, lastSixtyDaysSales] = responses;
         const data = {
-            todaySales: todaySales?.data ||0,
+            todaySales: todaySales?.data || 0,
             yesterdaySales: yesterdaySales?.data || 0,
             lastWeekSales: lastWeekSales?.data || 0,
             lastFourteenDaysSales: lastFourteenDaysSales?.data || 0,

@@ -53,15 +53,12 @@ const Home = () => {
   // Re-render Banner when screen is focused
   useFocusEffect(
     React.useCallback(() => {
-      // Trigger a re-render by changing the key of the Banner component
       setBannerKey((prevKey) => prevKey + 1);
     }, [])
   );
 
-  console.log("bannerKey",bannerKey)
   return (
     <>
-      {/*  */}
       <View>
         <HomeHeader />
       </View>
@@ -73,10 +70,8 @@ const Home = () => {
             marginTop: 2,
             flex: 1 / 3,
           }}>
-          {/* <Banner /> */}
           <Banner key={bannerKey} />
         </View>
-
         <HomeMasterCategory />
 
 

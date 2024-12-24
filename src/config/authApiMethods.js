@@ -61,7 +61,7 @@ export const LogInMethod = data => async dispatch => {
     })
 
     // console.log('LoginAction response', response?.data?.data);
-    console.log('LoginAction response', response?.data?.data?.store_data?.storeType);
+    console.log('LoginAction response', response);
     if (response?.data?.status === true) {
       if (response?.data?.data?.user_data?.userType === 'RETAILER') {
         dispatch(loginSuccess(response?.data?.data));
@@ -74,6 +74,8 @@ export const LogInMethod = data => async dispatch => {
           message: "This App For Retailer",
           type: "danger",
         })
+        console.log('LoginAction response', response?.data?.data);
+
       }
 
 

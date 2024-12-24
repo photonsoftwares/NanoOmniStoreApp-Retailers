@@ -182,7 +182,6 @@ const SelectPaymentMethod = () => {
                 sub_price: null,
                 actual_price: null,
                 price_pcs: null,
-                // product_qty: obj?.productQty,
                 discount: obj?.discount,
                 tax: obj?.tax,
                 tax_percent: obj?.taxPercent,
@@ -210,8 +209,6 @@ const SelectPaymentMethod = () => {
             }
         })
         const saveTBody = {
-            // registerId: "REG101",
-            // tenderId: "TENDER1",
             storeId: storeId,
             saasId: saasId,
             tender: {
