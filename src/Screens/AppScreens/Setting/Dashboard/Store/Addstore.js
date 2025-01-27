@@ -1,188 +1,3 @@
-// import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-// import React, { useEffect, useState } from 'react'
-// import HeaderComp from '../../../../../Components/HeaderCompo'
-// import { moderateScale, scale, textScale } from '../../../../../styles/responsiveSize'
-// import { launchImageLibrary } from 'react-native-image-picker';
-// import axios from 'axios';
-// import { useSelector } from 'react-redux'
-// import { BASE_URL } from '../../../../../config/Base_Url'
-// import { showToast } from '../../../../../utils/toast';
-
-// const Addstore = ({ navigation }) => {
-//     const { saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
-//     const saas1 = saasId
-//     // console.log("khumugg", saas1)
-//     const [selectedFile1, setSelectedFile1] = useState(null);
-//     const [selectedFile2, setSelectedFile2] = useState(null);
-//     const [selectedFile3, setSelectedFile3] = useState(null);
-//     console.log("image", selectedFile1?.assets[0]?.uri, "<>", selectedFile2?.assets[0]?.uri, "<<><><>>", selectedFile3?.assets[0]?.uri)
-
-//     useEffect(() => {
-//         setSelectedFile1(null)
-//         setSelectedFile2(null)
-//         setSelectedFile3(null)
-//     }, [setSelectedFile1, setSelectedFile2, setSelectedFile3])
-
-//     const openImagePicker = (index) => {
-//         const options = {
-//             mediaType: 'photo',
-//             quality: 0.5,
-//         };
-
-//         launchImageLibrary(options, (response) => {
-//             if (response && !response.didCancel) {
-//                 if (index === 0) {
-//                     setSelectedFile1(response);
-//                 } else if (index === 1) {
-//                     setSelectedFile2(response);
-//                 } else if (index === 2) {
-//                     setSelectedFile3(response);
-//                 }
-//             } else {
-//                 console.log('Image selection canceled');
-//             }
-//         })
-//     };
-
-//     const uploadImage = async () => {
-//         try {
-//             const formData = new FormData();
-//             if (selectedFile1) {
-//                 const file1 = {
-//                     uri: selectedFile1.assets[0].uri,
-//                     type: selectedFile1.assets[0].type,
-//                     name: newName(selectedFile1.assets[0].fileName)
-//                 };
-//                 formData.append('file1', file1);
-//             }
-//             if (selectedFile2) {
-//                 const file2 = {
-//                     uri: selectedFile2.assets[0].uri,
-//                     type: selectedFile2.assets[0].type,
-//                     name: newName(selectedFile2.assets[0].fileName)
-//                 };
-//                 formData.append('file2', file2);
-//             }
-//             if (selectedFile3) {
-//                 const file3 = {
-//                     uri: selectedFile3.assets[0].uri,
-//                     type: selectedFile3.assets[0].type,
-//                     name: newName(selectedFile3.assets[0].fileName)
-//                 };
-//                 formData.append('file3', file3);
-//             }
-
-
-//             console.log("FormData:", formData?._parts);
-//             console.log("response")
-
-//             const response = await axios.post(
-//                 `${BASE_URL}saas-master/save-brandlogo/${saas1}`,
-//                 formData,
-//                 {
-//                     headers: {
-//                         'Content-Type': 'multipart/form-data',
-//                     },
-//                 }
-//             );
-
-//             console.log("responsee", response?.data)
-
-//             if (response.status == 200) {
-//                 navigation.navigate("Home");
-//                 console.log('Image upload response:', response?.data);
-//             } else if (response?.status == 413) {
-//                 showToast("image file size too big please reduce image size")
-//                 console.log("image file size too big please reduce image size")
-//             } else {
-//                 showToast('Something went wrong while uploading the image')
-//             }
-
-
-//         } catch (error) {
-//             // showToast('Something went wrong while uploading the image')
-//         }
-
-//     };
-
-//     const newName = (originalFileName) => {
-//         const a = new Date().getTime();
-//         const b = Math.random().toString(36).substring(7);
-//         const c = originalFileName.split('.').pop();
-//         return `${a}_${b}.${c}`;
-//     };
-//     return (
-//         <View style={{ backgroundColor: '#fff', flex: 1 }}>
-//             <HeaderComp
-//                 screenName={'Add Banner'}
-//                 onBackPress={() => navigation.goBack()} />
-//             <ScrollView style={{ backgroundColor: '#FFF', marginVertical: scale(20) }}>
-//                 {[selectedFile1, selectedFile2, selectedFile3].map((file, index) => (
-//                     <View key={index} style={styles.boxContainer}>
-//                         {file?.assets?.[0]?.uri ? (
-//                             <Image source={{ uri: file?.assets?.[0]?.uri }} style={{ width: '100%', height: '100%' }} />
-//                         ) : (
-//                             <TouchableOpacity style={styles.button1} onPress={() => openImagePicker(index)}>
-//                                 <Text style={styles.buttonText}>Upload Logo</Text>
-//                             </TouchableOpacity>
-//                         )}
-//                     </View>
-//                 ))}
-//                 <TouchableOpacity style={styles.button2} onPress={uploadImage}>
-//                     <Text style={styles.buttonText}>Submit</Text>
-//                 </TouchableOpacity>
-//             </ScrollView>
-//         </View>
-//     )
-// }
-
-// export default Addstore
-
-// const styles = StyleSheet.create({
-//     boxContainer: {
-//         borderWidth: 2,
-//         borderColor: 'black',
-//         borderRadius: 10,
-//         height: scale(200),
-//         marginRight: scale(30),
-//         marginLeft: scale(30),
-//         marginTop: scale(50)
-//     },
-//     button1: {
-//         backgroundColor: '#D3D3D3',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         borderRadius: scale(10),
-//         width: scale(200),
-//         height: moderateScale(40),
-//         marginTop: moderateScale(50),
-//         marginLeft: scale(50)
-//     },
-//     button2: {
-//         backgroundColor: '#ECE447',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         borderRadius: scale(10),
-//         width: scale(300),
-//         height: moderateScale(40),
-//         marginTop: moderateScale(40),
-//         marginLeft: scale(40)
-//     },
-//     buttonText: {
-//         fontSize: textScale(18),
-//         fontWeight: 'bold',
-//         color: 'black',
-//     },
-// });
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////
 
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
@@ -201,7 +16,6 @@ const Addstore = ({ navigation }) => {
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    // console.log("image", selectedFile1?.assets[0]?.uri, "<>", selectedFile2?.assets[0]?.uri, "<<><><>>", selectedFile3?.assets[0]?.uri)
 
     useEffect(() => {
         setSelectedFile1(null)
@@ -260,7 +74,6 @@ const Addstore = ({ navigation }) => {
             }
 
 
-            console.log("FormData:", formData?._parts.length, !formData?._parts.length == 3);
             if (formData?._parts.length < 3) {
                 showToast("Select 3 Images")
             }
@@ -275,7 +88,6 @@ const Addstore = ({ navigation }) => {
                 }
             );
 
-            console.log("responsee", response?.data)
 
             if (response.status == 200) {
                 setIsLoading(false)
@@ -292,7 +104,6 @@ const Addstore = ({ navigation }) => {
 
 
         } catch (error) {
-            // showToast('Something went wrong while uploading the image')
             setIsLoading(false)
 
         }

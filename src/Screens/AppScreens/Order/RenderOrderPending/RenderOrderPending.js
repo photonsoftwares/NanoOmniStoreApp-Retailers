@@ -1,12 +1,11 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import React, { memo, useCallback, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import HeaderComp from '../../../../Components/HeaderCompo';
 import ButtonCompo from '../../../../Components/ButtonCompo';
 import { moderateScale } from '../../../../styles/responsiveSize';
 import { OrderViewOneMethod } from '../../../../config/userApiMethods';
-import PendingItemWithUserDetails from './PendingItemWithUserDetails/PendingItemWithUserDetails';
 import NoDataFound from '../../../../Components/NoDataFound';
 import { FlashList } from "@shopify/flash-list";
 
@@ -15,7 +14,6 @@ const PendingItem = memo(({ item }) => {
   const navigation = useNavigation();
   const { userId, storeId, saasId } = useSelector((state) => state?.authReducer?.user?.user_data);
   const dispatch = useDispatch();
-  const flatListRef = useRef(null);
 
 
 
@@ -36,15 +34,14 @@ const PendingItem = memo(({ item }) => {
       <View style={styles.separator} />
       <View style={styles.ContainerBothView}>
         <View style={styles.quantityContainer}>
-          {/* <Text style={styles.itemTitle}>Quantity</Text> */}
           <Text style={styles.itemTitle}>Payment</Text>
-          <Text style={[styles.itemValue, { fontWeight: '500',backgroundColor:'green',padding:4 ,color:'#fff',borderRadius:4}]}>{item.payment_type}</Text>
+          <Text style={[styles.itemValue, { fontWeight: '500', backgroundColor: 'green', padding: 4, color: '#fff', borderRadius: 4 }]}>{item.payment_type}</Text>
         </View>
 
         <View style={styles.verticalSeparator} />
         <View style={styles.valueContainer}>
           <Text style={styles.itemTitle}>Total Value</Text>
-          <Text style={[styles.itemValue, { fontWeight: '500' }]}>₹{item.order_value}</Text>
+          <Text style={[styles.itemValue, { fontWeight: '500' }]}>₹{item?.order_value}</Text>
         </View>
       </View>
       <View style={styles.separator} />
@@ -69,8 +66,6 @@ const PendingItem = memo(({ item }) => {
 
 const RenderOrderPending = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const { userId, storeId, saasId } = useSelector((state) => state?.authReducer?.user?.user_data);
   const keyExtractor = useCallback((item, index) => index.toString(), []);
   const [numColumns, setNumColumns] = useState(1);
   const renderItem = useCallback(({ item }) => <PendingItem item={item} />, []);
@@ -78,7 +73,6 @@ const RenderOrderPending = () => {
   const pendingOrders = ordersData.filter(order => order.status === 'PENDING');
 
 
-  // console.log("pendingOrders",pendingOrders.reverse()[0])
   return (
     <>
       <HeaderComp screenName={'Pending Ordes'} onBackPress={() => navigation.goBack()} />

@@ -1,10 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet,  View } from 'react-native'
 import React from 'react'
 import ServicesList from '../Home/Services/Services'
-import commonStyles from '../../../styles/commonStyles'
 import HeaderComp from '../../../Components/HeaderCompo'
 import { useNavigation } from '@react-navigation/native'
-import AddProducts from './AddProducts/AddProducts'
 import ImagePath from '../../../constants/ImagePath'
 
 const Products = () => {

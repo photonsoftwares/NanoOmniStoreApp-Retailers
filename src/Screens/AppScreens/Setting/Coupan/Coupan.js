@@ -1,6 +1,6 @@
 
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Clipboard, Pressable, TouchableHighlight, Linking, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FlashList } from "@shopify/flash-list";
@@ -12,7 +12,6 @@ import CreateCoupan from './CreateCoupan';
 
 
 const CustomerListData = memo(({ item }) => {
-    const navigation = useNavigation();
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
@@ -27,21 +26,17 @@ const CustomerListData = memo(({ item }) => {
                 <Text style={styles.keyValue}>Category:  {item.category}</Text>
                 <Text style={styles.keyValue}>Eligibility:  {item.customerEligibility}</Text>
                 <Text style={styles.keyValue}>Max Usage:  {item.maxusageperCustomer}</Text>
-                {/* <Text style={[styles.title, { fontSize: 14, fontWeight: 'bold' }]}>{item.couponCode}</Text> */}
                 <Text style={styles.keyValue}>Discount Type:  {item.discountType}</Text>
                 <Text style={styles.keyValue}>Max Discount:  ₹{item.maxDiscount}</Text>
                 <Text style={styles.keyValue}>Minimum Order:  ₹{item.minOrderAmount}</Text>
             </View>
             <View style={styles.itemTwo}>
                 <TouchableOpacity
-                    // onPress={() => navigation.push('UpdateCoupan', { id: item.customer_id })}
                     onPress={() => Clipboard.setString(item.couponCode)}
                     style={{ width: 100, borderWidth: 1, padding: 4, borderRadius: 8 }}
                 >
 
                     <Text style={[styles.title, { fontSize: 14, fontWeight: 'bold', textAlign: 'center', color: 'grey' }]}>{item.couponCode}</Text>
-
-                    {/* <MaterialCommunityIcons name="book-edit" size={26} color={'grey'} /> */}
                 </TouchableOpacity>
             </View>
         </View>
@@ -64,13 +59,10 @@ const Coupan = () => {
 
 
     const array = allCoupanData
-    // const array = allCoupanData.slice().reverse()
-
     const data = useMemo(() => {
         return array;
     }, [array]);
 
-    // console.log("allCoupanData", allCoupanData)
     return (
         <View style={styles.container}>
             <HeaderComp screenName={'All Coupon'}

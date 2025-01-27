@@ -55,12 +55,6 @@ const ExtraCharges = () => {
         }
     };
 
-    const handleMinOrderUpdate = () => {
-        console.log(`Updated Enable Minimum Order: ${isMinOrderEnabled}`);
-        console.log(`Updated Minimum Order Value: ${minOrderValue}`);
-        setSubmittedMin(false);
-    };
-
 
 
     return (

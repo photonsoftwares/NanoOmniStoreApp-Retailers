@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { GetMainAndSubCategoryMethod, GetMasterCategoryMethod, GetSubCategoryItemsMethod, GetSubCategoryMethod } from '../config/userApiMethods'
+import React, { useEffect } from 'react'
+import { GetMasterCategoryMethod, GetSubCategoryItemsMethod, GetSubCategoryMethod } from '../config/userApiMethods'
 import { useDispatch, useSelector } from 'react-redux'
 import MyImgCompo from './MyImgCompo'
 import HomeSubCategpry from './HomeSubCategpry'
@@ -10,38 +10,24 @@ import { BASE_URL } from '../config/Base_Url'
 
 const HomeMasterCategory = () => {
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchMasterCategory = async () => {
-            // setLoading(true)
             const resp = await dispatch(GetMasterCategoryMethod())
-            // setLoading(false)
-            console.log("resp", resp?.data[0]?.masterCategoryId)
             dispatch(setSelectedMasterCategory(resp?.data[0]?.masterCategoryId))
-
             const resp1 = await dispatch(GetSubCategoryMethod(resp?.data[0]?.masterCategoryId))
             dispatch(setSelectedSubCategory(resp1?.data[0]?.category))
             const resp2 = await dispatch(GetSubCategoryItemsMethod(resp1?.data[0]?.category))
-            // console.log("resp", resp, "..................", resp1, "..................", resp2)
         }
         fetchMasterCategory()
     }, [])
 
-    const { masterCategory, selectedMasterCategory, selectedSubCategory, subCategory, subCategoryItems } = useSelector((state) => state?.mainCategoryReducer);
-    // console.log("HomeMasterCategory", masterCategory, selectedMasterCategory, "......................", subCategory)
+    const { masterCategory, selectedMasterCategory, } = useSelector((state) => state?.mainCategoryReducer);
 
     const handleCategoryPress = (category) => {
         dispatch(setSubCategoryItemsPage(1))
-
-        // Handle category press here
-        console.log('Category Pressed:', category?.masterCategoryId);
-        // dispatch(setCurrentCategoryItemPage(1))
         dispatch(setSelectedMasterCategory(category?.masterCategoryId))
-
-        // dispatch(GetSelectedCategoryItemsMethod(category?.category_name))
         dispatch(GetSubCategoryMethod(category?.masterCategoryId))
-        // dispatch(GetMainAndSubCategoryMethod)
 
     };
 
@@ -94,11 +80,10 @@ export default HomeMasterCategory
 const styles = StyleSheet.create({
     itemContainer: {
         alignItems: 'center',
-        marginRight: 10, // Add marginRight to create space between items
-
+        marginRight: 10,
     },
     itemSeparator: {
-        width: 10, // Adjust the width according to your desired space between items
+        width: 10,
     },
     categoryName: {
         marginTop: 2,
@@ -110,7 +95,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 2,
         justifyContent: 'center',
-        // width: 120,
         width: 100,
     },
 });

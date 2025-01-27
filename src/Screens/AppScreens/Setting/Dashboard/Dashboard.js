@@ -66,9 +66,6 @@ export default Dashboard
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // margin: moderateScale(8),
-    // backgroundColor:'#FFF'
   },
   flatListContainer: {
   },

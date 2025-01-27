@@ -1,5 +1,5 @@
 
-import React, { useCallback, memo, useEffect } from 'react';
+import React, { useCallback, memo, } from 'react';
 import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
@@ -41,7 +41,6 @@ const OrderStatusList = () => {
     const renderItem = useCallback(({ item }) => <OrderStatusItem orderStatus={item} />, []);
     const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
     const dispatch = useDispatch()
-    const { ordersData, ordersCurrentPage } = useSelector((state) => state?.orderReducer)
 
     const fetchOrders = useCallback(() => {
         dispatch(OrderViewOrderMethod(storeId, saasId,))
@@ -74,12 +73,9 @@ const OrderStatusList = () => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        // margin: moderateScale(8),
-        // backgroundColor:'#FFF'
+
     },
     flatListContainer: {
-        // marginTop: 16,
     },
     serviceContainer: {
         flexDirection: 'row',
@@ -90,12 +86,10 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: 'white',
         paddingHorizontal: 16,
-        // marginVertical: moderateScale(4),
     },
     serviceName: {
         fontWeight: 'bold',
         fontSize: textScale(20),
-        // Ensure the text doesn't overflow
         flex: 1,
         color: '#000'
 
@@ -103,7 +97,6 @@ const styles = StyleSheet.create({
     itemContainer: {
         flex: 1,
         margin: moderateScale(8),
-        // backgroundColor: 'red'
     },
 });
 

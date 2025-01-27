@@ -1,7 +1,7 @@
 
 import React, { memo, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Clipboard, Pressable, TouchableHighlight, Linking, Platform } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux'
+import { View, Text, StyleSheet, TouchableOpacity, Clipboard, Pressable, Linking, Platform } from 'react-native';
+import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FlashList } from "@shopify/flash-list";

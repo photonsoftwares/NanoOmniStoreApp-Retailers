@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, View, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import HomeHeader from '../../../Components/HomeHeader';
-import { moderateScale, scale } from '../../../styles/responsiveSize';
+import { moderateScale} from '../../../styles/responsiveSize';
 import { GetCartMethod, GetCategoryItemMethod, GetSelectedCategoryItemsMethod, OrderViewOrderMethod, RecommendedItemMethod } from '../../../config/userApiMethods';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
 import Banner from '../../../Components/Banner';

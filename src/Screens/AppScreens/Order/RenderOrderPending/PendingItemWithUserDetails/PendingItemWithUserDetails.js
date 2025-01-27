@@ -52,15 +52,15 @@ const PendingItemWithUserDetails = ({ route }) => {
         <Text style={styles.sectionHeading}>Order Details</Text>
         <View style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           {/* {customerBookedOrders.map(order => ( */}
-          <View key={customerBookedOrders[0].order_id} style={styles.itemContainer}>
+          <View key={customerBookedOrders[0]?.order_id} style={styles.itemContainer}>
             <View style={styles.allView}>
               <Text style={styles.titleStyle}>{`Order ID: `}</Text>
-              <Text style={styles.valueStyle}>{customerBookedOrders[0].order_id}</Text>
+              <Text style={styles.valueStyle}>{customerBookedOrders[0]?.order_id}</Text>
             </View>
 
             <View style={styles.allView}>
               <Text style={styles.titleStyle}>{`Order Date: `}</Text>
-              <Text style={styles.valueStyle}>{customerBookedOrders[0].order_date}</Text>
+              <Text style={styles.valueStyle}>{customerBookedOrders[0]?.order_date}</Text>
             </View>
 
 
@@ -122,14 +122,13 @@ const PendingItemWithUserDetails = ({ route }) => {
   );
 
 
-  console.log("customerBookedOrders",customerBookedOrders[0])
   const renderItemDetails = () => {
     return (
       <>
         <Text style={styles.sectionHeading}>Item Details</Text>
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           {customerBookedOrders.map(order => (
-            <View key={order.order_id} style={styles.itemContainer}>
+            <View key={order?.order_id} style={styles.itemContainer}>
               <View style={styles.allView}>
                 <Text style={styles.titleStyle}>{`Item ID: `}</Text>
                 <Text style={styles.valueStyle}>{order.item_id}</Text>
@@ -197,7 +196,8 @@ const PendingItemWithUserDetails = ({ route }) => {
           colorList: null,
           item_name: obj?.item_name,
           conc_id: 1,
-          UOM: null,
+          // UOM: null,
+          UOM: obj?.gram,
           description: null,
           special_description: null,
           price: obj?.item_price / obj?.bill_qty,
@@ -255,6 +255,7 @@ const PendingItemWithUserDetails = ({ route }) => {
         orderMobileNumber: orderMobileNumber,
       };
 
+      console.log("saveTBody", saveTBody)
       const pdf_file_name = await dispatch(SaveTransactionMethod(saveTBody, order_id, selectedOption))
 
       if (pdf_file_name) {
@@ -267,6 +268,8 @@ const PendingItemWithUserDetails = ({ route }) => {
 
   };
 
+
+  console.log("customerBookedOrders",customerBookedOrders)
 
 
   return (

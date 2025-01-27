@@ -24,7 +24,7 @@ import WeightUnitSelector from '../../../../Components/WeightUnitSelector';
 
 const AddProducts = () => {
     const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
-    const { subCategory, subCategoryItems, masterCategory, selectedMasterCategory, } = useSelector((state) => state?.mainCategoryReducer);
+    const { subCategory, masterCategory, } = useSelector((state) => state?.mainCategoryReducer);
     const { storeType } = useSelector((state) => state?.authReducer?.user?.store_data)
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -58,16 +58,6 @@ const AddProducts = () => {
 
     });
 
-    // console.log("selectedCategoryFormData", formData.category,)
-
-    const handleColorSelect = (color) => {
-        setSelectedColor(color);
-        handleCloseColorPicker();
-    };
-
-    const handleOpenColorPicker = () => {
-        setColorPickerVisible(true);
-    };
 
     const handleCloseColorPicker = () => {
         setColorPickerVisible(false);
@@ -93,12 +83,10 @@ const AddProducts = () => {
         await dispatch(setSelectedMasterCategory(numberString))
         const resp1 = await dispatch(GetSubCategoryMethod(numberString))
 
-        console.log("addItem", category(), masterCategoryIds, numberString, "resp1", resp1)
 
 
     };
     const filterCategoryByName = (categoryName) => {
-        console.log("categoryName", categoryName)
         return masterCategory
             .filter(category => category.masterCategoryName === categoryName)
             .map(category => category.masterCategoryId);
@@ -160,12 +148,9 @@ const AddProducts = () => {
             });
 
             if (result.didCancel) {
-                // console.log('User cancelled image picker');
             } else if (result.error) {
-                console.error('ImagePicker Error: ', result.error);
             } else {
                 setSelectedImage(result);
-                // console.log(result)
             }
         } catch (error) {
             console.error('Error picking image:', error);
@@ -297,7 +282,7 @@ const AddProducts = () => {
 
 
                         </View>
-                        <Text style={{ marginTop: moderateScale(8), color: 'red',fontSize:12 }}>JPG or PNG images, maximum 20KB</Text>
+                        <Text style={{ marginTop: moderateScale(8), color: 'red', fontSize: 12 }}>JPG or PNG images, maximum 20KB</Text>
                     </View>
                     <Text style={{ color: 'grey' }}>*</Text>
                     <TextInput
@@ -406,85 +391,6 @@ const AddProducts = () => {
                             :
                             null
                     }
-                    {/* <Text style={styles.selectedUnitText}>Selected Unit: {selectedUnit}</Text> */}
-
-
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder="Stock Quantity"
-                        placeholderTextColor={'grey'}
-                        value={formData.stock_quantity}
-                        onChangeText={(text) => handleChange('stock_quantity', text)}
-                        keyboardType='numeric'
-                    /> */}
-
-
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder="Closing Quantity"
-                        value={formData.closing_quantity}
-                        onChangeText={(text) => handleChange('closing_quantity', text)}
-                        keyboardType='numeric'
-
-                    /> */}
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder="Received Quantity"
-                        value={formData.received_quantity}
-                        onChangeText={(text) => handleChange('received_quantity', text)}
-                        keyboardType='numeric'
-
-                    /> */}
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder="Purcahse Price"
-                        value={formData.product_cost}
-                        onChangeText={(text) => handleChange('product_cost', text)}
-                        keyboardType='numeric'
-
-                    /> */}
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder="Selling Price"
-                        value={formData.selling_price}
-                        onChangeText={(text) => handleChange('selling_price', text)}
-                        keyboardType='numeric'
-
-                    /> */}
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder="Discount Percent"
-                        value={formData.discount}
-                        onChangeText={(text) => handleChange('discount', text)}
-                        keyboardType='numeric'
-                        maxLength={2}
-                    /> */}
-
-                    {/* <TouchableOpacity
-                        onPress={() => handleOpenColorPicker()}
-                        containerStyle={[styles.input, { backgroundColor: 'red' }]}
-                    >
-                     
-
-                        <TextInput
-                            style={[styles.input, { backgroundColor: selectedColor ? selectedColor : '#FFF' }]}
-                            value={selectedColor || ''}
-                            keyboardType="numeric"
-                            placeholderTextColor={selectedColor ? '#999' : '#666'}
-                            placeholder={selectedColor ? 'Color Selected' : 'Select Color'}
-                            editable={false}
-                        />
-
-                    </TouchableOpacity> */}
-
-                    {/* <Button title="Open Color Picker" onPress={handleOpenColorPicker} /> */}
-
-                    {/* {selectedColor && <View style={[styles.selectedColor, { backgroundColor: selectedColor }]} />}
-                    <ColorPicker
-                        visible={colorPickerVisible}
-                        onSelect={handleColorSelect}
-                        onClose={handleCloseColorPicker}
-                    /> */}
 
                     <View style={{ marginTop: moderateScale(16) }}>
                         <ButtonCompo title="Add Product" onPress={handleAddProduct} style={{}} />
@@ -502,9 +408,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         padding: moderateScale(16),
-        // justifyContent: 'center',
         backgroundColor: '#fff',
-        // marginTop:4
 
     },
     input: {

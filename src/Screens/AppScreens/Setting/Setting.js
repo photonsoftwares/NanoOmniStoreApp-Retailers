@@ -63,8 +63,6 @@ const OrderStatusItem = React.memo(({ orderStatus, index }) => {
       },
     ],
 
-    // backgroundColor:'red',
-    // bottom:moderateScale(20)
   };
 
   return (

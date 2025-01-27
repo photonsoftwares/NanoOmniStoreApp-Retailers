@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, FlatList, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { scale, width } from '../styles/responsiveSize';
@@ -14,7 +14,6 @@ import { showToast } from '../utils/toast';
 const NoData = () => {
   return (
     <View style={{ backgroundColor: '#FFF', alignItems: 'center', marginTop: scale(160), marginRight: scale(70) }}>
-      {/* // <View style={{ backgroundColor: '#FFF', alignItems: 'center', marginTop: scale(160),  }}> */}
       <Text style={{ fontSize: 18, fontWeight: '700' }}>No Items</Text>
     </View>
 
@@ -34,7 +33,6 @@ const SubCategoryItemListRender = ({ item }) => {
     const percentageOff = (discountAmount / originalPrice) * 100;
 
     var totalOff = percentageOff.toFixed(0) + "%";
-    // console.log("first", totalOff)
   } else {
     showToast("Prices are not defined or null.");
   }
@@ -42,25 +40,10 @@ const SubCategoryItemListRender = ({ item }) => {
 
   return (
     <View style={[styles.itemContainer, {}]}>
-     
-      {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 6, width: '80%' }}>
-        {
-          item?.stock == 0 ?
-            <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>out of stock</Text>
-            :
-            <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, }}>Stock: {item?.stock}</Text>
-        }
-        {
-          totalOff == '-Infinity%' ?
-            <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
-            :
-            <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
-        }
-
-      </View> */}
 
       <FastImage
-        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
+        // source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
+        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
         style={styles.img}
         resizeMode='cover'
       />
@@ -73,10 +56,10 @@ const SubCategoryItemListRender = ({ item }) => {
         </View>
         <Text style={styles.title} numberOfLines={2}>{item.title}{item?.item_name}</Text>
 
-        
+
       </View>
       {/* Out Of Stock */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around',  width: '100%' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
         {
           item?.stock == 0 ?
             <Text style={{ alignSelf: 'flex-start', paddingHorizontal: 6, color: 'grey', borderRadius: 4, fontSize: 12, backgroundColor: '#edf1f7', }}>OOS</Text>
@@ -99,14 +82,13 @@ const SubCategoryItemListRender = ({ item }) => {
 };
 
 const HomeSubeCategoryItem = () => {
-  const { masterCategory, selectedMasterCategory, selectedSubCategory, subCategory, subCategoryItems, subCategoryItemsTotalPage, subCategoryItemsPage } = useSelector((state) => state?.mainCategoryReducer);
+  const { selectedSubCategory, subCategoryItems, subCategoryItemsTotalPage, subCategoryItemsPage } = useSelector((state) => state?.mainCategoryReducer);
   const dispatch = useDispatch()
   const [loder, setLoder] = useState(false)
   const memoizedsubCategoryItems = useMemo(() => {
     return subCategoryItems;
   }, [subCategoryItems]);
 
-  // console.log("memoizedsubCategoryItems", memoizedsubCategoryItems)
 
   const loadMoreData = async () => {
     if (subCategoryItemsTotalPage > subCategoryItemsPage) {
@@ -117,12 +99,10 @@ const HomeSubeCategoryItem = () => {
     } else {
       showToast("No More Data")
     }
-
-
-
   };
-  const Footer = () => {
 
+
+  const Footer = () => {
     return (
       <View>
         {
@@ -135,9 +115,10 @@ const HomeSubeCategoryItem = () => {
   }
 
 
-  // console.log("HomeSubeCategoryItem", subCategoryItemsPage,selectedSubCategory)
+  console.log('memoizedsubCategoryItems', memoizedsubCategoryItems?.length,subCategoryItems?.length,"pg",subCategoryItemsPage)
   return (
     <View style={styles.container}>
+      <Text style={{marginLeft:10}}>Total:- {memoizedsubCategoryItems?.length}</Text>
       {
         memoizedsubCategoryItems?.length == 0 ?
           <>{NoData()}</>
@@ -149,9 +130,6 @@ const HomeSubeCategoryItem = () => {
             numColumns={2}
             contentContainerStyle={styles.contentContainer}
             ListEmptyComponent={() => NoData()}
-            // onEndReached={loadMoreData}
-            // onEndReachedThreshold={1}
-            // ListFooterComponent={loder ? <View style={{ alignItems: 'center', width: '100%' }}><ActivityIndicator size="large" color="#0000ff" /></View> : <ButtonCompo title={'lode more'} onPress={loadMoreData()}/>}
             ListFooterComponent={<Footer />}
             ListFooterComponentStyle={{ alignSelf: 'center', marginRight: 100 }}
 

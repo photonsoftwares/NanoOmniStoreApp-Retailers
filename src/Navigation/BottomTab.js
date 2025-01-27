@@ -73,7 +73,7 @@ const BottomTab = () => {
             />
 
 
-            <Tab.Screen name={NavigationStrings.TEST} component={Test}
+            {/* <Tab.Screen name={NavigationStrings.TEST} component={Test}
                 options={{
                     tabBarLabel: 'Test',
                     tabBarColor: 'red',
@@ -85,7 +85,7 @@ const BottomTab = () => {
                         </View>
                     ),
                 }}
-            />
+            /> */}
 
             {/* <Tab.Screen name={NavigationStrings.TEST1} component={Test1}
                 options={{

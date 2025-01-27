@@ -14,8 +14,6 @@ import Loader from '../../../../Components/Loader';
 import CategoryUpdate from './CategoryUpdate';
 
 const Category = () => {
-    const { userId, storeId, saasId } = useSelector((state) => state?.authReducer?.user?.user_data);
-    const { categoryData, selectedCategory } = useSelector((state) => state?.categoriesReducer);
     const { masterCategory } = useSelector((state) => state?.mainCategoryReducer);
     const [key, setKey] = useState(Date.now());
     const [loading, setLoading] = useState(true)
@@ -26,8 +24,6 @@ const Category = () => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
-
-    // console.log("hjkl;", masterCategory)
 
     useEffect(() => {
         const fetchMasterCategory = async () => {

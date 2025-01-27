@@ -9,10 +9,7 @@ import { FlashList } from "@shopify/flash-list";
 
 
 const PendingItem = memo(({ item }) => {
-  const navigation = useNavigation();
   const { user_data } = useSelector((state) => state?.authReducer?.user);
-  const { storeId, saasId } = user_data;
-  const dispatch = useDispatch();
 
   const renderContainer = (title, value) => (
     <View style={styles.ContainerBothView}>
@@ -44,7 +41,6 @@ const PendingItem = memo(({ item }) => {
       </View>
       <View style={styles.separator} />
       <View style={styles.processOrderContainer}>
-        {/* Add your button component here */}
       </View>
     </View>
   );

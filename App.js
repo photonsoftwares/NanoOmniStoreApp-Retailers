@@ -1,6 +1,6 @@
 
 
-import { StyleSheet, StatusBar, Platform, PermissionsAndroid, Linking, } from 'react-native'
+import { StyleSheet, StatusBar, Platform, PermissionsAndroid, Linking, Alert, } from 'react-native'
 import React, { useEffect, } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'

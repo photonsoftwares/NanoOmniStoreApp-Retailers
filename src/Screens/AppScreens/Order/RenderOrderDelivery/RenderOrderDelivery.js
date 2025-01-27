@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { memo, useCallback, useState } from 'react';
 import HeaderComp from '../../../../Components/HeaderCompo';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,6 @@ import { getOrderItemDetailMethod } from '../../../../config/userApiMethods';
 
 const PendingItem = memo(({ item }) => {
   const { user_data } = useSelector((state) => state?.authReducer?.user);
-  const { storeId, saasId } = user_data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -34,8 +33,8 @@ const PendingItem = memo(({ item }) => {
       <View style={styles.separator} />
       <View style={styles.ContainerBothView}>
         <View style={styles.quantityContainer}>
-        <Text style={styles.itemTitle}>Payment</Text>
-          <Text style={[styles.itemValue, { fontWeight: '500',backgroundColor:'green',padding:4 ,color:'#fff',borderRadius:4}]}>{item.payment_type}</Text>
+          <Text style={styles.itemTitle}>Payment</Text>
+          <Text style={[styles.itemValue, { fontWeight: '500', backgroundColor: 'green', padding: 4, color: '#fff', borderRadius: 4 }]}>{item.payment_type}</Text>
 
         </View>
         <View style={styles.verticalSeparator} />
@@ -64,23 +63,21 @@ const PendingItem = memo(({ item }) => {
 const RenderOrderDelivery = () => {
   const { ordersData } = useSelector((state) => state?.orderReducer);
   const deliveredOrders = ordersData.filter((order) => order.status === 'delivered');
-  // const deliveredOrders = ordersData.filter((order) => order.status === 'Delivered');
   const keyExtractor = useCallback((item, index) => index.toString(), []);
   const renderItem = useCallback(({ item }) => <PendingItem item={item} />, []);
   const [numColumns] = useState(1);
   const navigation = useNavigation();
   const reversedArray = deliveredOrders.reverse();
 
-console.log(reversedArray[0])
+  console.log(reversedArray[0])
   return (
     <>
       <HeaderComp screenName={'Delivered Orders'} onBackPress={() => navigation.goBack()} />
       <View style={{ flex: 1 }}>
         {deliveredOrders.length !== 0 ? (
-         
+
           <FlashList
             data={reversedArray}
-            // data={deliveredOrders}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             numColumns={numColumns}
