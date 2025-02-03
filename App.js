@@ -1,7 +1,7 @@
 
 
-import { StyleSheet, StatusBar, Platform, PermissionsAndroid, Linking, Alert, } from 'react-native'
-import React, { useEffect, } from 'react'
+import { StyleSheet, StatusBar, Platform, PermissionsAndroid, Alert, } from 'react-native'
+import React, { useEffect, useState, } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'
 import { persistor, store } from './src/ReduxToolkit/store'
@@ -9,20 +9,17 @@ import FlashMessage from 'react-native-flash-message'
 import { moderateScale, textScale } from './src/styles/responsiveSize'
 import SplashScreen from 'react-native-splash-screen'
 import { notificationListeners, requestUserPermission } from './src/utils/notificationServices'
-import SpInAppUpdates, {
-  NeedsUpdateResponse,
-  IAUUpdateKind,
-  StartUpdateOptions,
-} from 'sp-react-native-in-app-updates';
 import Routes from './src/Navigation/Routes'
+import SpInAppUpdates, { IAUInstallStatus, IAUUpdateKind, StartUpdateOptions } from 'sp-react-native-in-app-updates'
+import UpdatePopup from './src/Components/UpdatePopup'
 
 
 const App = () => {
-  const inAppUpdates = new SpInAppUpdates(false)
+  const [isPopupVisible, setPopupVisible] = useState(false);
 
   useEffect(() => {
     SplashScreen.hide();
-
+    checkUpdate()
   })
 
   useEffect(() => {
@@ -50,10 +47,52 @@ const App = () => {
 
 
 
-  const openPlayStore = () => {
-    Linking.openURL('https://play.google.com/store/apps/details?id=com.omniretailer')
-      .catch(err => console.error('An error occurred', err));
+  const checkUpdate = async () => {
+    const inAppUpdates = new SpInAppUpdates(false); // isDebug = false
+    try {
+      const result = await inAppUpdates.checkNeedsUpdate();
+      console.log("checkUpdate", result)
+      if (result.shouldUpdate) {
+        setPopupVisible(true); // Show the update popup
+      }
+    } catch (e) {
+      console.log('Error checking for update:', e);
+    }
   };
+
+  const handleUpdate = async () => {
+    setPopupVisible(false); // Hide the popup
+    const inAppUpdates = new SpInAppUpdates(false);
+
+    let updateOptions: StartUpdateOptions = {};
+    if (Platform.OS === 'android') {
+      updateOptions = {
+        updateType: IAUUpdateKind.IMMEDIATE,
+      };
+    } else if (Platform.OS === 'ios') {
+      updateOptions = {
+        title: 'Update available',
+        message:
+          'There is a new version of the app available on the App Store. Do you want to update it?',
+        buttonUpgradeText: 'Update',
+        buttonCancelText: 'Cancel',
+      };
+    }
+
+    try {
+      inAppUpdates.addStatusUpdateListener(downloadStatus => {
+        console.log('Download status:', downloadStatus);
+        if (downloadStatus.status === IAUInstallStatus.DOWNLOADED) {
+          console.log('Update downloaded, installing...');
+          inAppUpdates.installUpdate();
+        }
+      });
+      await inAppUpdates.startUpdate(updateOptions);
+    } catch (e) {
+      console.log('Error during update:', e);
+    }
+  };
+
 
   return (
     <Provider store={store}>
@@ -66,6 +105,11 @@ const App = () => {
             fontSize: textScale(16)
           }}
           position='top'
+        />
+        <UpdatePopup
+          visible={isPopupVisible}
+          handleUpdate={handleUpdate}
+          onClose={() => setPopupVisible(false)}
         />
       </PersistGate>
     </Provider>

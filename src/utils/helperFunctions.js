@@ -30,3 +30,7 @@ export {
     otpTimerCounter,
 };
 
+export function convertToInteger(value) {
+    return Math.floor(value); // This will return the largest integer less than or equal to the given value
+  }
+  

@@ -115,7 +115,6 @@ const HomeSubeCategoryItem = () => {
   }
 
 
-  console.log('memoizedsubCategoryItems', memoizedsubCategoryItems?.length,subCategoryItems?.length,"pg",subCategoryItemsPage)
   return (
     <View style={styles.container}>
       <Text style={{marginLeft:10}}>Total:- {memoizedsubCategoryItems?.length}</Text>

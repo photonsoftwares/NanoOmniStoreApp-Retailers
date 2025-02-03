@@ -24,6 +24,7 @@ const PendingItem = memo(({ item }) => {
     </View>
   );
 
+  // console.log("item",item)
   return (
     <View style={[styles.itemContainer, { elevation: 8 }]}>
       {renderContainer('Order ID', item.order_id)}
@@ -73,6 +74,7 @@ const RenderOrderPending = () => {
   const pendingOrders = ordersData.filter(order => order.status === 'PENDING');
 
 
+  console.log("pendingOrders", pendingOrders[0])
   return (
     <>
       <HeaderComp screenName={'Pending Ordes'} onBackPress={() => navigation.goBack()} />

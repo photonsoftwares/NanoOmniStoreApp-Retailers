@@ -398,7 +398,7 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
 };
 
 export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async (dispatch, getState) => {
-
+// console.log("CategoryItemUpdateMethod",data)
 
 
     try {
@@ -409,7 +409,7 @@ export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommen
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
-            console.log('CategoryItemUpdateMethod_resp', response, endUrl);
+            // console.log('CategoryItemUpdateMethod_resp', response?.data?.price, endUrl);
 
             if (response?.status == true) {
 

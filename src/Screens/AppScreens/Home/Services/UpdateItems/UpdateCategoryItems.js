@@ -136,6 +136,7 @@ const UpdateCategoryItems = ({ route }) => {
 
         }
 
+        // console.log("jsonString",jsonString)
     };
 
     const imgUpload = async (url) => {

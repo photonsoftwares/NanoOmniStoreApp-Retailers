@@ -21,6 +21,7 @@ const PendingItemWithUserDetails = ({ route }) => {
   const [loader, setLoader] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  console.log("customerData",customerData)
 
   const handleOptionSelect = (value) => {
     setSelectedOption(value);
@@ -269,8 +270,6 @@ const PendingItemWithUserDetails = ({ route }) => {
   };
 
 
-  console.log("customerBookedOrders",customerBookedOrders)
-
 
   return (
     <>
@@ -283,7 +282,6 @@ const PendingItemWithUserDetails = ({ route }) => {
         /> :
 
         <View style={{ backgroundColor: 'white', flex: 1 }}>
-
           <View style={styles.cardContainer}>
             {renderCustomerDetails()}
             {renderOrderDetails()}
@@ -291,7 +289,7 @@ const PendingItemWithUserDetails = ({ route }) => {
           </View>
 
           <ButtonCompo
-            title={selectedOption ? 'Next' : `Pick Pack - Total: ₹${customerData.order_value}`}
+            title={selectedOption ? 'Next' : `Pick Pack - Total: ₹${customerData?.order_value}`}
             onPress={handleButtonPress}
           />
 
