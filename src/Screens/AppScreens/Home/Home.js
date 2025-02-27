@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import HomeHeader from '../../../Components/HomeHeader';
-import HomeSliderCompo from '../../../Components/HomeSliderCompo';
+// import HomeSliderCompo from '../../../Components/HomeSliderCompo';
 import { moderateScale, scale } from '../../../styles/responsiveSize';
 import Services from './Services/Services';
 import { GetCartMethod, GetCategoryItemMethod, GetSelectedCategoryItemsMethod, OrderViewOrderMethod, RecommendedItemMethod } from '../../../config/userApiMethods';

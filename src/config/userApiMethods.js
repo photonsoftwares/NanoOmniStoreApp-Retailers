@@ -1473,3 +1473,40 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
     }
 
 };
+
+// Add this function to your userActionApi.js file
+export const UpdateOnlineStatusMethod = (storeId) => async (dispatch, getState) => {
+    // console.log("UpdateOnlineStatusMethod_props", storeId, saasId, status);
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const method = "PUT";
+        const headers = {};
+        const endUrl = `${BASE_URL}store-master/update-online-status/${storeId}`;
+
+        const response = await ApiRequest(endUrl, method, headers);
+
+        console.log('UpdateOnlineStatusMethod_resp', response);
+
+        if (response?.status === true) {
+            showMessage({
+                message: response.message || "Status updated successfully",
+                type: "success",
+            });
+            return response.data; // Return the updated status (e.g., "Online" or "Offline")
+        } else {
+            throw new Error(response.message || "Failed to update status");
+        }
+    } catch (error) {
+        console.error("UpdateOnlineStatusMethod API request error:", error);
+        showMessage({
+            message: "Error updating status",
+            description: error.message || "Unknown error occurred",
+            type: "danger",
+        });
+        throw error; // Re-throw the error to handle it in the component
+    } finally {
+        dispatch(setLoadingState(false));
+    }
+};

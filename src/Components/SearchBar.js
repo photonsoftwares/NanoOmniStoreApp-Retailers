@@ -358,7 +358,7 @@ const SearchBar = () => {
         <Image
           key={item?.item_id}  // Add this line to set a unique key for each Image component
           // source={{ uri: `http://3.111.70.84:8089/prod/api/v1/item/get-image/${item?.item_id}` }}
-          source={{ uri: `http://3.111.70.84:8089/prod/api/v1/item/get-image/${item?.item_id}?timestamp=${Date.now()}` }}
+          source={{ uri: `${BASE_URL}item/get-image/${item?.item_id}?timestamp=${Date.now()}` }}
 
           style={styles.itemImage}
         />

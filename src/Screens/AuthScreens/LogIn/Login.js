@@ -45,12 +45,12 @@ const Login = () => {
       user_name: inputs.storeId,
       password: inputs.password,
     });
-    
 
+    console.log(data)
 
     const a = await dispatch(LogInMethod(data))
 
-    // console.log("second",a)
+    console.log("second", a)
 
 
   };
@@ -82,7 +82,7 @@ const Login = () => {
       showsVerticalScrollIndicator={false}
     >
       <View style={[styles.formContainer, {}]}>
-        <Text style={[commonStyles.fontBold24, { fontWeight: 'bold', marginBottom: scale(10), alignSelf: 'center',color:colors.grey900 }]}>LogIn</Text>
+        <Text style={[commonStyles.fontBold24, { fontWeight: 'bold', marginBottom: scale(10), alignSelf: 'center', color: colors.grey900 }]}>LogIn</Text>
 
         <TextInputCompo
           onChangeText={(text) => handleOnChange(text, 'storeId')}
