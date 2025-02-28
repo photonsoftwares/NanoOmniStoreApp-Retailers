@@ -156,7 +156,7 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
 };
 
 export const SaveTransactionMethod = (data, orderIdd, selectedOption) => async (dispatch, getState) => {
-    console.log("SaveTransaction_props", data)
+    // console.log("SaveTransaction_props", data)
 
     try {
         const endUrl = `${BASE_URL}transaction/save-transaction`;
@@ -164,10 +164,10 @@ export const SaveTransactionMethod = (data, orderIdd, selectedOption) => async (
         const body = JSON.stringify(data);
         const method = 'Post';
 
-        // console.log("SaveTransaction_before", endUrl, body)
+        console.log("SaveTransaction_before", body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        console.log('SaveTransaction_resp', body, endUrl, response,);
+        console.log('SaveTransaction_resp', response,);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -398,7 +398,7 @@ export const ItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurre
 };
 
 export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommendedCurrentPage) => async (dispatch, getState) => {
-// console.log("CategoryItemUpdateMethod",data)
+    // console.log("CategoryItemUpdateMethod",data)
 
 
     try {
@@ -1974,5 +1974,42 @@ export const DashboardMMethod = () => async (dispatch, getState) => {
 
     } catch (error) {
         showToast(`${error} Error in DashboardMMethod`);
+    }
+};
+
+
+export const UpdateOnlineStatusMethod = (storeId) => async (dispatch, getState) => {
+    // console.log("UpdateOnlineStatusMethod_props", storeId, saasId, status);
+
+    dispatch(setLoadingState(true));
+
+    try {
+        const method = "PUT";
+        const headers = {};
+        const endUrl = `${BASE_URL}store-master/update-online-status/${storeId}`;
+
+        const response = await ApiRequest(endUrl, method, headers);
+
+        console.log('UpdateOnlineStatusMethod_resp', response);
+
+        if (response?.status === true) {
+            showMessage({
+                message: response.message || "Status updated successfully",
+                type: "success",
+            });
+            return response.data; // Return the updated status (e.g., "Online" or "Offline")
+        } else {
+            throw new Error(response.message || "Failed to update status");
+        }
+    } catch (error) {
+        console.error("UpdateOnlineStatusMethod API request error:", error);
+        showMessage({
+            message: "Error updating status",
+            description: error.message || "Unknown error occurred",
+            type: "danger",
+        });
+        throw error; // Re-throw the error to handle it in the component
+    } finally {
+        dispatch(setLoadingState(false));
     }
 };

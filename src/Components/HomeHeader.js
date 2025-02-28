@@ -1,21 +1,55 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native'
-import React from 'react'
-import { useSelector } from 'react-redux';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Switch } from 'react-native'
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'
 import { moderateScale, scale, textScale } from '../styles/responsiveSize';
 import ImagePath from '../constants/ImagePath';
 import SearchBar from './SearchBar';
 import Profile from '../Screens/AppScreens/Profile/Profile';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { UpdateOnlineStatusMethod } from '../config/userApiMethods'
 
 
 const HomeHeader = () => {
     const { storeName } = useSelector(state => state?.authReducer?.user?.store_data);
     const userId = useSelector(state => state?.auth?.data?.customer_data?.id);
+    const { storeId } = useSelector((state) => state?.authReducer?.user?.user_data)
     const userType = useSelector(state => state?.auth?.data?.customer_data?.customerType
     );
+
+    const dispatch = useDispatch();
+    const [isOnline, setIsOnline] = useState(false);
     const navigation = useNavigation()
+    const [loading, setLoading] = useState(false);
+
+
+    const handleToggle = async (value) => {
+        setIsOnline(value); // Update the toggle state immediately for better UX
+        setLoading(true); // Show loading state while the API call is in progress
+
+        console.log(storeId)
+
+        try {
+
+            // Call the API to update the online status
+            const response = await dispatch(UpdateOnlineStatusMethod(storeId));
+
+            console.log('API Response:', response);
+
+            // Update the toggle state based on the API response
+            if (response === "Online") {
+                setIsOnline(true);
+            } else if (response === "Offline") {
+                setIsOnline(false);
+            }
+        } catch (error) {
+            console.error('Error updating online status:', error);
+            setIsOnline(!value); // Revert the toggle state if the API call fails
+        } finally {
+            setLoading(false); // Hide loading state
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -36,7 +70,13 @@ const HomeHeader = () => {
                 </ScrollView>
             </View>
 
-            <View style={{ justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Switch
+                    value={isOnline}
+                    onValueChange={handleToggle}
+                    disabled={loading} // Disable the switch while the API call is in progress
+                    style={{ marginRight: moderateScale(10) }}
+                />
                 <TouchableOpacity
                     onPress={() => navigation.navigate(SearchBar)}
                     style={[{ height: moderateScale(35), width: moderateScale(35), alignSelf: 'center', }]}>

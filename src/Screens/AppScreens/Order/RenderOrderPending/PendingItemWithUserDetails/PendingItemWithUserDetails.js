@@ -1,9 +1,9 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet,} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { OrderMasterDetailsMethod, SaveTransactionMethod,} from '../../../../../config/userApiMethods';
+import { OrderMasterDetailsMethod, SaveTransactionMethod, } from '../../../../../config/userApiMethods';
 import ButtonCompo from '../../../../../Components/ButtonCompo';
 import HeaderComp from '../../../../../Components/HeaderCompo';
 import { useNavigation } from '@react-navigation/native';
@@ -21,7 +21,7 @@ const PendingItemWithUserDetails = ({ route }) => {
   const [loader, setLoader] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  console.log("customerData",customerData)
+  // console.log("customerData",customerData)
 
   const handleOptionSelect = (value) => {
     setSelectedOption(value);
@@ -161,11 +161,11 @@ const PendingItemWithUserDetails = ({ route }) => {
                   </>
                   :
                   <>
-                  <View style={styles.allView}>
-                    <Text style={styles.titleStyle}>{`Quantity: `}</Text>
-                    <Text style={styles.valueStyle}>{order.bill_qty}</Text>
-                  </View>
-                </>
+                    <View style={styles.allView}>
+                      <Text style={styles.titleStyle}>{`Quantity: `}</Text>
+                      <Text style={styles.valueStyle}>{order.bill_qty}</Text>
+                    </View>
+                  </>
               }
 
 
@@ -182,7 +182,7 @@ const PendingItemWithUserDetails = ({ route }) => {
     );
   };
 
-
+  console.log(selectedOption)
   const handleButtonPress = async () => {
 
     if (selectedOption === null) {
