@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList, ActivityIndicator, Image } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { scale, width } from '../styles/responsiveSize';
@@ -41,9 +41,9 @@ const SubCategoryItemListRender = ({ item }) => {
   return (
     <View style={[styles.itemContainer, {}]}>
 
-      <FastImage
+      <Image
         // source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
-        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
+        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
         style={styles.img}
         resizeMode='cover'
       />
@@ -70,7 +70,7 @@ const SubCategoryItemListRender = ({ item }) => {
           totalOff == '-Infinity%' ?
             <Text style={{ alignSelf: 'flex-end', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12 }}></Text>
             :
-            <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#FFF', borderRadius: 4, fontSize: 12, }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
+            <Text style={{ alignSelf: 'flex-end', backgroundColor: item?.actual_price > item?.price ? '#008000' : '#FFF', paddingHorizontal: 6, color: '#000', borderRadius: 4, fontSize: 12, }}>{item?.actual_price > item?.price ? totalOff : null}</Text>
         }
 
       </View>
@@ -113,11 +113,11 @@ const HomeSubeCategoryItem = () => {
       </View>
     )
   }
-
+  // console.log("data", memoizedsubCategoryItems?.length)
 
   return (
     <View style={styles.container}>
-      <Text style={{marginLeft:10}}>Total:- {memoizedsubCategoryItems?.length}</Text>
+      <Text style={{ marginLeft: 10, color: '#000' }}>Total:- {memoizedsubCategoryItems?.length}</Text>
       {
         memoizedsubCategoryItems?.length == 0 ?
           <>{NoData()}</>
@@ -178,7 +178,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scale(12),
     fontWeight: '700',
-    textAlign: 'left'
+    textAlign: 'left',
+    color: '#000'
   },
   price: {
     fontSize: scale(14),
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
   buttonTitle: {
     fontSize: scale(14),
     fontWeight: '700',
+    color: '#000'
   },
 });
 

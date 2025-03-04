@@ -616,7 +616,8 @@ function Indicator() {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 3,
-    borderRadius: 8
+    borderRadius: 8,
+    height: 240,
   },
   card: {
     width: width - 10,

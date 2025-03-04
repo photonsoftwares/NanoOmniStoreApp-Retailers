@@ -16,12 +16,13 @@ const GenrateInvoicePdf = ({ route }) => {
     const navigation = useNavigation()
     const source = { uri: `${BASE_URL}transaction/pdf/${pdf_file_name}`, cache: true };
 
-// console.log("a",source.uri)
+    // console.log("a",source.uri)
 
     const convertPdfToBase64 = async () => {
         try {
             const pdfUrl = `${BASE_URL}transaction/pdf/${pdf_file_name}`;
             const response = await fetch(pdfUrl);
+            console.log('respgip', response);
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch PDF. Status: ${response.status}`);
@@ -32,8 +33,8 @@ const GenrateInvoicePdf = ({ route }) => {
 
             const base64 =
                 typeof btoa === 'function'
-                    ? btoa(String.fromCharCode(...uint8Array)) 
-                    : require('buffer').Buffer.from(uint8Array).toString('base64'); 
+                    ? btoa(String.fromCharCode(...uint8Array))
+                    : require('buffer').Buffer.from(uint8Array).toString('base64');
 
             return base64;
         } catch (error) {
@@ -60,15 +61,15 @@ const GenrateInvoicePdf = ({ route }) => {
         myCustomShare(base64Data);
     }
 
-  const printFromURL = async () => {
-  try {
-    await RNPrint.print({
-      filePath: source.uri
-    });
-  } catch (error) {
-    console.error('Print Error:', error);
-  }
-};
+    const printFromURL = async () => {
+        try {
+            await RNPrint.print({
+                filePath: source.uri
+            });
+        } catch (error) {
+            console.error('Print Error:', error);
+        }
+    };
     return (
         <>
             <HeaderComp

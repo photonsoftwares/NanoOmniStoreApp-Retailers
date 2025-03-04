@@ -21,6 +21,7 @@ const GenratePdfBilling = ({ route }) => {
         try {
             const pdfUrl = `${BASE_URL}transaction/pdf/${pdf_file_name}`;
             const response = await fetch(pdfUrl);
+            console.log('respgpb', response);
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch PDF. Status: ${response.status}`);
@@ -65,13 +66,13 @@ const GenratePdfBilling = ({ route }) => {
 
     const printFromURL = async () => {
         try {
-          await RNPrint.print({
-            filePath: source.uri
-          });
+            await RNPrint.print({
+                filePath: source.uri
+            });
         } catch (error) {
-          console.error('Print Error:', error);
+            console.error('Print Error:', error);
         }
-      };
+    };
 
     return (
         <>
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-        marginHorizontal:8
+        marginHorizontal: 8
     },
 });
 

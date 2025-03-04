@@ -68,7 +68,7 @@ const Home = () => {
           style={{
             width: '100%',
             marginTop: 2,
-            flex: 1 / 3,
+            flex: 1 / 1.5,
           }}>
           <Banner key={bannerKey} />
         </View>

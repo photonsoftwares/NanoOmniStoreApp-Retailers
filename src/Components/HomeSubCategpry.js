@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
   itemContainer: {
     // flex: 1,
     padding: 10,
-    height: 100,
-    width: 100,
+    height: 90,
+    width: 90,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderWidth: 0.5,
-    borderRadius: 8,
+    borderRadius: 50,
     borderWidth: 1
 
   },

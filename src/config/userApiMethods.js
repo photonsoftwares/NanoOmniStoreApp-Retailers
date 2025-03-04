@@ -167,7 +167,7 @@ export const SaveTransactionMethod = (data, orderIdd, selectedOption) => async (
         console.log("SaveTransaction_before", body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        console.log('SaveTransaction_resp', response,);
+        console.log('SaveTransaction_resp', response, body, endUrl);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -206,7 +206,7 @@ export const SaveTransactionBillingMethod = (data, orderIdd) => async (dispatch,
         // console.log("SaveTransaction_before", endUrl, body)
         let response = await ApiRequest(endUrl, method, headers, body);
 
-        // console.log('SaveTransaction_resp', response);
+        console.log('SaveTransaction_resp for billing', response, body, endUrl);
         if (response?.status) {
             showMessage({
                 message: `Invoice is Loading`,
@@ -1122,11 +1122,13 @@ export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getS
 
     try {
         const response = await ApiRequest(endUrl, method, headers);
+        // console.log(response?.data.length)
 
         if (response?.status) {
+            dispatch(setSubCategoryItemsData(response?.data))
             if (subCategoryItemsPage == 1) {
-                dispatch(setSubCategoryItemsData(response?.data))
-                dispatch(setSubCategoryItemsTotalPage(response?.count / 12))
+                // dispatch(setSubCategoryItemsData(response?.data))
+                // dispatch(setSubCategoryItemsTotalPage(response?.count / 12))
             } else {
                 if (response?.next == null) {
                     dispatch(setSubCategoryItemsData([...subCategoryItems, ...response?.data]))
