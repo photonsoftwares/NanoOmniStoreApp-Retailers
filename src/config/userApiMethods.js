@@ -1122,23 +1122,23 @@ export const GetSubCategoryItemsMethod = (categoryName) => async (dispatch, getS
 
     try {
         const response = await ApiRequest(endUrl, method, headers);
-        // console.log(response?.data.length)
+        console.log(response?.data.length)
 
         if (response?.status) {
             dispatch(setSubCategoryItemsData(response?.data))
-            if (subCategoryItemsPage == 1) {
-                // dispatch(setSubCategoryItemsData(response?.data))
-                // dispatch(setSubCategoryItemsTotalPage(response?.count / 12))
-            } else {
-                if (response?.next == null) {
-                    dispatch(setSubCategoryItemsData([...subCategoryItems, ...response?.data]))
+            // if (subCategoryItemsPage == 1) {
+            //     // dispatch(setSubCategoryItemsData(response?.data))
+            //     // dispatch(setSubCategoryItemsTotalPage(response?.count / 12))
+            // } else {
+            //     if (response?.next == null) {
+            //         dispatch(setSubCategoryItemsData([...subCategoryItems, ...response?.data]))
 
-                    showToast("No More Data")
-                    console.log("response?.next == null", response?.next == null)
-                } else {
-                    dispatch(setSubCategoryItemsData([...subCategoryItems, ...response?.data]))
-                }
-            }
+            //         showToast("No More Data")
+            //         console.log("response?.next == null", response?.next == null)
+            //     } else {
+            //         dispatch(setSubCategoryItemsData([...subCategoryItems, ...response?.data]))
+            //     }
+            // }
         } else {
             dispatch(setSubCategoryItemsData([]))
         }

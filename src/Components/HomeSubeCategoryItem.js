@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, FlatList, ActivityIndicator, Image } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList, ActivityIndicator, Image, RefreshControl } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { scale, width } from '../styles/responsiveSize';
@@ -9,6 +9,7 @@ import { GetSubCategoryItemsMethod } from '../config/userApiMethods';
 import ButtonCompo from './ButtonCompo';
 import { setSubCategoryItemsPage } from '../ReduxToolkit/features/mainCategorySlice';
 import { showToast } from '../utils/toast';
+import MyImgCompo from './MyImgCompo';
 
 
 const NoData = () => {
@@ -43,10 +44,15 @@ const SubCategoryItemListRender = ({ item }) => {
 
       <Image
         // source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
-        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
+        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
         style={styles.img}
         resizeMode='cover'
       />
+      {/* <FastImage
+        source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
+        style={styles.img}
+        resizeMode={FastImage.resizeMode.cover}
+      /> */}
       <View style={{ width: '100%', gap: 6, height: 65 }}>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -85,10 +91,17 @@ const HomeSubeCategoryItem = () => {
   const { selectedSubCategory, subCategoryItems, subCategoryItemsTotalPage, subCategoryItemsPage } = useSelector((state) => state?.mainCategoryReducer);
   const dispatch = useDispatch()
   const [loder, setLoder] = useState(false)
-  const memoizedsubCategoryItems = useMemo(() => {
-    return subCategoryItems;
-  }, [subCategoryItems]);
+  const [refreshing, setRefreshing] = useState(false);
+  // const memoizedsubCategoryItems = useMemo(() => {
+  //   return subCategoryItems;
+  // }, [subCategoryItems]);
 
+  const handleRefresh = async () => {
+    setRefreshing(true); // Show the refresh spinner
+    // dispatch(setSubCategoryItemsPage(1)); // Reset to the first page
+    await dispatch(GetSubCategoryItemsMethod(selectedSubCategory)); // Fetch data again
+    setRefreshing(false); // Hide the refresh spinner
+  };
 
   const loadMoreData = async () => {
     if (subCategoryItemsTotalPage > subCategoryItemsPage) {
@@ -117,13 +130,13 @@ const HomeSubeCategoryItem = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ marginLeft: 10, color: '#000' }}>Total:- {memoizedsubCategoryItems?.length}</Text>
+      <Text style={{ marginLeft: 10, color: '#000' }}>Total:- {subCategoryItems?.length}</Text>
       {
-        memoizedsubCategoryItems?.length == 0 ?
+        subCategoryItems?.length == 0 ?
           <>{NoData()}</>
           :
           <FlatList
-            data={memoizedsubCategoryItems || []}
+            data={subCategoryItems || []}
             keyExtractor={(item, index) => item.id || index}
             renderItem={({ item }) => <SubCategoryItemListRender item={item} />}
             numColumns={2}
@@ -131,6 +144,14 @@ const HomeSubeCategoryItem = () => {
             ListEmptyComponent={() => NoData()}
             ListFooterComponent={<Footer />}
             ListFooterComponentStyle={{ alignSelf: 'center', marginRight: 100 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing} // Controlled by the `refreshing` state
+                onRefresh={handleRefresh} // Function to call when refreshing
+                colors={['#0000ff']} // Customize the spinner color (optional)
+                tintColor="#0000ff" // Customize the spinner color (optional)
+              />
+            }
 
           />
       }
