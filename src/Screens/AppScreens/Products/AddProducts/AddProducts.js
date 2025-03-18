@@ -17,6 +17,7 @@ import CustomModal from '../../../../Components/Modal';
 import { showToast } from '../../../../utils/toast';
 import { setSelectedMasterCategory } from '../../../../ReduxToolkit/features/mainCategorySlice';
 import WeightUnitSelector from '../../../../Components/WeightUnitSelector';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
 
@@ -36,7 +37,13 @@ const AddProducts = () => {
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState('KG');
 
-
+    // State for UOM dropdown
+    const [uomOpen, setUomOpen] = useState(false);
+    const [uomValue, setUomValue] = useState(null);
+    const [uomItems, setUomItems] = useState([
+        { label: 'W', value: 'W' },
+        { label: 'E', value: 'E' },
+    ]);
 
 
 
@@ -53,8 +60,8 @@ const AddProducts = () => {
         closing_quantity: 0,
         received_quantity: 0,
         discount: 0,
-        selling_price: 0
-
+        selling_price: 0,
+        UOM: ''
 
     });
 
@@ -211,13 +218,15 @@ const AddProducts = () => {
             opening_qty: formData.opening_quantity,
             closing_qty: formData.closing_quantity,
             received_qty: formData.received_quantity,
-            UOM: storeType == 'Vegitable' ? selectedUnit : '',
+            // UOM: storeType == 'Vegitable' ? selectedUnit : '',
             colorList: [SelectedColor],
+            UOM: uomValue,
         };
 
         // console.log("AddItem", body)
 
         const resp = await dispatch(AddNewItemMethod(body))
+        console.log(resp, "AddItem")
         if (resp?.status === true) {
             var itemId = await resp?.data?.item_id;
 
@@ -292,6 +301,19 @@ const AddProducts = () => {
                         value={formData.item_name}
                         onChangeText={(text) => handleChange('item_name', text)}
 
+                    />
+
+                    <Text style={{ color: 'grey' }}>*</Text>
+                    <DropDownPicker
+                        open={uomOpen}
+                        value={uomValue}
+                        items={uomItems}
+                        setOpen={setUomOpen}
+                        setValue={setUomValue}
+                        setItems={setUomItems}
+                        placeholder="Select UOM"
+                        style={styles.input}
+                        dropDownContainerStyle={styles.dropdownContainer}
                     />
                     <Pressable
                         onPress={() => setModalVisible(true)}
@@ -434,6 +456,12 @@ const styles = StyleSheet.create({
     },
     dropdownDropStyle: {
         backgroundColor: '#fafafa',
+    },
+    dropdownContainer: {
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginBottom: 10,
     },
 });
 

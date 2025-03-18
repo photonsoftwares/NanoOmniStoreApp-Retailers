@@ -29,7 +29,8 @@ const UpdateCategoryItems = ({ route }) => {
     // console.log("UpdateCategoryItems", itemToUpdate?.actual_price, itemId, itemToUpdate?.actual_price || '',_actual_price)
 
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
-    const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price.toString() || '');
+    // const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price.toString() || '');
+    const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price || '');
     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
     // const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
@@ -71,7 +72,7 @@ const UpdateCategoryItems = ({ route }) => {
     const handleUpdate = async () => {
         // setIsLoading(true)
         if (receivedQty == 0) {
-            showToast("please add quantity")
+            showToast("please add Recevied Quantity")
         }
 
         const data = {
@@ -254,7 +255,7 @@ const UpdateCategoryItems = ({ route }) => {
                             </View>
 
                         </View>
-                        <Text style={{ marginTop: moderateScale(8), color: 'red',fontSize:12 ,alignSelf:'center'}}>JPG or PNG images, maximum 20KB</Text>
+                        <Text style={{ marginTop: moderateScale(8), color: 'red', fontSize: 12, alignSelf: 'center' }}>JPG or PNG images, maximum 20KB</Text>
 
                         {/* //////////// */}
 

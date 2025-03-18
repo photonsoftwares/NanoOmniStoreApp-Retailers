@@ -12,6 +12,7 @@ import { FlashList } from "@shopify/flash-list";
 
 
 const ServiceItem = memo(({ service }) => {
+    console.log(service.status, "service")
     const color = service;
     const navigation = useNavigation()
     const colors = useTheme().colors
@@ -32,7 +33,7 @@ const ServiceItem = memo(({ service }) => {
     return (
         <View style={[styles.serviceContainer, { elevation: 10 }]}>
 
-
+            <View style={styles.activity} ><Text style={styles.isactive} >{service.status}</Text></View>
             <MyImgCompo
                 imageUri={url}
                 resizeMode='cover'
@@ -66,6 +67,7 @@ const ServiceItem = memo(({ service }) => {
             </View>
             <View style={{ width: '90%' }}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UpdateItems', service)}>
+                    {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UpdateCategoryItems', { itemId: service?.item_id })}> */}
                     <Text style={[styles.buttonText, { color: colors.grey900 }]}>Update</Text>
                 </TouchableOpacity>
             </View>
@@ -86,7 +88,9 @@ const ServicesList = ({ ProductsScreen }) => {
 
     const handleEndReached = async () => {
         setIsLoading(true)
+        console.log("called before")
         await dispatch(RecommendedItemMethod(storeId, saasId, recommendedCurrentPage));
+        console.log("called", storeId, saasId, recommendedCurrentPage)
         setIsLoading(false)
     }
 
@@ -126,7 +130,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'white',
         paddingVertical: moderateScale(4),
-        gap:8
+        gap: 8
+    },
+    activity: {
+        display: 'flex',
+        top: 10,
+        right: 10,
+        position: 'absolute',
+        zIndex: 10,
+    },
+    isactive: {
+        color: '#000',
+        backgroundColor: 'yellow',
+        padding: 4,
+        borderRadius: 4,
+        fontWeight: 'bold',
+        fontSize: 12
     },
     serviceImage: {
         width: 100,

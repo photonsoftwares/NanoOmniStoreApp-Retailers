@@ -14,6 +14,7 @@ import Loader from '../../../../../Components/Loader';
 import CustomDropDown from '../../../../../Components/CustomDropDown';
 import CustomModal from '../../../../../Components/Modal';
 import { setSelectedMasterCategory } from '../../../../../ReduxToolkit/features/mainCategorySlice';
+import { showToast } from '../../../../../utils/toast';
 
 const UpdateItemScreen = ({ route }) => {
     const itemToUpdate = route?.params
@@ -25,13 +26,13 @@ const UpdateItemScreen = ({ route }) => {
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
-    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.stock || '');
+    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.opening_qty?.toString() || '');
     const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price?.toString() || '');
     const [status, setStatus] = useState(itemToUpdate?.status);
     const [category, setCategory] = useState(itemToUpdate?.category || '');
     const [isOpen, setOpen] = useState(false);
 
-    // console.log("itemToUpdate",itemToUpdate?.stock)
+    console.log("itemToUpdate", receivedQty)
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -91,7 +92,11 @@ const UpdateItemScreen = ({ route }) => {
     };
 
     const handleUpdate = async () => {
-        setIsLoading(true)
+
+        if (receivedQty == 0) {
+            showToast("please add quantity")
+        }
+        // setIsLoading(true)
 
         const data = {
             "item_name": itemName,
@@ -124,7 +129,7 @@ const UpdateItemScreen = ({ route }) => {
         }
         const jsonString = JSON.stringify(data);
 
-        // console.log("jsonString", jsonString)
+        console.log("jsonString", jsonString)
 
         const ItemUpdateMethod_resp = await dispatch(CategoryItemUpdateMethod(jsonString,
             itemId,
@@ -229,7 +234,7 @@ const UpdateItemScreen = ({ route }) => {
 
 
 
-    console.log("UpdateItem", actualPrice)
+    // console.log("UpdateItem", actualPrice)
     return (
         <>
             <HeaderComp
@@ -278,7 +283,7 @@ const UpdateItemScreen = ({ route }) => {
                             </View>
 
                         </View>
-                        <Text style={{ marginTop: moderateScale(8), color: 'red',fontSize:12 ,alignSelf:'center'}}>JPG or PNG images, maximum 20KB</Text>
+                        <Text style={{ marginTop: moderateScale(8), color: 'red', fontSize: 12, alignSelf: 'center' }}>JPG or PNG images, maximum 20KB</Text>
 
                         <Text style={styles.label}>Item Name</Text>
                         <TextInput

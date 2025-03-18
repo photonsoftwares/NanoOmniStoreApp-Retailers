@@ -312,13 +312,15 @@ export const RecommendedItemMethod = (storeIdd, saasIdd, page = 1) => async (dis
     dispatch(setLoadingState(true));
 
     try {
-        const endUrl = `${BASE_URL}search/recommended-item/${storeId}/${saasId}/${page}`;
+        // const endUrl = `${BASE_URL}search/recommended-item/${storeId}/${saasId}/${1}`;
+        const endUrl = `${BASE_URL}item/get-item-list-nextgen/${saasId}/${storeId}/${page}`;
         const method = "GET";
         const headers = {};
 
         try {
             const response = await ApiRequest(endUrl, method, headers);
             console.log("RecommendedItemMethod", endUrl, response.data.length)
+            console.log("RecommendedItemMethod", endUrl, response.message)
 
             if (response?.status === true) {
                 // console.log("RecommendedItemMethod_resp", response?.data?.length);
@@ -410,6 +412,7 @@ export const CategoryItemUpdateMethod = (data, itemId, storeId, saasId, recommen
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
             // console.log('CategoryItemUpdateMethod_resp', response?.data?.price, endUrl);
+            console.log(response, "response")
 
             if (response?.status == true) {
 
@@ -874,6 +877,7 @@ export const AddNewItemMethod = (data) => async (dispatch, getState) => {
 
         try {
             const response = await ApiRequest(endUrl, method, headers, body);
+            console.log('AddNewItemMethod_resp', response);
 
             if (response?.status) {
                 showMessage({
