@@ -282,11 +282,13 @@ const PendingItemWithUserDetails = ({ route }) => {
         /> :
 
         <View style={{ backgroundColor: 'white', flex: 1 }}>
-          <View style={styles.cardContainer}>
-            {renderCustomerDetails()}
-            {renderOrderDetails()}
-            {renderItemDetails()}
-          </View>
+          <ScrollView>
+            <View style={styles.cardContainer}>
+              {renderCustomerDetails()}
+              {renderOrderDetails()}
+              {renderItemDetails()}
+            </View>
+          </ScrollView>
 
           <ButtonCompo
             title={selectedOption ? 'Next' : `Pick Pack - Total: ₹${customerData?.order_value}`}

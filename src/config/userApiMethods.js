@@ -1,8 +1,8 @@
-import {showMessage} from 'react-native-flash-message';
-import {ApiRequest} from './apiRequests';
-import {setLoadingState} from '../ReduxToolkit/features/loadingSlice';
-import {BASE_URL} from './Base_Url';
-import {setCategoryData} from '../ReduxToolkit/features/productSlice';
+import { showMessage } from 'react-native-flash-message';
+import { ApiRequest } from './apiRequests';
+import { setLoadingState } from '../ReduxToolkit/features/loadingSlice';
+import { BASE_URL } from './Base_Url';
+import { setCategoryData } from '../ReduxToolkit/features/productSlice';
 import {
   setDeliveredItems,
   setOrders,
@@ -17,7 +17,7 @@ import {
   setRecommended,
   setRecommendedCurrentPage,
 } from '../ReduxToolkit/features/recommendedSlice';
-import {setCategoriesData} from '../ReduxToolkit/features/categoriesSlice';
+import { setCategoriesData } from '../ReduxToolkit/features/categoriesSlice';
 import {
   addCategoriesItemPageData,
   setCategoryItemsData,
@@ -27,22 +27,22 @@ import {
   addItemCart,
   totalInVoiceCart,
 } from '../ReduxToolkit/features/cartSlice';
-import {showToast} from '../utils/toast';
-import {setSearch} from '../ReduxToolkit/features/searchSlice';
-import {setSalesReport} from '../ReduxToolkit/features/salesReport';
+import { showToast } from '../utils/toast';
+import { setSearch } from '../ReduxToolkit/features/searchSlice';
+import { setSalesReport } from '../ReduxToolkit/features/salesReport';
 import axios from 'axios';
-import {setSalesSummary} from '../ReduxToolkit/features/salesSummary';
+import { setSalesSummary } from '../ReduxToolkit/features/salesSummary';
 import {
   setExtraDeliveryChargesValue,
   setExtraMinOrderValue,
 } from '../ReduxToolkit/features/extraChargesSlice';
-import {setCustomerList} from '../ReduxToolkit/features/customerList';
+import { setCustomerList } from '../ReduxToolkit/features/customerList';
 import {
   setAllRetailerWallet,
   setRetailerWallet,
   setWallet,
 } from '../ReduxToolkit/features/walletSlice';
-import {setCoupan} from '../ReduxToolkit/features/coupanSlice';
+import { setCoupan } from '../ReduxToolkit/features/coupanSlice';
 import {
   setMasterCategoryData,
   setSubCategoryCategory,
@@ -54,45 +54,45 @@ import {
   setInventory,
   setInventoryCurrentPage,
 } from '../ReduxToolkit/features/InventorySlice';
-import {setDashboard} from '../ReduxToolkit/features/dashboardSlice';
+import { setDashboard } from '../ReduxToolkit/features/dashboardSlice';
 
 export const OrderViewOrderMethod =
   (page = 1) =>
-  async (dispatch, getState) => {
-    // console.log('OrderViewOrderMethod_props', storeId, saasId, page);
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
-    dispatch(setLoadingState(true));
-    // console.log(page)
-
-    try {
-      const endUrl = `${BASE_URL}order/view-order/${saasId}/${storeId}`;
-
-      const method = 'GET';
-      const headers = {};
+    async (dispatch, getState) => {
+      // console.log('OrderViewOrderMethod_props', storeId, saasId, page);
+      const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+      dispatch(setLoadingState(true));
+      // console.log(page)
 
       try {
-        const response = await ApiRequest(endUrl, method, headers);
+        const endUrl = `${BASE_URL}order/view-order/${saasId}/${storeId}`;
 
-        console.log('OrderViewOrderMethod_resp', endUrl, response?.data.length);
-        if (response?.status === true && response?.data?.length > 0) {
-          dispatch(setOrders(response?.data));
+        const method = 'GET';
+        const headers = {};
 
-          return response?.data;
-        } else {
-          showToast('No Orders');
+        try {
+          const response = await ApiRequest(endUrl, method, headers);
+
+          console.log('OrderViewOrderMethod_resp', endUrl, response?.data.length);
+          if (response?.status === true && response?.data?.length > 0) {
+            dispatch(setOrders(response?.data));
+
+            return response?.data;
+          } else {
+            showToast('No Orders');
+          }
+        } catch (error) {
+          console.error('TestMethod API request error:', error);
+        } finally {
+          dispatch(setLoadingState(false));
         }
       } catch (error) {
-        console.error('TestMethod API request error:', error);
-      } finally {
+        // console.error("TestMethod unexpected error:", error);
+        showToast('something error');
+
         dispatch(setLoadingState(false));
       }
-    } catch (error) {
-      // console.error("TestMethod unexpected error:", error);
-      showToast('something error');
-
-      dispatch(setLoadingState(false));
-    }
-  };
+    };
 
 export const OrderViewOneMethod =
   (storeId, saasId, order_id) => async (dispatch, getState) => {
@@ -129,6 +129,7 @@ export const OrderMasterDetailsMethod =
       const headers = {};
       const method = 'GET';
       let response = await ApiRequest(endUrl, method, headers);
+      console.log(response, endUrl, 'OrderMasterDetailsMethod_resp');
 
       if (response?.status) {
         await dispatch(setCustomerData(response?.data));
@@ -289,77 +290,77 @@ export const UpdateOrderMasterMethod =
 
 export const UpdateOrderStatusMethod =
   (orderIdd, status = 'DELIVERYBOY') =>
-  async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
-    console.log('UpdateOrderStatusMethod', orderIdd, status);
+    async (dispatch, getState) => {
+      const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+      console.log('UpdateOrderStatusMethod', orderIdd, status);
 
-    try {
-      const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/${status}`;
-      const headers = {};
-      const method = 'Put';
-      let response = await ApiRequest(endUrl, method, headers);
-      console.log('UpdateOrderStatusMethod_Resp', response);
-      if (response?.status === true) {
-        dispatch(OrderViewOrderMethod());
-      } else {
+      try {
+        const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/${status}`;
+        const headers = {};
+        const method = 'Put';
+        let response = await ApiRequest(endUrl, method, headers);
+        console.log('UpdateOrderStatusMethod_Resp', response);
+        if (response?.status === true) {
+          dispatch(OrderViewOrderMethod());
+        } else {
+          showMessage({
+            message: `${response.message}`,
+            type: 'danger',
+          });
+        }
+
+        return response;
+      } catch (error) {
         showMessage({
-          message: `${response.message}`,
+          message: 'Network Error '`${error}`,
           type: 'danger',
         });
       }
-
-      return response;
-    } catch (error) {
-      showMessage({
-        message: 'Network Error '`${error}`,
-        type: 'danger',
-      });
-    }
-  };
+    };
 
 export const RecommendedItemMethod =
   (storeIdd, saasIdd, page = 1) =>
-  async (dispatch, getState) => {
-    // console.log('RecommendedItemMethod_props', storeId, saasId, page);
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    async (dispatch, getState) => {
+      // console.log('RecommendedItemMethod_props', storeId, saasId, page);
+      const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
-    dispatch(setLoadingState(true));
+      dispatch(setLoadingState(true));
 
-    try {
+      try {
         const endUrl = `${BASE_URL}search/recommended-item/${storeId}/${saasId}/${page}`;
         const method = "GET";
         const headers = {};
 
         try {
-            const response = await ApiRequest(endUrl, method, headers);
-            console.log("RecommendedItemMethod", endUrl, response.data.length)
+          const response = await ApiRequest(endUrl, method, headers);
+          console.log("RecommendedItemMethod", endUrl, response.data.length)
 
-        if (response?.status === true) {
-          // console.log("RecommendedItemMethod_resp", response?.data?.length);
+          if (response?.status === true) {
+            // console.log("RecommendedItemMethod_resp", response?.data?.length);
 
-          if (page === 1) {
-            dispatch(setRecommended(response?.data));
-            dispatch(setRecommendedCurrentPage(page + 1));
+            if (page === 1) {
+              dispatch(setRecommended(response?.data));
+              dispatch(setRecommendedCurrentPage(page + 1));
+            } else {
+              dispatch(addRecommendedPageData(response?.data));
+              dispatch(setRecommendedCurrentPage(page + 1));
+            }
+            return response?.data;
           } else {
-            dispatch(addRecommendedPageData(response?.data));
-            dispatch(setRecommendedCurrentPage(page + 1));
+            throw new Error('No products found in the response');
           }
-          return response?.data;
-        } else {
-          throw new Error('No products found in the response');
+        } catch (error) {
+          showToast('No More Data available');
+        } finally {
+          dispatch(setLoadingState(false));
         }
       } catch (error) {
-        showToast('No More Data available');
-      } finally {
+        // console.error("TestMethod unexpected error:", error);
+        showToast('something error');
+
         dispatch(setLoadingState(false));
       }
-    } catch (error) {
-      // console.error("TestMethod unexpected error:", error);
-      showToast('something error');
-
-      dispatch(setLoadingState(false));
-    }
-  };
+    };
 
 export const ItemUpdateMethod =
   (data, itemId, storeId, saasId, recommendedCurrentPage) => async dispatch => {
@@ -401,39 +402,39 @@ export const ItemUpdateMethod =
 
 export const CategoryItemUpdateMethod =
   (data, itemId, storeId, saasId, recommendedCurrentPage) =>
-  async (dispatch, getState) => {
-    // console.log("CategoryItemUpdateMethod",data)
+    async (dispatch, getState) => {
+      // console.log("CategoryItemUpdateMethod",data)
 
-    try {
-      const endUrl = `${BASE_URL}item/update-item/${itemId}`;
-      const method = 'PUT';
-      const headers = {};
-      const body = data;
+      try {
+        const endUrl = `${BASE_URL}item/update-item/${itemId}`;
+        const method = 'PUT';
+        const headers = {};
+        const body = data;
 
         try {
-            const response = await ApiRequest(endUrl, method, headers, body);
-            // console.log('CategoryItemUpdateMethod_resp', response?.data?.price, endUrl);
+          const response = await ApiRequest(endUrl, method, headers, body);
+          // console.log('CategoryItemUpdateMethod_resp', response?.data?.price, endUrl);
 
-        if (response?.status == true) {
-          dispatch(GetSubCategoryItemsMethod(response?.data?.category));
-          dispatch(RecommendedItemMethod(storeId, saasId));
+          if (response?.status == true) {
+            dispatch(GetSubCategoryItemsMethod(response?.data?.category));
+            dispatch(RecommendedItemMethod(storeId, saasId));
 
-          return response;
-        } else {
-          showToast('Unknown error occurred');
+            return response;
+          } else {
+            showToast('Unknown error occurred');
+          }
+        } catch (error) {
+          showToast(error.message || 'Unknown error occurred');
+        } finally {
         }
       } catch (error) {
-        showToast(error.message || 'Unknown error occurred');
-      } finally {
+        // console.error("TestMethod unexpected error:", error);
+        showToast('something error');
       }
-    } catch (error) {
-      // console.error("TestMethod unexpected error:", error);
-      showToast('something error');
-    }
-  };
+    };
 
 export const GetCategoryItemMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   // const { categoryCurrentPage } = getState().categoriesReducer;
 
   dispatch(setLoadingState(true));
@@ -468,8 +469,8 @@ export const GetCategoryItemMethod = () => async (dispatch, getState) => {
 
 export const GetSelectedCategoryItemsMethod =
   categoryName => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
-    const {categoryItemsCurrentPage} = getState().categoryItemsReducer;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    const { categoryItemsCurrentPage } = getState().categoryItemsReducer;
 
     dispatch(setLoadingState(true));
 
@@ -510,7 +511,7 @@ export const GetSelectedCategoryItemsMethod =
 
 export const GetSearchItemsMethod =
   searchText => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     // console.log('GetSearchItemsMethod_props', storeId, saasId, page,categoryItemsCurrentPage);
 
     try {
@@ -539,7 +540,7 @@ export const GetSearchItemsMethod =
 
 export const SearchWalletItemsMethod =
   searchText => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     console.log('SearchWalletItemsMethod_props', storeId, saasId, searchText);
 
     try {
@@ -567,7 +568,7 @@ export const SearchWalletItemsMethod =
   };
 
 export const AddToCartMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   console.log('AddToCartMethod_props', storeId, saasId, data);
 
   dispatch(setLoadingState(true));
@@ -604,7 +605,7 @@ export const AddToCartMethod = data => async (dispatch, getState) => {
 };
 
 export const GetCartMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   dispatch(setLoadingState(true));
 
@@ -644,7 +645,7 @@ export const GetCartMethod = data => async (dispatch, getState) => {
 };
 
 export const DeleteAllCartMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   dispatch(setLoadingState(true));
 
   try {
@@ -673,7 +674,7 @@ export const DeleteAllCartMethod = () => async (dispatch, getState) => {
 };
 
 export const DeleteOneMethod = itemId => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   try {
     const method = 'delete';
@@ -704,7 +705,7 @@ export const DeleteOneMethod = itemId => async (dispatch, getState) => {
 
 export const UpdateCartItemQntyMethod =
   (itemId, qty) => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     dispatch(setLoadingState(true));
 
     try {
@@ -806,7 +807,7 @@ export const uploadImageMethod = async (itemId, selectedImage) => {
 };
 
 export const AddNewItemMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   try {
     const method = 'POST';
@@ -814,8 +815,8 @@ export const AddNewItemMethod = data => async (dispatch, getState) => {
     const body = JSON.stringify(data);
     const endUrl = `${BASE_URL}item/add-item`;
 
-        try {
-            const response = await ApiRequest(endUrl, method, headers, body);
+    try {
+      const response = await ApiRequest(endUrl, method, headers, body);
 
       if (response?.status) {
         showMessage({
@@ -846,7 +847,7 @@ export const AddNewItemMethod = data => async (dispatch, getState) => {
 
 export const AddSubCategoryMethod =
   (data, masterCategoryId) => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     console.log('AddMasterCategoryMethod_Data', data);
 
     try {
@@ -912,7 +913,7 @@ export const AddMasterCategoryMethod = data => async (dispatch, getState) => {
 };
 
 export const GetMasterCategoryMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   console.log('GetMasterCategoryMethod_props', storeId, saasId);
 
   const method = 'GET';
@@ -939,7 +940,7 @@ export const GetMasterCategoryMethod = data => async (dispatch, getState) => {
 
 export const PutMasterCategoryMethod =
   (id, data) => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
     const method = 'PUT';
     const headers = {};
@@ -962,7 +963,7 @@ export const PutMasterCategoryMethod =
   };
 
 export const deleteMasterCategoryMethod = id => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   const method = 'DELETE';
   const headers = {};
@@ -986,7 +987,7 @@ export const deleteMasterCategoryMethod = id => async (dispatch, getState) => {
 
 export const GetSubCategoryMethod =
   masterCategoryId => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
     const method = 'GET';
     const headers = {};
@@ -1016,7 +1017,7 @@ export const GetSubCategoryMethod =
 
 export const GetMainAndSubCategoryMethod =
   masterCategoryId => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
     try {
       const resp = await dispatch(GetMasterCategoryMethod());
@@ -1037,8 +1038,8 @@ export const GetMainAndSubCategoryMethod =
 
 export const GetSubCategoryItemsMethod =
   categoryName => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
-    const {subCategoryItemsPage, subCategoryItems} =
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    const { subCategoryItemsPage, subCategoryItems } =
       getState()?.mainCategoryReducer;
 
     const method = 'GET';
@@ -1075,7 +1076,7 @@ export const GetSubCategoryItemsMethod =
   };
 
 export const GetCategoryMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   dispatch(setLoadingState(true));
 
   try {
@@ -1108,8 +1109,8 @@ export const GetCategoryMethod = data => async (dispatch, getState) => {
 
 export const GetgetSalesReportMethod =
   startDateprops => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
-    const {salesReportData, startDate} = getState()?.salesReportReducer;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    const { salesReportData, startDate } = getState()?.salesReportReducer;
 
     const date =
       (await startDateprops) == undefined ? startDate : startDateprops;
@@ -1135,8 +1136,8 @@ export const GetgetSalesReportMethod =
 
 export const GetgetSalesSummarytMethod =
   (fromDate, toDate) => async (dispatch, getState) => {
-    const {storeId, saasId} = getState()?.authReducer?.user?.user_data;
-    const {startDate} = getState()?.salesReportReducer;
+    const { storeId, saasId } = getState()?.authReducer?.user?.user_data;
+    const { startDate } = getState()?.salesReportReducer;
 
     const date = (await fromDate) == undefined ? startDate : fromDate;
 
@@ -1171,7 +1172,7 @@ export const GetgetSalesSummarytMethod =
 
 export const UpdateDeliveryChargesMethod =
   charges => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     const store_per_id = getState()?.authReducer?.user?.store_per_id;
     const charge = charges || 0;
 
@@ -1210,7 +1211,7 @@ export const UpdateDeliveryChargesMethod =
 
 export const UpdateMinOrderValueMethod =
   charges => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     const store_per_id = getState()?.authReducer?.user?.store_per_id;
     const charge = charges || 0;
     dispatch(setLoadingState(true));
@@ -1247,7 +1248,7 @@ export const UpdateMinOrderValueMethod =
   };
 
 export const GetMinOrderValueMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   const store_per_id = getState()?.authReducer?.user?.store_per_id;
 
   dispatch(setLoadingState(true));
@@ -1280,7 +1281,7 @@ export const GetMinOrderValueMethod = () => async (dispatch, getState) => {
 };
 
 export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   const store_per_id = getState()?.authReducer?.user?.store_per_id;
 
   dispatch(setLoadingState(true));
@@ -1312,7 +1313,7 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
 };
 
 export const GetCustomerMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   dispatch(setLoadingState(true));
 
@@ -1374,7 +1375,7 @@ export const CreateWalletMethod = data => async (dispatch, getState) => {
 
 export const UpdateWalletMethod =
   (data, selectedOption) => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
     try {
       const method = 'PUT';
@@ -1404,7 +1405,7 @@ export const UpdateWalletMethod =
   };
 
 export const GetAllWalletMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   dispatch(setLoadingState(true));
 
   try {
@@ -1457,7 +1458,7 @@ export const CreateRetailerWalletMethod =
   };
 
 export const GetRetailerWalletMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   try {
     const method = 'GET';
@@ -1504,7 +1505,7 @@ export const UpdateRetailerWalletMethod =
   };
 
 export const CreateCoupanMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   const store_per_id = getState()?.authReducer?.user?.store_per_id;
 
   try {
@@ -1533,7 +1534,7 @@ export const CreateCoupanMethod = data => async (dispatch, getState) => {
 };
 
 export const GetAllCoupanMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   const store_per_id = getState()?.authReducer?.user?.store_per_id;
   dispatch(setLoadingState(true));
 
@@ -1559,7 +1560,7 @@ export const GetAllCoupanMethod = () => async (dispatch, getState) => {
 };
 
 export const setFcmTokenMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   console.log('setFcmTokenMethod_data', data, userId);
 
@@ -1582,7 +1583,7 @@ export const setFcmTokenMethod = data => async (dispatch, getState) => {
 };
 
 export const getOrderItemDetailMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   dispatch(setLoadingState(true));
 
@@ -1651,7 +1652,7 @@ export const deleteCategoryMethod =
 
 export const updateCategoryMethod =
   (data, categoryId) => async (dispatch, getState) => {
-    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
     // const { categoryCurrentPage } = getState().categoriesReducer;
 
     dispatch(setLoadingState(true));
@@ -1690,7 +1691,7 @@ export const updateCategoryMethod =
   };
 
 export const GetQRItemMethod = data => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
   console.log('GetQRItemMethod_props', storeId, saasId, data);
 
   const method = 'GET';
@@ -1713,8 +1714,8 @@ export const GetQRItemMethod = data => async (dispatch, getState) => {
 };
 
 export const GetInventoryMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
-  const {inventoryCurrentPage} = getState()?.inventoryReducer;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+  const { inventoryCurrentPage } = getState()?.inventoryReducer;
 
   console.log('GetQRItemMethod_props', storeId, saasId, inventoryCurrentPage);
 
@@ -1747,57 +1748,50 @@ export const GetInventoryMethod = () => async (dispatch, getState) => {
 /////////
 
 export const DashboardMMethod = () => async (dispatch, getState) => {
-  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
 
   const method = 'GET';
   const headers = {};
 
-  const baseUrl = `${BASE_URL}dashboard`;
+  const baseUrl = `${BASE_URL}dashboard/get-dashboard-in1/${storeId}`;
 
-  const urls = [
-    `${baseUrl}/today-sales/${storeId}/${
-      new Date().toISOString().split('T')[0]
-    }`,
-    `${baseUrl}/yesterday-sales/${storeId}`,
-    `${baseUrl}/last-week-sales/${storeId}`,
-    `${baseUrl}/last-fourteen-days-sales/${storeId}`,
-    `${baseUrl}/last-month-sales/${storeId}`,
-    `${baseUrl}/last-sixty-days-sales/${storeId}`,
-  ];
+  // const urls = [
+  //   `${baseUrl}/today-sales/${storeId}/${new Date().toISOString().split('T')[0]
+  //   }`,
+  //   `${baseUrl}/yesterday-sales/${storeId}`,
+  //   `${baseUrl}/last-week-sales/${storeId}`,
+  //   `${baseUrl}/last-fourteen-days-sales/${storeId}`,
+  //   `${baseUrl}/last-month-sales/${storeId}`,
+  //   `${baseUrl}/last-sixty-days-sales/${storeId}`,
+  // ];
 
   try {
-    const responses = await Promise.all(
-      urls.map(url => ApiRequest(url, method, headers)),
-    );
-
+    // const responses = await Promise.all(
+    //   urls.map(url => ApiRequest(url, method, headers)),
+    // );
+    const response = await ApiRequest(baseUrl, method, headers);
+    console.log(response?.data, "DashboardMMethod")
     // Combine or handle the responses as needed
-    const [
-      todaySales,
-      yesterdaySales,
+    const {
+      todaysSales,
+      salesInAMonth,
       lastWeekSales,
-      lastFourteenDaysSales,
-      lastMonthSales,
-      lastSixtyDaysSales,
-    ] = responses;
+      last14DaysSales
+    } = response?.data || {};
     const data = {
-      todaySales: todaySales?.data || 0,
-      yesterdaySales: yesterdaySales?.data || 0,
-      lastWeekSales: lastWeekSales?.data || 0,
-      lastFourteenDaysSales: lastFourteenDaysSales?.data || 0,
-      lastMonthSales: lastMonthSales?.data || 0,
-      lastSixtyDaysSales: lastSixtyDaysSales?.data || 0,
+      todaySales: todaysSales || 0,
+      salesInAMonth: salesInAMonth || 0,
+      lastWeekSales: lastWeekSales || 0,
+      last14DaysSales: last14DaysSales || 0,
     };
-    // console.log("Dashboard Resp", data)
 
     dispatch(setDashboard(data));
 
     return {
-      todaySales,
-      yesterdaySales,
+      todaysSales,
+      salesInAMonth,
       lastWeekSales,
-      lastFourteenDaysSales,
-      lastMonthSales,
-      lastSixtyDaysSales,
+      last14DaysSales,
     };
   } catch (error) {
     showToast(`${error} Error in DashboardMMethod`);

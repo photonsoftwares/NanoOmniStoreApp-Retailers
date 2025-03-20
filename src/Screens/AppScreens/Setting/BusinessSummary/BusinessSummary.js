@@ -8,6 +8,8 @@ const BusinessSummary = () => {
     const dashboard = useSelector((state) => state?.dashboardReducer?.dashboard) || {}
 
 
+    console.log(dashboard, "dashboard")
+
     // console.log("redux", redux)
 
     const SummaryItem = ({ iconName, label, value, backgroundColor, iconColor }) => (
@@ -32,11 +34,11 @@ const BusinessSummary = () => {
 
             <View style={styles.grid}>
                 <SummaryItem iconName="stats-chart" label="Today's Sale" value={`₹ ${dashboard?.todaySales}`} backgroundColor="#E8F4FF" iconColor="#2979FF" />
-                <SummaryItem iconName="bag" label="Yesterday Sales" value={`₹ ${dashboard?.yesterdaySales}`} backgroundColor="#FFF4F2" iconColor="#FF6F61" />
+                {/* <SummaryItem iconName="bag" label="Yesterday Sales" value={`₹ ${dashboard?.yesterdaySales}`} backgroundColor="#FFF4F2" iconColor="#FF6F61" /> */}
                 <SummaryItem iconName="card" label="Last Week Sales" value={`₹ ${dashboard?.lastWeekSales}`} backgroundColor="#FFECEC" iconColor="#FF3B3B" />
-                <SummaryItem iconName="cash" label="Last 14 Days Sales" value={`₹ ${dashboard?.lastFourteenDaysSales}`} backgroundColor="#E8FFF1" iconColor="#28A745" />
-                <SummaryItem iconName="trending-down" label="Last Month Sales" value={`₹ ${dashboard?.lastMonthSales}`} backgroundColor="#F4E8FF" iconColor="#8E44AD" />
-                <SummaryItem iconName="cart" label="Last 60 Days Sales" value={`₹ ${dashboard?.lastSixtyDaysSales}`} backgroundColor="#FFF1F1" iconColor="#FF5252" />
+                <SummaryItem iconName="cash" label="Last 14 Days Sales" value={`₹ ${dashboard?.last14DaysSales}`} backgroundColor="#E8FFF1" iconColor="#28A745" />
+                <SummaryItem iconName="trending-down" label="Last Month Sales" value={`₹ ${dashboard?.salesInAMonth}`} backgroundColor="#F4E8FF" iconColor="#8E44AD" />
+                {/* <SummaryItem iconName="cart" label="Last 60 Days Sales" value={`₹ ${dashboard?.lastSixtyDaysSales}`} backgroundColor="#FFF1F1" iconColor="#FF5252" /> */}
             </View>
         </View>
     );
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#E0E0E0',
         shadowColor: '#000',
-       
+
     },
     header: {
         flexDirection: 'row',
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     value: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#000'
     },
     label: {
         fontSize: 14,

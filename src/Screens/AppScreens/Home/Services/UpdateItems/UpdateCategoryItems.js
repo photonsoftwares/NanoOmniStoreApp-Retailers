@@ -51,6 +51,13 @@ const UpdateCategoryItems = ({ route }) => {
     const { categoryData } = useSelector((state) => state?.productReducer);
     const [selectedCategory, setSelectedCategory] = useState(itemToUpdate?.category);
 
+    const [uomOpen, setUomOpen] = useState(false);
+    const [uomValue, setUomValue] = useState(itemToUpdate?.UOM || '');
+    const [uomItems, setUomItems] = useState([
+        { label: 'W', value: 'W' },
+        { label: 'E', value: 'E' },
+    ]);
+
     console.log("selectedCategory", actualPrice)
 
     const handleCategorySelect = (category) => {
@@ -101,6 +108,7 @@ const UpdateCategoryItems = ({ route }) => {
             "closing_quantity": 0,
             "received_quantity": receivedQty,
             "actual_price": actualPrice,
+            "UOM": uomValue
 
         }
         const jsonString = JSON.stringify(data);
@@ -278,6 +286,19 @@ const UpdateCategoryItems = ({ route }) => {
                             placeholder='Description'
                         />
 
+                        <Text style={{ color: 'grey' }}>*</Text>
+                        <DropDownPicker
+                            open={uomOpen}
+                            value={uomValue}
+                            items={uomItems}
+                            setOpen={setUomOpen}
+                            setValue={setUomValue}
+                            setItems={setUomItems}
+                            placeholder="Select UOM"
+                            style={styles.input}
+                            dropDownContainerStyle={styles.dropdownContainers}
+                        />
+
 
 
 
@@ -421,6 +442,10 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    dropdownContainers: {
+        height: 90,
+        marginBottom: 10,
     },
 });
 

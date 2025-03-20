@@ -20,6 +20,8 @@ const UpdateItemScreen = ({ route }) => {
     const itemToUpdate = route?.params
     const itemId = itemToUpdate?.item_id
 
+    console.log(itemToUpdate, "itemToUpdate")
+
     const [modalVisible, setModalVisible] = useState(false);
     const [subCategoryModalVisible, setSubCategoryModalVisible] = useState(false);
     const { recommendedData, recommendedCurrentPage } = useSelector((state) => state?.recommendedReducer);
@@ -32,7 +34,6 @@ const UpdateItemScreen = ({ route }) => {
     const [category, setCategory] = useState(itemToUpdate?.category || '');
     const [isOpen, setOpen] = useState(false);
 
-    console.log("itemToUpdate", receivedQty)
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -48,6 +49,12 @@ const UpdateItemScreen = ({ route }) => {
     const { masterCategory, selectedMasterCategory, subCategory, subCategoryItems } = useSelector((state) => state?.mainCategoryReducer);
     const [selectedSubCategory, setSelectedSubCategory] = useState(subCategory[0]?.category);
 
+    const [uomOpen, setUomOpen] = useState(false);
+    const [uomValue, setUomValue] = useState(itemToUpdate?.UOM || '');
+    const [uomItems, setUomItems] = useState([
+        { label: 'W', value: 'W' },
+        { label: 'E', value: 'E' },
+    ]);
 
 
 
@@ -124,7 +131,7 @@ const UpdateItemScreen = ({ route }) => {
             "closing_quantity": 0,
             "received_quantity": receivedQty,
             "actual_price": actualPrice,
-
+            "UOM": uomValue
 
         }
         const jsonString = JSON.stringify(data);
@@ -303,6 +310,18 @@ const UpdateItemScreen = ({ route }) => {
                             placeholderTextColor="#666"
                             placeholder='Description'
                         />
+                        <Text style={{ color: 'grey' }}>*</Text>
+                        <DropDownPicker
+                            open={uomOpen}
+                            value={uomValue}
+                            items={uomItems}
+                            setOpen={setUomOpen}
+                            setValue={setUomValue}
+                            setItems={setUomItems}
+                            placeholder="Select UOM"
+                            style={styles.input}
+                            dropDownContainerStyle={styles.dropdownContainers}
+                        />
                         <Text style={styles.label}>Price</Text>
                         <TextInput
                             style={styles.input}
@@ -455,6 +474,10 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    dropdownContainers: {
+        height: 90,
+        marginBottom: 10,
     },
 });
 
