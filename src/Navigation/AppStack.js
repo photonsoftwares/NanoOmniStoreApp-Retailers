@@ -46,6 +46,7 @@ import SubCategoryUpdate from '../Screens/AppScreens/Setting/CategoryUpdate/SubC
 import Scan from '../Components/Scan'
 import WalletSearch from '../Screens/AppScreens/Setting/Wallet/WalletSearch'
 import QrCode from '../Screens/AppScreens/Setting/QrCode'
+import Notification from '../Screens/AppScreens/Setting/Notification/Notification'
 
 const AppStack = (Stack) => {
   return (
@@ -112,6 +113,11 @@ const AppStack = (Stack) => {
       <Stack.Screen
         name={NavigationStrings.ADDPRODUCTS}
         component={AddProducts}
+      />
+      {/* Notification */}
+      <Stack.Screen
+        name={NavigationStrings.NOTIFICATION}
+        component={Notification}
       />
 
       {/* Cart */}

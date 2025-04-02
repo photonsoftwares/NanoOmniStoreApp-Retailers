@@ -38,6 +38,9 @@ export default {
     // cart
     CART: "Cart",
 
+    // Notification
+    NOTIFICATION: "Notification",
+
     // SelectPaymentMethod
     SELECTPAYMENTMETHOD: "SelectPaymentMethod",
 
@@ -60,7 +63,7 @@ export default {
     UPDATEWALLET: "UpdateWallet",
     CUSTOMERWALLET: "CustomerWallet",
     WALLETSEARCH: "WalletSearch",
-    
+
     COUPAN: "Coupan",
     CREATECOUPAN: "CreateCoupan",
     UPDATECOUPAN: "UpdateCoupan",

@@ -145,7 +145,7 @@ const PendingItemWithUserDetails = ({ route }) => {
                 <Text style={styles.valueStyle}>{order.category}</Text>
               </View>
 
-              {/* {
+              {
                 storeType === 'VEGETABLE' ?
                   <>
                     <View style={styles.allView}>
@@ -166,7 +166,7 @@ const PendingItemWithUserDetails = ({ route }) => {
                       <Text style={styles.valueStyle}>{order.bill_qty}</Text>
                     </View>
                   </>
-              } */}
+              }
 
 
               <View style={styles.allView}>

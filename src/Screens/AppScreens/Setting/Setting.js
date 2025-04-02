@@ -17,6 +17,7 @@ import Wallet from './Wallet/Wallet';
 import Coupan from './Coupan/Coupan';
 import QrCode from './QrCode';
 import BusinessSummary from './BusinessSummary/BusinessSummary';
+import Notification from './Notification/Notification';
 
 const orderStatusData = [
   { id: '1', status: 'Dashboard', elevation: 1, screen: Dashboard },
@@ -29,6 +30,7 @@ const orderStatusData = [
   { id: '13', status: 'Wallet', elevation: 1, screen: Wallet },
   { id: '14', status: 'Coupon', elevation: 1, screen: Coupan },
   { id: '15', status: 'Qr Code', elevation: 1, screen: QrCode },
+  { id: '16', status: 'Notification', elevation: 1, screen: Notification },
   // Add more order statuses as needed
 ];
 
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
   },
   flatListContainer: {
-    paddingVertical:moderateScale(15)
+    paddingVertical: moderateScale(15)
   },
   serviceContainer: {
     flexDirection: 'row',
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     margin: moderateScale(8),
-    backgroundColor:'#fff'
+    backgroundColor: '#fff'
 
   },
   serviceContainer: {
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     elevation: 1, // Add elevation for shadow (Android)
-    bottom:25
+    bottom: 25
   },
 });
 
