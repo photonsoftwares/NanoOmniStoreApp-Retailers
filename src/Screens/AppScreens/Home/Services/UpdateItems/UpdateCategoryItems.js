@@ -29,12 +29,12 @@ const UpdateCategoryItems = ({ route }) => {
     // console.log("UpdateCategoryItems", itemToUpdate?.actual_price, itemId, itemToUpdate?.actual_price || '',_actual_price)
 
     const [itemName, setItemName] = useState(itemToUpdate?.item_name || '');
-    // const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price.toString() || '');
-    const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price || '');
+    const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price.toString() || '');
+    // const [actualPrice, setActualPrice] = useState(itemToUpdate?.actual_price || '');
     const [description, setDescription] = useState(itemToUpdate?.special_description || '');
     const [newprice, setPrice] = useState(itemToUpdate?.price.toString() || '');
     // const [receivedQty, setReceivedQty] = useState(itemToUpdate?.received_qty || '');
-    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.stock || '');
+    const [receivedQty, setReceivedQty] = useState(itemToUpdate?.stock.toString() || '');
     const [status, setStatus] = useState(itemToUpdate?.status);
     const [category, setCategory] = useState(itemToUpdate?.category || '');
     const [isOpen, setOpen] = useState(false);

@@ -1815,7 +1815,7 @@ export const UpdateOnlineStatusMethod =
 
       if (response?.status === true) {
         showMessage({
-          message: response.message || 'Status updated successfully',
+          message: response.data || 'Status updated successfully',
           type: 'success',
         });
         return response.data; // Return the updated status (e.g., "Online" or "Offline")

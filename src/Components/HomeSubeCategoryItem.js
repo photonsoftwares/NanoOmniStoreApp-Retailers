@@ -37,22 +37,22 @@ const SubCategoryItemListRender = ({ item }) => {
   } else {
     showToast("Prices are not defined or null.");
   }
-
+  console.log(`${BASE_URL}item/get-image/${item.item_id}`, "item image url")
 
   return (
     <View style={[styles.itemContainer, {}]}>
 
-      <Image
+      {/* <Image
         // source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
         source={{ uri: `${BASE_URL}item/get-image/${item.item_id}` }}
         style={styles.img}
         resizeMode='cover'
-      />
-      {/* <FastImage
+      /> */}
+      <FastImage
         source={{ uri: `${BASE_URL}item/get-image/${item.item_id}?key=${new Date()}` }}
         style={styles.img}
         resizeMode={FastImage.resizeMode.cover}
-      /> */}
+      />
       <View style={{ width: '100%', gap: 6, height: 65 }}>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
