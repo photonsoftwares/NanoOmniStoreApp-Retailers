@@ -10,6 +10,7 @@ import ButtonCompo from './ButtonCompo';
 import { setSubCategoryItemsPage } from '../ReduxToolkit/features/mainCategorySlice';
 import { showToast } from '../utils/toast';
 import MyImgCompo from './MyImgCompo';
+import { playBeep } from '../help/soundhelper';
 
 
 const NoData = () => {
@@ -80,7 +81,7 @@ const SubCategoryItemListRender = ({ item }) => {
         }
 
       </View>
-      <Pressable style={styles.button} onPress={() => navigation.navigate('UpdateCategoryItems', { itemId: item?.item_id })}>
+      <Pressable style={styles.button} onPress={() => { navigation.navigate('UpdateCategoryItems', { itemId: item?.item_id }), playBeep() }}>
         <Text style={styles.buttonTitle}>Update</Text>
       </Pressable>
     </View>

@@ -81,8 +81,8 @@ android {
         applicationId "com.omniretailer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 76
-        versionName "2.76.0"
+        versionCode 78
+        versionName "2.78.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {

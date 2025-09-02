@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import NavigationServices from '../Navigation/NavigationServices';
 import { Alert } from 'react-native';
+import { playBeep } from '../help/soundhelper';
 
 export async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -10,7 +11,7 @@ export async function requestUserPermission() {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-        console.log('Authorization status::', authStatus);
+    console.log('Authorization status::', authStatus);
 
     if (enabled) {
         console.log('Authorization status:', authStatus);
@@ -21,7 +22,7 @@ export async function requestUserPermission() {
 
 export const getFcmToken = async () => {
     let fcmToken = await AsyncStorage.getItem('fcmToken')
-    console.log("old fcmToken", fcmToken,fcmToken == null)
+    console.log("old fcmToken", fcmToken, fcmToken == null)
 
     if (fcmToken == null) {
         try {
@@ -68,6 +69,7 @@ export async function notificationListeners() {
     messaging().onMessage(async remoteMessage => {
         // console.log("forground notification", remoteMessage)
         Alert.alert(`${remoteMessage?.notification?.title}`, `${remoteMessage?.notification?.body}`)
+        // playBeep();
         // if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Notification") {
         //     setTimeout(() => {
         //         NavigationService.navigate("Notification", { data: remoteMessage?.data })

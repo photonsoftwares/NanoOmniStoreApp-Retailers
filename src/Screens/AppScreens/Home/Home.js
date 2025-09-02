@@ -2,13 +2,18 @@ import { StyleSheet, View, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import HomeHeader from '../../../Components/HomeHeader';
-import { moderateScale} from '../../../styles/responsiveSize';
+import { moderateScale } from '../../../styles/responsiveSize';
 import { GetCartMethod, GetCategoryItemMethod, GetSelectedCategoryItemsMethod, OrderViewOrderMethod, RecommendedItemMethod } from '../../../config/userApiMethods';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
 import Banner from '../../../Components/Banner';
 import { setCurrentCategoryItemPage } from '../../../ReduxToolkit/features/categoryItemsSlice';
 import { setSelectedCategory } from '../../../ReduxToolkit/features/categoriesSlice';
 import HomeMasterCategory from '../../../Components/HomeMasterCategory';
+import {
+  connectSocket,
+  disconnectSocket,
+} from "../../../services/socketService";
+import { playBeep } from '../../../help/soundhelper';
 
 const Home = () => {
   const { userId, storeId, saasId, } = useSelector((state) => state?.authReducer?.user?.user_data)
@@ -56,6 +61,15 @@ const Home = () => {
       setBannerKey((prevKey) => prevKey + 1);
     }, [])
   );
+  console.log("storeId", storeId)
+  useEffect(() => {
+    const socket = connectSocket(storeId, (newOrder) => {
+      console.log("Received new order:", newOrder);
+      playBeep();
+    });
+
+    return () => disconnectSocket();
+  }, [storeId]);
 
   return (
     <>
