@@ -1834,3 +1834,71 @@ export const UpdateOnlineStatusMethod =
       dispatch(setLoadingState(false));
     }
   };
+
+// delivery boy api
+// Get Delivery Boys List
+export const GetDeliveryBoysMethod = () => async (dispatch, getState) => {
+  const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+
+  try {
+    const endUrl = `${BASE_URL}delivery/get-user-delivery-details/${saasId}/${storeId}`;
+    const method = 'GET';
+    const headers = {};
+
+    const response = await ApiRequest(endUrl, method, headers);
+    console.log('GetDeliveryBoysMethod_resp', response);
+
+    if (response?.status === true) {
+      return response?.data; // Returns array of delivery boys
+    } else {
+      showMessage({
+        message: response?.message || 'Failed to fetch delivery boys',
+        type: 'danger',
+      });
+      return [];
+    }
+  } catch (error) {
+    showMessage({
+      message: 'Network Error',
+      description: error.message || 'Unknown error occurred',
+      type: 'danger',
+    });
+    return [];
+  }
+};
+
+// Assign Order to Delivery Boy
+export const AssignOrderToDeliveryBoyMethod =
+  (orderId, status, deliveryBoyId) => async (dispatch, getState) => {
+    const { userId, storeId, saasId } = getState()?.authReducer?.user?.user_data;
+
+    try {
+      const endUrl = `${BASE_URL}order/accept-order/${storeId}/${saasId}/${orderId}/${status}/${deliveryBoyId}`;
+      const method = 'PUT';
+      const headers = {};
+
+      const response = await ApiRequest(endUrl, method, headers);
+      console.log('AssignOrderToDeliveryBoyMethod_resp', response);
+
+      if (response?.status === true) {
+        showMessage({
+          message: response?.message || 'Order assigned successfully',
+          type: 'success',
+        });
+        return true;
+      } else {
+        showMessage({
+          message: response?.message || 'Failed to assign order',
+          type: 'danger',
+        });
+        return false;
+      }
+    } catch (error) {
+      showMessage({
+        message: 'Network Error',
+        description: error.message || 'Unknown error occurred',
+        type: 'danger',
+      });
+      return false;
+    }
+  };
