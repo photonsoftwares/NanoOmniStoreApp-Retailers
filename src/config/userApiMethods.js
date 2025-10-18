@@ -890,7 +890,7 @@ export const AddMasterCategoryMethod = data => async (dispatch, getState) => {
 
     try {
       const response = await ApiRequest(endUrl, method, headers, body);
-
+      console.log("addcategory master", response, endUrl, body)
       if (response?.status === true) {
         dispatch(GetMasterCategoryMethod());
         showToast('New Category Successfully Added');
