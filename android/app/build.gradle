@@ -79,8 +79,15 @@ android {
         applicationId "com.omniretailer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+<<<<<<< HEAD
         versionCode 5
         versionName "5"
+=======
+        versionCode 87
+        versionName "2.87.0"
+        missingDimensionStrategy 'react-native-camera', 'general'
+
+>>>>>>> 88a2e06 (all)
     }
     signingConfigs {
        release {
@@ -117,6 +124,9 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation platform('com.google.firebase:firebase-bom:32.2.2') // latest stable BOM
+implementation 'com.google.firebase:firebase-analytics'
+implementation 'com.google.firebase:firebase-messaging'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
@@ -132,3 +142,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'

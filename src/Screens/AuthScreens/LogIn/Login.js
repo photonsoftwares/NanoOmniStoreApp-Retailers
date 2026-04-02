@@ -8,6 +8,20 @@ import commonStyles from '../../../styles/commonStyles';
 import TextInputCompo from '../../../Components/TextInputCompo';
 import { validateLoginForm } from '../../../utils/validation';
 import { LogInMethod } from '../../../config/authApiMethods';
+<<<<<<< HEAD
+=======
+import DeviceInfo from 'react-native-device-info';
+import SpInAppUpdates, {
+  NeedsUpdateResponse,
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
+import { getFcmToken } from '../../../utils/notificationServices';
+import messaging from '@react-native-firebase/messaging';
+
+
+console.log("fcm token--",getFcmToken);
+>>>>>>> 88a2e06 (all)
 
 
 const Login = () => {

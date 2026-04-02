@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,12 +17,64 @@ const PendingItemWithUserDetails = ({ route }) => {
   const { extraDeliveryCharges, extraDeliveryChargesValue } = useSelector((state) => state.extraChargesReducer);
   const [total, setTotal] = useState(0);
 
+=======
+import React, {useEffect, useState} from 'react';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  OrderMasterDetailsMethod,
+  SaveTransactionMethod,
+  UpdateOrderMasterMethod
+} from '../../../../../config/userApiMethods';
+import ButtonCompo from '../../../../../Components/ButtonCompo';
+import HeaderComp from '../../../../../Components/HeaderCompo';
+import {useNavigation} from '@react-navigation/native';
+import Loader from '../../../../../Components/Loader';
+import ProcessType from '../../../../../Components/ProcessType';
+import DeliveryBoyModal from '../../../../../Components/DeliveryBoyModal';
+
+const PendingItemWithUserDetails = ({route}) => {
+  const {order_id, order_date, orderMobileNumber} = route?.params;
+  console.log("mobileno-------",orderMobileNumber);
+  
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {userId, storeId, saasId} = useSelector(
+    state => state?.authReducer?.user?.user_data,
+  );
+  const storeType = useSelector(
+    state => state?.authReducer?.user?.store_data?.storeType,
+  );
+  const {customerBookedOrders, customerAddresses, customerData} = useSelector(
+    state => state.customerReducer,
+  );
+  const [total, setTotal] = useState(0);
+  const [loader, setLoader] = useState(true);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [deliveryModal, setDeliveryModal] = useState(false);
+  const [selectedBoy, setSelectedBoy] = useState(null);
+  console.log('customerData', customerData,total);
+
+
+
+  const handleOptionSelect = value => {
+    if (value === 'DELIVERYBOY') {
+      setModalVisible(false);
+      setDeliveryModal(true); // 👈 open delivery boy list
+    } else {
+      setSelectedOption(value);
+      setModalVisible(false);
+    }
+  };
+>>>>>>> 88a2e06 (all)
 
   useEffect(() => {
     dispatch(OrderMasterDetailsMethod(storeId, saasId, route?.params));
     dispatch(GetCustomerAddressMethod(storeId, saasId, customerData?.address_id));
   }, []);
 
+<<<<<<< HEAD
   // useEffect(() => {
   //   // Calculate the total whenever customerBookedOrders changes
   //   const newTotal = customerBookedOrders.reduce((acc, order) => acc + parseFloat(order.item_price), 0);
@@ -29,22 +82,25 @@ const PendingItemWithUserDetails = ({ route }) => {
   // }, [customerBookedOrders]);
 
 
+=======
+>>>>>>> 88a2e06 (all)
   useEffect(() => {
     // Calculate the total amount with quantity whenever customerBookedOrders changes
     const newTotal = customerBookedOrders.reduce((acc, order) => {
-      const orderTotal = parseFloat(order.item_price) * parseInt(order.item_qty);
+      const orderTotal =
+        parseFloat(order.item_price) * parseInt(order.item_qty);
       return acc + orderTotal;
     }, 0);
 
     setTotal(newTotal);
   }, [customerBookedOrders]);
 
-
   const renderOrderDetails = () => {
 
     return (
       <>
         <Text style={styles.sectionHeading}>Order Details</Text>
+<<<<<<< HEAD
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           {customerBookedOrders.map(order => (
             <View key={order.order_id} style={styles.itemContainer}>
@@ -77,6 +133,33 @@ const PendingItemWithUserDetails = ({ route }) => {
             </View>
           ))}
         </ScrollView>
+=======
+        <View
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}>
+          {/* {customerBookedOrders.map(order => ( */}
+          <View
+            key={customerBookedOrders[0]?.order_id}
+            style={styles.itemContainer}>
+            <View style={styles.allView}>
+              <Text style={styles.titleStyle}>{`Order ID: `}</Text>
+              <Text style={styles.valueStyle}>
+                {customerBookedOrders[0]?.order_id}
+              </Text>
+            </View>
+
+            <View style={styles.allView}>
+              <Text style={styles.titleStyle}>{`Order Date: `}</Text>
+              <Text style={styles.valueStyle}>
+                {customerBookedOrders[0]?.order_date}
+              </Text>
+            </View>
+
+            <View style={styles.divider}></View>
+          </View>
+          {/* ))} */}
+        </View>
+>>>>>>> 88a2e06 (all)
       </>
     );
   };
@@ -129,7 +212,9 @@ const PendingItemWithUserDetails = ({ route }) => {
     return (
       <>
         <Text style={styles.sectionHeading}>Item Details</Text>
-        <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}>
           {customerBookedOrders.map(order => (
             <View key={order.order_id} style={styles.itemContainer}>
               <View style={styles.allView}>
@@ -147,10 +232,36 @@ const PendingItemWithUserDetails = ({ route }) => {
                 <Text style={styles.valueStyle}>{order.category}</Text>
               </View>
 
+<<<<<<< HEAD
               <View style={styles.allView}>
                 <Text style={styles.titleStyle}>{`Item Quantity: `}</Text>
                 <Text style={styles.valueStyle}>{order.bill_qty}</Text>
               </View>
+=======
+              {storeType === 'VEGETABLE' ? (
+                <>
+                  <View style={styles.allView}>
+                    <Text style={styles.titleStyle}>{`Quantity: `}</Text>
+                    <Text style={styles.valueStyle}>
+                      {order.bill_qty} of {order.gram} gram
+                    </Text>
+                  </View>
+                  <View style={styles.allView}>
+                    <Text style={styles.titleStyle}>{`Total Quantity: `}</Text>
+                    <Text style={styles.valueStyle}>
+                      {order.bill_qty * order.gram} gram
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View style={styles.allView}>
+                    <Text style={styles.titleStyle}>{`Quantity: `}</Text>
+                    <Text style={styles.valueStyle}>{order.bill_qty}</Text>
+                  </View>
+                </>
+              )}
+>>>>>>> 88a2e06 (all)
 
               <View style={styles.allView}>
                 <Text style={styles.titleStyle}>{`Item Price: `}</Text>
@@ -165,6 +276,7 @@ const PendingItemWithUserDetails = ({ route }) => {
     );
   };
 
+<<<<<<< HEAD
   // console.log(customerBookedOrders[0])
 
   const handleButtonPress = async () => {
@@ -255,6 +367,137 @@ const PendingItemWithUserDetails = ({ route }) => {
           onPress={handleButtonPress}
         />
       </View>
+=======
+  const handleButtonPress = async () => {
+    if (selectedOption === null) {
+      setModalVisible(true);
+    } else {
+      const mergeBody = customerBookedOrders.map(obj => {
+        return {
+          order_id: order_id,
+          order_date: order_date,
+          item_id: obj?.item_id,
+          colorList: null,
+          item_name: obj?.item_name,
+          conc_id: 1,
+          // UOM: null,
+          UOM: obj?.gram,
+          description: null,
+          special_description: null,
+          price: obj?.item_price / obj?.bill_qty,
+          brand: null,
+          sub_price: null,
+          actual_price: null,
+          price_pcs: null,
+          product_qty: obj?.bill_qty,
+          discount: 0,
+          tax: 0,
+          tax_percent: 0,
+          status: 'active',
+          category: obj?.category,
+          saas_id: obj?.saas_id,
+          store_id: obj?.store_id,
+          promo_id: null,
+          image_name: null,
+          hsn_code: null,
+          tax_rate: 0,
+          tax_code: 0,
+          barcode: null,
+          supplier_name: null,
+          opening_qty: null,
+          received_qty: null,
+          sold_qty: null,
+          closing_qty: null,
+          product_cost: null,
+          product_price: null,
+          product_av_cost: null,
+          mrp: null,
+          dept: null,
+          item_class: null,
+          sub_class: null,
+          item_code: null,
+          salesManId:"",
+          salesMan: "",
+          newPrice: null,
+          productQty: obj?.bill_qty,
+          Discountper: 0,
+        };
+      });
+      const saveTBody = {
+        registerId: 'REG1',
+        storeId: storeId,
+        saasId: saasId,
+        tenderId: 'TENDER1',
+        customerName: customerData?.customer_name,
+        customerNumber: customerData?.mobile_number,
+        tender: {
+          Cash:0,
+        },
+        cartItems: mergeBody,
+        orderId: order_id,
+        orderMobileNumber: orderMobileNumber,
+        deliveryBoyID:selectedBoy?.user_id,
+       
+      };
+
+      console.log('saveTBody', saveTBody);
+      const pdf_file_name = await dispatch(
+        SaveTransactionMethod(saveTBody, order_id, selectedOption),
+      );
+
+      if (pdf_file_name) {
+        navigation.navigate('GenrateInvoicePdf', pdf_file_name);
+      }
+    }
+  };
+
+  return (
+    <>
+      <HeaderComp
+        screenName={'Order Details'}
+        onBackPress={() => navigation.goBack()}
+      />
+
+      {loader ? (
+        <Loader isLoading={loader} />
+      ) : (
+        <View style={{backgroundColor: 'white', flex: 1}}>
+          <View style={styles.cardContainer}>
+            {renderCustomerDetails()}
+            {renderOrderDetails()}
+            {renderItemDetails()}
+          </View>
+
+          <ButtonCompo
+            title={
+              selectedOption
+                ? selectedOption === 'DELIVERYBOY'
+                  ? `Assign to ${selectedBoy?.name || 'Delivery Boy'}`
+                  : 'Next'
+                : `Pick Pack - Total: ₹${customerData?.order_value}`
+            }
+            onPress={handleButtonPress}
+          />
+        </View>
+      )}
+      <ProcessType
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSelect={handleOptionSelect}
+      />
+
+      <DeliveryBoyModal
+        visible={deliveryModal}
+        onClose={() => setDeliveryModal(false)}
+        onSelect={boy => {
+          console.log('Selected Boy:', boy);
+
+          setSelectedBoy(boy);
+          setSelectedOption('DELIVERYBOY');
+          setDeliveryModal(false);
+        }}
+      />
+>>>>>>> 88a2e06 (all)
     </>
   );
 };
@@ -281,7 +524,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#000'
+    color: '#000',
   },
   allView: {
     flexDirection: 'row',
@@ -292,12 +535,15 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   titleStyle: {
-    color: '#000'
+    color: '#000',
   },
   valueStyle: {
-    color: '#000'
+    color: '#000',
   },
 });
 
 export default PendingItemWithUserDetails;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 88a2e06 (all)

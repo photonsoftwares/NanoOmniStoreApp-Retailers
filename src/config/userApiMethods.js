@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { showMessage } from "react-native-flash-message";
 import { ApiRequest } from "./apiRequests";
 import { setLoadingState } from "../ReduxToolkit/features/loadingSlice";
@@ -19,6 +20,69 @@ import { setExtraDeliveryChargesValue, setExtraMinOrderValue } from "../ReduxToo
 
 export const TestMethod = (storeId, saasId, page = 1) => async dispatch => {
     // console.log('TestMethod_props', storeId, saasId, page);
+=======
+import {showMessage} from 'react-native-flash-message';
+import {ApiRequest} from './apiRequests';
+import {setLoadingState} from '../ReduxToolkit/features/loadingSlice';
+import {BASE_URL} from './Base_Url';
+import {setCategoryData} from '../ReduxToolkit/features/productSlice';
+import {
+  setDeliveredItems,
+  setOrders,
+} from '../ReduxToolkit/features/orderSlice';
+import {
+  setBookedOrders,
+  setCustomerAddresses,
+  setCustomerData,
+} from '../ReduxToolkit/features/customerSlice';
+import {
+  addRecommendedPageData,
+  setRecommended,
+  setRecommendedCurrentPage,
+} from '../ReduxToolkit/features/recommendedSlice';
+import {setCategoriesData} from '../ReduxToolkit/features/categoriesSlice';
+import {
+  addCategoriesItemPageData,
+  setCategoryItemsData,
+  setCurrentCategoryItemPage,
+} from '../ReduxToolkit/features/categoryItemsSlice';
+import {
+  addItemCart,
+  totalInVoiceCart,
+} from '../ReduxToolkit/features/cartSlice';
+import {showToast} from '../utils/toast';
+import {setSearch} from '../ReduxToolkit/features/searchSlice';
+import {setSalesReport} from '../ReduxToolkit/features/salesReport';
+import axios from 'axios';
+import {setSalesSummary} from '../ReduxToolkit/features/salesSummary';
+import {
+  setExtraDeliveryChargesValue,
+  setExtraMinOrderValue,
+} from '../ReduxToolkit/features/extraChargesSlice';
+import {setCustomerList} from '../ReduxToolkit/features/customerList';
+import {
+  setAllRetailerWallet,
+  setRetailerWallet,
+  setWallet,
+} from '../ReduxToolkit/features/walletSlice';
+import {setCoupan} from '../ReduxToolkit/features/coupanSlice';
+import {
+  setMasterCategoryData,
+  setSubCategoryCategory,
+  setSubCategoryItemsData,
+  setSubCategoryItemsTotalPage,
+} from '../ReduxToolkit/features/mainCategorySlice';
+import {
+  addInventoryMoreData,
+  setInventory,
+  setInventoryCurrentPage,
+} from '../ReduxToolkit/features/InventorySlice';
+import {
+  setDashboard,
+  setDashboardData,
+} from '../ReduxToolkit/features/dashboardSlice';
+import {setDeliveryDetails} from '../ReduxToolkit/features/deliverySlice';
+>>>>>>> 88a2e06 (all)
 
     dispatch(setLoadingState(true));
     // console.log(page)
@@ -257,10 +321,16 @@ export const GetCustomerAddressMethod = (storeId, saasId, address_id) => async (
         })
     }
 
+<<<<<<< HEAD
 };
 
 export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getState) => {
     // console.log("SaveTransaction_props", orderIdd)
+=======
+export const SaveTransactionMethod =
+  (data, orderIdd, selectedOption) => async (dispatch, getState) => {
+    // console.log('SaveTransaction_props---', data);
+>>>>>>> 88a2e06 (all)
 
     try {
         // const endUrl = `http://3.7.230.172:8088/test/api/v1/transaction/save-transaction`;
@@ -272,6 +342,7 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
         const method = 'Post';
         let response = await ApiRequest(endUrl, method, headers, body);
 
+<<<<<<< HEAD
         // console.log('SaveTransaction_resp', response);
         if (response?.status) {
             showMessage({
@@ -281,6 +352,24 @@ export const SaveTransactionMethod = (data, orderIdd) => async (dispatch, getSta
             await dispatch(DeleteAllCartMethod())
             await dispatch(UpdateOrderStatusMethod(orderIdd))
             // await dispatch(UpdateOrderMasterMethod(response?.data?.transaction_id));
+=======
+      console.log('SaveTransaction_resp', body, endUrl, response);
+      if (response?.status) {
+        showMessage({
+          message: `Invoice is Loading`,
+          type: 'success',
+        });
+        await dispatch(DeleteAllCartMethod());
+        await dispatch(UpdateOrderStatusMethod(orderIdd, selectedOption,data));
+
+       
+      } else {
+        showMessage({
+          message: `${response.message}`,
+          type: 'danger',
+        });
+      }
+>>>>>>> 88a2e06 (all)
 
         } else {
             showMessage({
@@ -339,6 +428,7 @@ export const UpdateOrderMasterMethod = (orderId) => async (dispatch, getState) =
         })
     }
 
+<<<<<<< HEAD
 };
 
 
@@ -352,6 +442,80 @@ export const UpdateOrderStatusMethod = (orderIdd) => async (dispatch, getState) 
     try {
         const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/delivered`;
         // const endUrl = `${BASE_URL}order/update/order/master/${orderId}`;
+=======
+export const AcceptOrderByDeliveryBoyMethod =
+  (orderId, status, deliveryBoyId) => async (dispatch, getState) => {
+    const {storeId, saasId} = getState()?.authReducer?.user?.user_data;
+
+    console.log(
+      'AcceptOrderByDeliveryBoyMethod',
+      orderId,
+      status,
+      deliveryBoyId,
+    );
+
+    try {
+      const endUrl = `${BASE_URL}order/accept-order/${storeId}/${saasId}/${orderId}/${status}/${deliveryBoyId}`;
+      const method = 'PUT';
+      const headers = {};
+
+      const response = await ApiRequest(endUrl, method, headers);
+
+      console.log('AcceptOrderByDeliveryBoyMethod_resp', response);
+
+      if (response?.status === true) {
+        showMessage({
+          message: 'Order Assigned Successfully',
+          type: 'success',
+        });
+
+        // 🔄 Refresh order list
+        dispatch(OrderViewOrderMethod());
+      } else {
+        showMessage({
+          message: response?.message || 'Something went wrong',
+          type: 'danger',
+        });
+      }
+
+      return response;
+    } catch (error) {
+      console.log('AcceptOrderByDeliveryBoyMethod_error', error);
+
+      showMessage({
+        message: 'Network Error',
+        description: error?.message,
+        type: 'danger',
+      });
+    }
+  };
+
+export const UpdateOrderStatusMethod =
+  (orderIdd, status = 'DELIVERYBOY', data ) =>
+  async (dispatch, getState) => {
+    const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+    console.log('UpdateOrderStatusMethod---------------', orderIdd, status,data);
+    // console.log('data ayaaa----', );
+    const deliveryBoyId = data?.deliveryBoyID;
+
+    try {
+      const endUrl = `${BASE_URL}order/update-status/${storeId}/${saasId}/${orderIdd}/${status}`;
+      const headers = {};
+      const method = 'Put';
+      let response = await ApiRequest(endUrl, method, headers);
+      // console.log('UpdateOrderStatusMethod_Resp----------', response);
+      if (response?.status === true) {
+        dispatch(
+          AcceptOrderByDeliveryBoyMethod(orderIdd, status,deliveryBoyId),
+        );
+        dispatch(OrderViewOrderMethod());
+      } else {
+        showMessage({
+          message: `${response.message}`,
+          type: 'danger',
+        });
+      }
+>>>>>>> 88a2e06 (all)
 
         const headers = {};
         const method = 'Put';
@@ -1474,9 +1638,198 @@ export const GetDelivryChargesMethod = () => async (dispatch, getState) => {
 
 };
 
+<<<<<<< HEAD
 // Add this function to your userActionApi.js file
 export const UpdateOnlineStatusMethod = (storeId) => async (dispatch, getState) => {
     // console.log("UpdateOnlineStatusMethod_props", storeId, saasId, status);
+=======
+export const CreateRetailerWalletMethod =
+  data => async (dispatch, getState) => {
+    try {
+      const method = 'POST';
+      const headers = {};
+      const body = JSON.stringify(data);
+      const endUrl = `${BASE_URL}wallet/create-retailer-wallet`;
+
+      try {
+        const response = await ApiRequest(endUrl, method, headers, body);
+        console.log('CreateWalletMethod_response', response, endUrl);
+
+        if (response?.status == true) {
+          showToast('Balance added Succesfully ');
+          dispatch(GetRetailerWalletMethod());
+        } else {
+        }
+        return response;
+      } catch (error) {
+        showToast('something error in CreateRetailerWalletMethod');
+      } finally {
+        dispatch(setLoadingState(false));
+      }
+    } catch (error) {
+      showToast('something error in CreateRetailerWalletMethod');
+    }
+  };
+
+export const GetRetailerWalletMethod = () => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+
+  try {
+    const method = 'GET';
+    const headers = {};
+    const endUrl = `${BASE_URL}wallet/get-retailer-wallet/${storeId}`;
+
+    try {
+      const response = await ApiRequest(endUrl, method, headers);
+      dispatch(setRetailerWallet(response?.data?.amount));
+    } catch (error) {
+      showToast('something error in GetRetailerWalletMethod');
+    } finally {
+      dispatch(setLoadingState(false));
+    }
+  } catch (error) {
+    showToast('something error in GetRetailerWalletMethod');
+  }
+};
+
+export const UpdateRetailerWalletMethod =
+  data => async (dispatch, getState) => {
+    try {
+      const method = 'PUT';
+      const headers = {};
+      const body = JSON.stringify(data);
+      const endUrl = `${BASE_URL}wallet/update-retailer-wallet`;
+
+      try {
+        const response = await ApiRequest(endUrl, method, headers, body);
+
+        if (response?.status == true) {
+          showToast('Balance updated Succesfully ');
+          dispatch(GetRetailerWalletMethod());
+        }
+        return response;
+      } catch (error) {
+        showToast('something error in UpdateRetailerWalletMethod');
+      } finally {
+        dispatch(setLoadingState(false));
+      }
+    } catch (error) {
+      showToast('something error in UpdateRetailerWalletMethod');
+    }
+  };
+
+export const CreateCoupanMethod = data => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const store_per_id = getState()?.authReducer?.user?.store_per_id;
+
+  try {
+    const method = 'POST';
+    const headers = {};
+    const body = JSON.stringify(data);
+    const endUrl = `${BASE_URL}coupon/create-coupon`;
+
+    try {
+      const response = await ApiRequest(endUrl, method, headers, body);
+      console.log('CreateCoupanMethod_response', response);
+
+      if (response?.status == true) {
+        showToast('coupon created');
+      }
+      return response;
+    } catch (error) {
+      showToast('something error in CreateCoupanMethod');
+    } finally {
+      dispatch(setLoadingState(false));
+    }
+  } catch (error) {
+    showToast('something error in CreateCoupanMethod');
+    dispatch(setLoadingState(false));
+  }
+};
+
+export const GetAllCoupanMethod = () => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const store_per_id = getState()?.authReducer?.user?.store_per_id;
+  dispatch(setLoadingState(true));
+
+  try {
+    const method = 'GET';
+    const headers = {};
+    const endUrl = `${BASE_URL}coupon/get-all-coupon-store/${storeId}`;
+
+    try {
+      const response = await ApiRequest(endUrl, method, headers);
+      console.log('GetAllCoupanMethod_Resp', response?.data?.length, endUrl);
+      dispatch(setCoupan(response?.data));
+    } catch (error) {
+      showToast('something error in GetAllCoupanMethod');
+    } finally {
+      dispatch(setLoadingState(false));
+    }
+  } catch (error) {
+    showToast('something error in GetAllCoupanMethod');
+
+    dispatch(setLoadingState(false));
+  }
+};
+
+export const setFcmTokenMethod = data => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+
+  console.log('setFcmTokenMethod_data', data, userId);
+
+  try {
+    const headers = {};
+    const body = data;
+    const method = 'POST';
+    const endUrl = `${BASE_URL}customer/save-Fmc-Token-retailer/${userId}/${body}`;
+
+    let response = await ApiRequest(endUrl, method, headers, body);
+    console.log('setFcmTokenAction response', response,body);
+
+    if (response?.status) {
+    } else {
+    }
+    return response;
+  } catch (error) {
+    showToast('something error');
+  }
+};
+
+export const getOrderItemDetailMethod = data => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+
+  dispatch(setLoadingState(true));
+
+  try {
+    const headers = {};
+    const body = data;
+    const method = 'GET';
+    const endUrl = `${BASE_URL}order/get-order-details-list/${saasId}/${storeId}/${data}`;
+
+    let response = await ApiRequest(endUrl, method, headers, body);
+
+    if (response?.status) {
+      7;
+      await dispatch(setDeliveredItems(response?.data?.order_sub_details));
+      dispatch(setLoadingState(false));
+    } else {
+      dispatch(setLoadingState(false));
+    }
+    return response;
+  } catch (error) {
+    showMessage({
+      message: error,
+      type: 'danger',
+    });
+    dispatch(setLoadingState(false));
+  }
+};
+
+export const deleteCategoryMethod =
+  (data, masterCategoryId) => async (dispatch, getState) => {
+    console.log('deleteCategoryMethod_data', data);
+>>>>>>> 88a2e06 (all)
 
     dispatch(setLoadingState(true));
 
@@ -1509,4 +1862,153 @@ export const UpdateOnlineStatusMethod = (storeId) => async (dispatch, getState) 
     } finally {
         dispatch(setLoadingState(false));
     }
+<<<<<<< HEAD
 };
+=======
+  };
+
+export const GetQRItemMethod = data => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  console.log('GetQRItemMethod_props', storeId, saasId, data);
+
+  const method = 'GET';
+  const headers = {};
+  const body = JSON.stringify(data);
+  const endUrl = `${BASE_URL}item/view-item-detil/${data}`;
+
+  try {
+    const response = await ApiRequest(endUrl, method, headers);
+    console.log('GetQRItemMethod_resp', endUrl, response);
+
+    if (response?.status) {
+    } else {
+      showToast('Item not available Please try another bar code');
+    }
+    return response;
+  } catch (error) {
+    showToast(`${error} Error in GetQRItemMethod`);
+  }
+};
+
+export const GetInventoryMethod = () => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+  const {inventoryCurrentPage} = getState()?.inventoryReducer;
+
+  console.log('GetQRItemMethod_props', storeId, saasId, inventoryCurrentPage);
+
+  const method = 'GET';
+  const headers = {};
+  const endUrl = `${BASE_URL}item/get-item-lists/${saasId}/${storeId}/${inventoryCurrentPage}`;
+
+  try {
+    const response = await ApiRequest(endUrl, method, headers);
+    // console.log('GetInventoryMethod_resp', endUrl, response);
+
+    if (response?.status) {
+      console.log('inventoryCurrentPage', inventoryCurrentPage);
+      if (inventoryCurrentPage == '1') {
+        dispatch(setInventory(response?.data || []));
+        dispatch(setInventoryCurrentPage(inventoryCurrentPage + 1));
+      } else {
+        dispatch(addInventoryMoreData(response?.data || []));
+        dispatch(setInventoryCurrentPage(inventoryCurrentPage + 1));
+      }
+    } else {
+      showToast(response?.message);
+    }
+    return response;
+  } catch (error) {
+    showToast(`${error} Error in GetInventoryMethod`);
+  }
+};
+
+/////////
+
+export const DashboardMMethod = () => async (dispatch, getState) => {
+  const {userId, storeId, saasId} = getState()?.authReducer?.user?.user_data;
+
+  const method = 'GET';
+  const headers = {};
+
+  const baseUrl = `${BASE_URL}dashboard`;
+
+  const urls = [
+    `${baseUrl}/today-sales/${storeId}/${
+      new Date().toISOString().split('T')[0]
+    }`,
+    `${baseUrl}/yesterday-sales/${storeId}`,
+    `${baseUrl}/last-week-sales/${storeId}`,
+    `${baseUrl}/last-fourteen-days-sales/${storeId}`,
+    `${baseUrl}/last-month-sales/${storeId}`,
+    `${baseUrl}/last-sixty-days-sales/${storeId}`,
+  ];
+
+  try {
+    const responses = await Promise.all(
+      urls.map(url => ApiRequest(url, method, headers)),
+    );
+
+    // Combine or handle the responses as needed
+    const [
+      todaySales,
+      yesterdaySales,
+      lastWeekSales,
+      lastFourteenDaysSales,
+      lastMonthSales,
+      lastSixtyDaysSales,
+    ] = responses;
+    const data = {
+      todaySales: todaySales?.data || 0,
+      yesterdaySales: yesterdaySales?.data || 0,
+      lastWeekSales: lastWeekSales?.data || 0,
+      lastFourteenDaysSales: lastFourteenDaysSales?.data || 0,
+      lastMonthSales: lastMonthSales?.data || 0,
+      lastSixtyDaysSales: lastSixtyDaysSales?.data || 0,
+    };
+    // console.log("Dashboard Resp", data)
+
+    dispatch(setDashboard(data));
+
+    return {
+      todaySales,
+      yesterdaySales,
+      lastWeekSales,
+      lastFourteenDaysSales,
+      lastMonthSales,
+      lastSixtyDaysSales,
+    };
+  } catch (error) {
+    showToast(`${error} Error in DashboardMMethod`);
+  }
+};
+
+export const GetUserDeliveryDetailsMethod =
+  (userIdParam = 8, StoreId = 80001) =>
+  async (dispatch, getState) => {
+    dispatch(setLoadingState(true));
+
+    try {
+      const endUrl = `${BASE_URL}delivery/get-user-delivery-details/${userIdParam}/${StoreId}`;
+      const method = 'GET';
+      const headers = {};
+
+      const response = await ApiRequest(endUrl, method, headers);
+
+      console.log('GetUserDeliveryDetailsMethod_resp', endUrl, response);
+
+      if (response?.status === true) {
+        // 👉 yaha tum apne reducer me data save kar sakte ho
+        dispatch(setDeliveryDetails(response?.data));
+
+        return response?.data;
+      } else {
+        showToast(response?.message || 'No delivery details found');
+      }
+    } catch (error) {
+      console.log('GetUserDeliveryDetailsMethod_error', error);
+      showToast('Something went wrong');
+    } finally {
+      dispatch(setLoadingState(false));
+    }
+  };
+>>>>>>> 88a2e06 (all)

@@ -15,6 +15,16 @@ import searchReducer from './features/searchSlice';
 import salesReportReducer from './features/salesReport';
 import salesSummaryReducer from './features/salesSummary';
 import extraChargesReducer from './features/extraChargesSlice';
+<<<<<<< HEAD
+=======
+import customerListReducer from './features/customerList';
+import walletSliceReducer from './features/walletSlice';
+import coupanSliceReducer from './features/coupanSlice';
+import mainCategoryReducer from './features/mainCategorySlice';
+import inventoryReducer from './features/InventorySlice';
+import dashboardReducer from './features/dashboardSlice';
+import deliveryReducer from './features/deliverySlice';
+>>>>>>> 88a2e06 (all)
 
 
 
@@ -33,6 +43,17 @@ const appReducer = combineReducers({
     salesReportReducer,
     salesSummaryReducer,
     extraChargesReducer,
+<<<<<<< HEAD
+=======
+    customerListReducer,
+    walletSliceReducer,
+    coupanSliceReducer,
+
+    mainCategoryReducer,
+    inventoryReducer,
+    dashboardReducer,
+     deliveryReducer: deliveryReducer,
+>>>>>>> 88a2e06 (all)
 });
 
 const rootReducer = (state, action) => {
