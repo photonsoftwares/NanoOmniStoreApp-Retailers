@@ -79,12 +79,17 @@ android {
         applicationId "com.omniretailer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         versionCode 5
         versionName "5"
 =======
         versionCode 87
         versionName "2.87.0"
+=======
+        versionCode 98
+        versionName "2.98.0"
+>>>>>>> Stashed changes
         missingDimensionStrategy 'react-native-camera', 'general'
 
 >>>>>>> 88a2e06 (all)

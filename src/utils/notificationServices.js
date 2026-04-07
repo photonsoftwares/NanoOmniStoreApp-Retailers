@@ -2,6 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import NavigationServices from '../Navigation/NavigationServices';
+<<<<<<< Updated upstream
 
 
 
@@ -15,22 +16,33 @@ import { playSound } from '../utils/soundService';
 
 // Tts.setDefaultLanguage('en-US');
 // Tts.setDefaultRate(0.5);
+=======
+import {Alert} from 'react-native';
+import {playNotificationSound} from '../utils/soundService';
+>>>>>>> Stashed changes
 export async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    console.log('Authorization status::', authStatus);
+  console.log('Authorization status::', authStatus);
 
+<<<<<<< Updated upstream
     if (enabled) {
         console.log('Authorization status:', authStatus);
         getFcmToken()
     }
+=======
+  if (enabled) {
+    getFcmToken();
+  }
+>>>>>>> Stashed changes
 }
 
 
 export const getFcmToken = async () => {
+<<<<<<< Updated upstream
     let fcmToken = await AsyncStorage.getItem('fcmToken')
     console.log("old fcmToken", fcmToken, fcmToken == null)
 
@@ -248,3 +260,80 @@ export async function createNotificationChannel() {
 
 //     return unsubscribe;
 // }
+=======
+  let fcmToken = await AsyncStorage.getItem('fcmToken');
+
+  if (fcmToken == null) {
+    try {
+      const token = await messaging().getToken();
+      if (token) {
+        await AsyncStorage.setItem('fcmToken', token);
+        console.log('new fcmToken', token);
+      }
+    } catch (error) {
+      console.log('error in creating token');
+    }
+  }
+};
+
+export async function notificationListeners() {
+  // ✅ SINGLE onMessage (FIXED)
+  const unsubscribe = messaging().onMessage(async remoteMessage => {
+    console.log('New Notification:', remoteMessage);
+
+    // 🔊 SOUND PLAY
+    playNotificationSound(
+      remoteMessage?.data?.title,
+      remoteMessage?.data?.body,
+    );
+
+    // 📢 ALERT
+    Alert.alert(
+      remoteMessage?.notification?.title,
+      remoteMessage?.notification?.body,
+    );
+
+    // 👉 NAVIGATION (optional)
+    if (remoteMessage?.data?.redirect_to === 'Notification') {
+      setTimeout(() => {
+        NavigationServices.navigate('Notification', {
+          data: remoteMessage?.data,
+        });
+      }, 1200);
+    }
+  });
+
+  // 🔁 Background → open app
+  messaging().onNotificationOpenedApp(remoteMessage => {
+    if (remoteMessage?.data?.redirect_to === 'Notification') {
+      setTimeout(() => {
+        NavigationServices.navigate('Notification', {
+          data: remoteMessage?.data,
+        });
+      }, 1200);
+    }
+  });
+
+  // ❌ Removed duplicate onMessage (IMPORTANT FIX)
+
+  // 🔁 Kill state
+  messaging()
+    .getInitialNotification()
+    .then(remoteMessage => {
+      if (remoteMessage?.data?.redirect_to === 'Notification') {
+        setTimeout(() => {
+          NavigationServices.navigate('Notification', {
+            data: remoteMessage?.data,
+          });
+        }, 1200);
+      }
+    });
+
+  // 🔁 Background handler
+  messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Background message:', remoteMessage);
+  });
+
+  return unsubscribe;
+}
+>>>>>>> Stashed changes

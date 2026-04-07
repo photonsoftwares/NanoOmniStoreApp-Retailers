@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import Sound from 'react-native-sound';
 import Tts from 'react-native-tts';
 
@@ -33,4 +34,19 @@ export const playSound = (message = 'New order received') => {
             sound.release();
         });
     });
+=======
+import notifee, { AndroidImportance } from '@notifee/react-native';
+
+export const playNotificationSound = async (title, body) => {
+  await notifee.displayNotification({
+    title: title || 'New Order',
+    body: body || 'You got a new order',
+    android: {
+      channelId: 'default',
+      pressAction: {
+        id: 'default',
+      },
+    },
+  });
+>>>>>>> Stashed changes
 };

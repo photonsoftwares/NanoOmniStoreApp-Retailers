@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 
 import { StyleSheet, StatusBar, } from 'react-native'
@@ -9,6 +10,34 @@ import { persistor, store } from './src/ReduxToolkit/store'
 import FlashMessage from 'react-native-flash-message'
 import { moderateScale, textScale } from './src/styles/responsiveSize'
 import SplashScreen from 'react-native-splash-screen'
+=======
+import {
+  StyleSheet,
+  StatusBar,
+  Platform,
+  PermissionsAndroid,
+  Alert,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
+import {persistor, store} from './src/ReduxToolkit/store';
+import FlashMessage from 'react-native-flash-message';
+import {moderateScale, textScale} from './src/styles/responsiveSize';
+import SplashScreen from 'react-native-splash-screen';
+import {
+  notificationListeners,
+  requestUserPermission,
+} from './src/utils/notificationServices';
+import Routes from './src/Navigation/Routes';
+import SpInAppUpdates, {
+  IAUInstallStatus,
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
+import UpdatePopup from './src/Components/UpdatePopup';
+import { createChannel } from './src/utils/notificationSound';
+>>>>>>> Stashed changes
 
 const App = () => {
 
@@ -17,6 +46,7 @@ const App = () => {
 <<<<<<< HEAD
 =======
     checkUpdate();
+    createChannel();
   });
 
   // useEffect(() => {
